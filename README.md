@@ -1,2 +1,2 @@
-# ChessJava
+# Projet_JAVA_Chess
 

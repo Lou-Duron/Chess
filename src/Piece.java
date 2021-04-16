@@ -1,5 +1,3 @@
-package Projet_Echec;
-
 import javax.swing.ImageIcon;
 
 public abstract class Piece {

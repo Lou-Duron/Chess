@@ -1,5 +1,3 @@
-
-
 import javax.swing.*;
 
 public class Bishop extends Piece {

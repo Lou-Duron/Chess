@@ -1,5 +1,3 @@
-
-
 public class Board {
     
     Square [][] board;
