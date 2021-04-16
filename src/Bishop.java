@@ -1,4 +1,4 @@
-package Projet_Echec;
+
 
 import javax.swing.*;
 
@@ -10,10 +10,10 @@ public class Bishop extends Piece {
         this.x = x;
         this.y = y;
         if(isBlack){
-            image = new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/bb.png");
+            image = new ImageIcon("Images/bb.png");
         }
         else{
-        image = new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/wb.png");
+        image = new ImageIcon("Images/wb.png");
         }
     }
 }

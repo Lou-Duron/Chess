@@ -1,4 +1,4 @@
-package Projet_Echec;
+
 
 import javax.swing.ImageIcon;
 
@@ -15,10 +15,10 @@ public class Square {
         isFilled = false;
         piece = null;
         if(isBlack){
-            image = new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/CaseNoire.PNG");
+            image = new ImageIcon("Images/CaseNoire.PNG");
         }
         else{
-        image = new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/CaseBlanche.PNG");
+        image = new ImageIcon("Images/CaseBlanche.PNG");
         }
     }
 
@@ -27,10 +27,10 @@ public class Square {
     public ImageIcon returnImage(){
         if(isFilled){
             if(isBlack){
-                return new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/Bbb.png");
+                return new ImageIcon("Images/Bbb.png");
             }
             else{
-                return new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/Wbb.png");
+                return new ImageIcon("Images/Wbb.png");
             }
         }
         else{

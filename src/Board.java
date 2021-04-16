@@ -1,4 +1,4 @@
-package Projet_Echec;
+
 
 public class Board {
     

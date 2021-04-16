@@ -1,4 +1,4 @@
-package projet_java_chess.src;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,9 +28,9 @@ public class Frame{
         chessBoard = new Board();
     
         //Board and Pieces images
-        caseBlancheDispo = new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/CaseBlancheDispo.PNG");
-        caseNoireDispo = new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/CaseNoireDispo.PNG");
-        woodBackground = new ImageIcon("C:/Users/USER/Desktop/Master/Java/src/Images/woodBackground.jpg");
+        caseBlancheDispo = new ImageIcon("Images/CaseBlancheDispo.PNG");
+        caseNoireDispo = new ImageIcon("Images/CaseNoireDispo.PNG");
+        woodBackground = new ImageIcon("Images/woodBackground.jpg");
 
         // Layouts
         bl = new BorderLayout();
