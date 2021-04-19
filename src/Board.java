@@ -1,31 +1,45 @@
 public class Board {
     
-    Square [][] board;
+    public Square [][] board;
 
     public Board(){
-        board = new Square[8][8];
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                if(x%2 == y%2){
-                    board[x][y] = new Square(x,y,false);
-                }
-                else{
-                    board[x][y] = new Square(x,y,true);
-                }
-            }
-        }
+        initBoard();
     }
 
+    public void initBoard(){
+        board[0][0] = new Square(0,0, new Rook(true), true);
+        board[0][1] = new Square(0,0, new Rook(true), true);
+        board[0][2] = new Square(0,0, new Rook(true), true);
+        board[0][3] = new Square(0,0, new Rook(true), true);
+        board[0][4] = new Square(0,0, new Rook(true), true);
+        board[0][5] = new Square(0,0, new Rook(true), true);
+        board[0][6] = new Square(0,0, new Rook(true), true);
+        board[0][7] = new Square(0,0, new Rook(true), true);
+        board[1][0] = new Square(0,0, new Rook(true), true);
+        board[1][1] = new Square(0,0, new Rook(true), true);
+        board[1][0] = new Square(0,0, new Rook(true), true);
+        board[1][0] = new Square(0,0, new Rook(true), true);
+        board[1][0] = new Square(0,0, new Rook(true), true);
+
+        for (int i = 2; i < 6; i++) {
+            for (int j = 0; j < 8; j++) {
+                board[i][j] = new Square(i, j, null, true);
+            }
+        }
+
+    }
     // Add a piece on the board
     public void addPiece(Piece piece, int x, int y){
         board[x][y].piece = piece;
-        board[x][y].piece.x = x;
-        board[x][y].piece.y = y;
-        board[x][y].isFilled = true;
+
     }
 
     // Remove a piece from the board
     public void deletePiece(int x, int y){
         board[x][y].piece = null;
+    }
+
+    public void display(){
+
     }
 }

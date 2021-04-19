@@ -2,16 +2,23 @@ import javax.swing.*;
 
 public class Bishop extends Piece {
     
-    public Bishop(boolean isBlack, int x, int y){
-        this.isBlack = isBlack;
-        isAlive = true;
-        this.x = x;
-        this.y = y;
-        if(isBlack){
-            image = new ImageIcon("Images/bb.png");
+    public Bishop(boolean color, int y) {
+        super(color);
+    }
+
+    public boolean canMove(Board b, Square start, Square end) {
+
+        if (start.equals(end))
+            return false;
+
+        // If piece with same color
+        if (end.piece.getColor() == this.getColor()) {
+            return false;
         }
-        else{
-        image = new ImageIcon("Images/wb.png");
-        }
+        // Didn't move diagonally
+        if (end.x == start.x || end.y == start.y)
+            return false;
+
+        return true;
     }
 }
