@@ -2,7 +2,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public abstract class Piece {
-    private boolean isWhite, isAlive; //Status
+    private boolean isWhite, isAlive; //Status //isAlive necessaire ?
     Position position; // Position of the piece
     JLabel image; // Label
     ImageIcon icon; // Icon

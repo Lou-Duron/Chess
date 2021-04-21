@@ -43,7 +43,7 @@ public class Frame {
         //this.add(DaD);
         
         // Players panels
-        // (Player 1 = black, Player 2 = white)
+        // (player1 = black, player2 = white)
         player1 = new JLabel();
         player1.setBackground(CL_PLAYER);
         player1.setOpaque(true);
