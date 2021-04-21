@@ -21,12 +21,12 @@ public class Pawn extends Piece {
             return false;
         }
         // Pawns can only move forward
-        if (end.x < start.x) {
+        if (end.position.x < start.position.x) {
             return false;
         }
 
         // Diagonal move to eat a piece
-        if (Math.abs(end.x-start.x) != 1 || Math.abs(end.y-start.y) != 1) {
+        if (Math.abs(end.position.x-start.position.x) != 1 || Math.abs(end.position.y-start.position.y) != 1) {
             return false;
         }
         return true;

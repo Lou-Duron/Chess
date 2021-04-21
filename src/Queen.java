@@ -22,8 +22,8 @@ public class Queen extends Piece {
             return false;
         }
 
-        if (end.x == start.x || end.y == start.y){ //didn't move diagonally
-            if (Math.abs(end.x-start.x) != 0 || Math.abs(end.y-start.y) != 0){  //didn't move vertically
+        if (end.position.x == start.position.x || end.position.y == start.position.y){ //didn't move diagonally
+            if (Math.abs(end.position.x-start.position.x) != 0 || Math.abs(end.position.y-start.position.y) != 0){  //didn't move vertically
                 return false;
             }
         }

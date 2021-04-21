@@ -22,8 +22,8 @@ public class Knight extends Piece {
             return false;
         }
 
-        if (Math.abs(end.y-start.y) != 2 || Math.abs(end.x-start.x) != 1 ){ // up and down L
-            if (Math.abs(end.x-start.x) != 2 || Math.abs(end.y-start.y) != 1 ){ // right left L
+        if (Math.abs(end.position.y-start.position.y) != 2 || Math.abs(end.position.x-start.position.x) != 1 ){ // up and down L
+            if (Math.abs(end.position.x-start.position.x) != 2 || Math.abs(end.position.y-start.position.y) != 1 ){ // right left L
                 return false;
             }
         }

@@ -4,7 +4,7 @@ public class Player {
     String name;
     boolean isWhite;
     Timer time;
-    int deadPieces;
+    int deadPieces; // Cemetery ??
 
     public Player(String name, boolean isWhite){
         this.name = name;

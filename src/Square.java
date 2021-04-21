@@ -1,17 +1,15 @@
 import javax.swing.*;
 
 public class Square {
-    int x, y; // Position
-    boolean isWhite, isFilled; // Color and presence of a piece(boolean)
+    Position position; // Position
+    boolean isWhite; // Color and presence of a piece(boolean)
     Piece piece; // Piece on the square
     JLabel image, moves; // Labels 
     ImageIcon icon, iconDispo;
 
-    public Square(int x, int y, boolean isWhite){
-        this.x = x;
-        this.y = y;
+    public Square(Position position, boolean isWhite){
+        this.position = position;
         this.isWhite = isWhite;
-        isFilled = false;
         piece = null;
         if(isWhite){
             icon = new ImageIcon("Images/cb.png");
@@ -28,11 +26,10 @@ public class Square {
     // Remove piece from the square
     public void removePiece(){
         piece = null;
-        isFilled = false;
     }
 
     public boolean equals(Square s){
-        return this.x == s.x && this.y == s.y;
+        return this.position == s.position;
     }
 }
 

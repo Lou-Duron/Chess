@@ -23,6 +23,10 @@ public class Frame {
 
     public Frame() {
 
+        // Create a new board
+        chessboard = new Board();
+        chessboard.initBoard(); // Setup the board for a new game
+
         // Main frame
         frame = new JFrame("Chess");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,6 +43,7 @@ public class Frame {
         //this.add(DaD);
         
         // Players panels
+        // (Player 1 = black, Player 2 = white)
         player1 = new JLabel();
         player1.setBackground(CL_PLAYER);
         player1.setOpaque(true);
@@ -61,12 +66,12 @@ public class Frame {
         main.add(timer2, Integer.valueOf(2));
 
         // Names
-        name1 = new JLabel("Player1", SwingConstants.CENTER);
+        name1 = new JLabel(chessboard.playerB.name, SwingConstants.CENTER);
         name1.setBackground(CL_GUI);
         name1.setOpaque(true);
         name1.setForeground(CL_FONT);
         main.add(name1, Integer.valueOf(2));
-        name2 = new JLabel("Player2", SwingConstants.CENTER);
+        name2 = new JLabel(chessboard.playerW.name, SwingConstants.CENTER);
         name2.setBackground(CL_GUI);
         name2.setOpaque(true);
         name2.setForeground(CL_FONT);
@@ -216,8 +221,7 @@ public class Frame {
             public void mouseReleased(MouseEvent e) {}
         });   
 
-        chessboard = new Board();
-        chessboard.initBoard(); // Setup the board for a new game
+        
         initBoardGraphics(); // Initialize the chessboard (graphically)
         frame.setVisible(true);  
 
@@ -255,7 +259,7 @@ public class Frame {
         for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
                 addSquareListener(chessboard.board[x][y]);
-                if(chessboard.board[x][y].isFilled){
+                if(chessboard.board[x][y].piece != null){
                     addPieceListener(chessboard.board[x][y].piece);
                 }
             }     
@@ -273,9 +277,9 @@ public class Frame {
             public void mouseExited(MouseEvent e) {}
             @Override
             public void mousePressed(MouseEvent e) { 
-                if(selected && !square.isFilled){   
+                if(selected && square.piece == null){   
                 chessboard.movePiece(selectedPiece, square);
-                selectedPiece.image.setBounds(square.x*SQUARE_SIZE, square.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+                selectedPiece.image.setBounds(square.position.x*SQUARE_SIZE, square.position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
                 removeMoves(); 
                 } 
             }   
@@ -302,8 +306,8 @@ public class Frame {
                 else{
                     if(piece.getColor() != selectedPiece.getColor()){
                         eat(selectedPiece, piece);
-                        chessboard.movePiece(selectedPiece, chessboard.board[piece.x][piece.y]);
-                        selectedPiece.image.setBounds(piece.x*SQUARE_SIZE, piece.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+                        chessboard.movePiece(selectedPiece, chessboard.board[piece.position.x][piece.position.y]);
+                        selectedPiece.image.setBounds(piece.position.x*SQUARE_SIZE, piece.position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
                         chessboard.deletePiece(piece); 
                         removeMoves();   
                     }
@@ -358,7 +362,7 @@ public class Frame {
         selected = true;
         for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
-                if(!chessboard.board[x][y].isFilled){      
+                if(chessboard.board[x][y].piece == null){      
                     main.setLayer(chessboard.board[x][y].moves,1);
                 }
                 
@@ -373,7 +377,7 @@ public class Frame {
         selectedPiece = null;
         for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
-                if(!chessboard.board[x][y].isFilled){      
+                if(chessboard.board[x][y].piece == null){      
                     main.setLayer(chessboard.board[x][y].moves,0);
                 }
             }
@@ -410,7 +414,7 @@ public class Frame {
                 chessboard.board[x][y].moves.setIcon(new ImageIcon(newimgDispo));
                 chessboard.board[x][y].moves.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
 
-                if(chessboard.board[x][y].isFilled){
+                if(chessboard.board[x][y].piece != null){
                     Image imagePiece = chessboard.board[x][y].piece.icon.getImage();
                     Image newimgPiece = imagePiece.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
                     chessboard.board[x][y].piece.image.setIcon(new ImageIcon(newimgPiece));
@@ -428,7 +432,7 @@ public class Frame {
             for(int y=0; y<8; y++){
                 main.add(chessboard.board[x][y].image, Integer.valueOf(0));
                 main.add(chessboard.board[x][y].moves, Integer.valueOf(0));
-                if(chessboard.board[x][y].isFilled){
+                if(chessboard.board[x][y].piece != null){
                     main.add(chessboard.board[x][y].piece.image, Integer.valueOf(3));
                 }
             }

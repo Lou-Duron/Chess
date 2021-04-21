@@ -22,7 +22,7 @@ public class Rook extends Piece {
             return false;
         }
         // Can only move in a straight line
-        if (Math.abs(end.x-start.x) != 0 || Math.abs(end.y-start.y) != 0)
+        if (Math.abs(end.position.x-start.position.x) != 0 || Math.abs(end.position.y-start.position.y) != 0)
             return false;
 
         return true;

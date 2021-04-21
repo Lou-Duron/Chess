@@ -27,7 +27,7 @@ public class King extends Piece {
             return false;
         }
         // Can only move to a neighboring square
-        if (Math.abs(end.x-start.x) > 1 || Math.abs(end.y-start.y) > 1)
+        if (Math.abs(end.position.x-start.position.x) > 1 || Math.abs(end.position.y-start.position.y) > 1)
             return false;
 
         if (isCheck()){

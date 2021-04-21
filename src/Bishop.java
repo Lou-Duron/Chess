@@ -23,7 +23,7 @@ public class Bishop extends Piece {
             return false;
         }
         // Didn't move diagonally
-        if (end.x == start.x || end.y == start.y)
+        if (end.position.x == start.position.x || end.position.y == start.position.y)
             return false;
 
         return true;
