@@ -5,6 +5,7 @@ public class Square {
     boolean isWhite, isFilled; // Color and presence of a piece(boolean)
     Piece piece; // Piece on the square
     JLabel image, moves; // Labels 
+    ImageIcon icon, iconDispo;
 
     public Square(int x, int y, boolean isWhite){
         this.x = x;
@@ -13,13 +14,15 @@ public class Square {
         isFilled = false;
         piece = null;
         if(isWhite){
-            image = new JLabel(new ImageIcon("Images/cb.png"));
-            moves = new JLabel(new ImageIcon("Images/cbo.png"));
+            icon = new ImageIcon("Images/cb.png");
+            iconDispo = new ImageIcon("Images/cbo.png");
         }
         else{
-            image = new JLabel(new ImageIcon("Images/cn.png"));
-            moves = new JLabel(new ImageIcon("Images/cno.png"));
+            icon = new ImageIcon("Images/cn.png");
+            iconDispo = new ImageIcon("Images/cno.png");
         }
+        image = new JLabel(icon);
+        moves = new JLabel(iconDispo);
     }
 
     // Remove piece from the square

@@ -278,7 +278,7 @@ public class Frame {
                 selectedPiece.image.setBounds(square.x*SQUARE_SIZE, square.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
                 removeMoves(); 
                 } 
-            } 
+            }   
             @Override
             public void mouseReleased(MouseEvent e) {}
         });
@@ -401,12 +401,19 @@ public class Frame {
         rightButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
         for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
-                chessboard.board[x][y].moves.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+                Image imageCase = chessboard.board[x][y].icon.getImage();
+                Image newimgCase = imageCase.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                chessboard.board[x][y].image.setIcon(new ImageIcon(newimgCase));
                 chessboard.board[x][y].image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+                Image imageDispo = chessboard.board[x][y].iconDispo.getImage();
+                Image newimgDispo = imageDispo.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                chessboard.board[x][y].moves.setIcon(new ImageIcon(newimgDispo));
+                chessboard.board[x][y].moves.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+
                 if(chessboard.board[x][y].isFilled){
-                    Image image = chessboard.board[x][y].piece.icon.getImage();
-                    Image newimg = image.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
-                    chessboard.board[x][y].piece.image.setIcon(new ImageIcon(newimg));
+                    Image imagePiece = chessboard.board[x][y].piece.icon.getImage();
+                    Image newimgPiece = imagePiece.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                    chessboard.board[x][y].piece.image.setIcon(new ImageIcon(newimgPiece));
                     chessboard.board[x][y].piece.image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
                     
                 }
