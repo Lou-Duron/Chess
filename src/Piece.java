@@ -1,4 +1,4 @@
-package Projet_Echec;
+
 
 import javax.swing.ImageIcon;
 
