@@ -1,12 +1,16 @@
-<<<<<<< HEAD
+import javax.swing.*;
 
-
-=======
->>>>>>> d2c614d42b07518459d846fb65af7ffee76f91d4
 public class Pawn extends Piece {
 
-    public Pawn(boolean color) {
-        super(color);
+    public Pawn(boolean isWhite) {
+        super(isWhite);
+        if(isWhite){
+            icon = new ImageIcon("Images/wp.png");
+        }
+        else{
+            icon = new ImageIcon("Images/bp.png");
+        }
+        image = new JLabel(icon);
     }
     public boolean canMove(Board b, Square start, Square end) {
         if (start.equals(end))

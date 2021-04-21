@@ -1,13 +1,16 @@
-<<<<<<< HEAD
+import javax.swing.*;
 
-
-=======
->>>>>>> d2c614d42b07518459d846fb65af7ffee76f91d4
 public class Rook extends Piece {
 
-    public Rook(boolean color) {
-        super(color);
-
+    public Rook(boolean isWhite) {
+        super(isWhite);
+        if(isWhite){
+            icon = new ImageIcon("Images/wr.png");
+        }
+        else{
+            icon = new ImageIcon("Images/br.png");
+        }
+        image = new JLabel(icon);
     }
 
     public boolean canMove(Board b, Square start, Square end) {

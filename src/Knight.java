@@ -1,13 +1,17 @@
-<<<<<<< HEAD
+import javax.swing.*;
 
-
-=======
->>>>>>> d2c614d42b07518459d846fb65af7ffee76f91d4
 public class Knight extends Piece {
     boolean castlingDone;
-    public Knight(boolean color){
-        super(color);
+    public Knight(boolean isWhite){
+        super(isWhite);
         castlingDone = false;
+        if(isWhite){
+            icon = new ImageIcon("Images/wn.png");
+        }
+        else{
+            icon = new ImageIcon("Images/bn.png");
+        }
+        image = new JLabel(icon);
     }
     public boolean canMove(Board b, Square start, Square end) {
         if (start.equals(end))

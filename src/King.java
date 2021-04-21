@@ -1,14 +1,18 @@
-<<<<<<< HEAD
+import javax.swing.*;
 
-
-=======
->>>>>>> d2c614d42b07518459d846fb65af7ffee76f91d4
 public class King extends Piece {
     public boolean check;
 
-    public King(boolean color){
-        super(color);
+    public King(boolean isWhite){
+        super(isWhite);
         check = false;
+        if(isWhite){
+            icon = new ImageIcon("Images/wk.png");
+        }
+        else{
+            icon = new ImageIcon("Images/bk.png");
+        }
+        image = new JLabel(icon);
     }
 
     public boolean isCheck(){

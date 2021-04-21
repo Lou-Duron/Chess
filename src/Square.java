@@ -1,45 +1,39 @@
-import javax.swing.ImageIcon;
+import javax.swing.*;
 
 public class Square {
-    public int x, y; // Position
-    public Piece piece; // Piece on the square
-    boolean color;
-    ImageIcon image; // Image 
+    int x, y; // Position
+    boolean isWhite, isFilled; // Color and presence of a piece(boolean)
+    Piece piece; // Piece on the square
+    JLabel image, moves; // Labels 
 
-    public Square(int x, int y, Piece piece, Boolean color){
+    public Square(int x, int y, boolean isWhite){
         this.x = x;
         this.y = y;
-        this.color = color;
-        this.piece = piece;
-        if(color){
-            image = new ImageIcon("Images/CaseNoire.PNG");
+        this.isWhite = isWhite;
+        isFilled = false;
+        piece = null;
+        if(isWhite){
+            image = new JLabel(new ImageIcon("Images/cb.png"));
+            moves = new JLabel(new ImageIcon("Images/cbo.png"));
         }
         else{
-            image = new ImageIcon("Images/CaseBlanche.PNG");
+            image = new JLabel(new ImageIcon("Images/cn.png"));
+            moves = new JLabel(new ImageIcon("Images/cno.png"));
         }
-    }
-
-    // À supprimer 
-    // Return the image of the square (square + piece). 
-    public ImageIcon returnImage(){
-        if(this.piece != null){
-            if(color){
-                return new ImageIcon("Images/Bbb.png");
-            }
-            else{
-                return new ImageIcon("Images/Wbb.png");
-            }
-        }
-        else{
-            return this.image;
-        }
-    }
-    public boolean equals(Square s){
-        return this.x == s.x && this.y == s.y;
     }
 
     // Remove piece from the square
     public void removePiece(){
         piece = null;
+        isFilled = false;
+    }
+
+    public boolean equals(Square s){
+        return this.x == s.x && this.y == s.y;
     }
 }
+
+    
+
+
+

@@ -2,8 +2,15 @@ import javax.swing.*;
 
 public class Bishop extends Piece {
     
-    public Bishop(boolean color, int y) {
-        super(color);
+    public Bishop(boolean isWhite) {
+        super(isWhite);
+        if(isWhite){
+            icon = new ImageIcon("Images/wb.png");
+        }
+        else{
+            icon = new ImageIcon("Images/bb.png");
+        }
+        image = new JLabel(icon);
     }
 
     public boolean canMove(Board b, Square start, Square end) {

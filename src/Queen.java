@@ -1,12 +1,16 @@
-<<<<<<< HEAD
-
-=======
->>>>>>> d2c614d42b07518459d846fb65af7ffee76f91d4
+import javax.swing.*;
 
 public class Queen extends Piece {
 
-    public Queen(boolean color) {
-        super(color);
+    public Queen(boolean isWhite) {
+        super(isWhite);
+        if(isWhite){
+            icon = new ImageIcon("Images/wq.png");
+        }
+        else{
+            icon = new ImageIcon("Images/bq.png");
+        }
+        image = new JLabel(icon);
     }
 
     public boolean canMove(Board b, Square start, Square end) {

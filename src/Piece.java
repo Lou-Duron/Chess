@@ -1,17 +1,14 @@
-<<<<<<< HEAD
-
-
-=======
->>>>>>> d2c614d42b07518459d846fb65af7ffee76f91d4
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 
 public abstract class Piece {
-    private boolean color; // Color
-    private boolean isAlive; //Status
-    ImageIcon image; // Image
+    private boolean isWhite, isAlive; //Status
+    int x, y; // Position of the piece
+    JLabel image; // Label
+    ImageIcon icon; // Icon
 
-    public Piece(boolean color) {
-        this.color = color;
+    public Piece(boolean isWhite) {
+        this.isWhite = isWhite;
         this.isAlive = true;
     }
 
@@ -19,11 +16,16 @@ public abstract class Piece {
         this.isAlive = alive;
     }
 
-    public void setColor(boolean color){
-        this.color = color;
+    public void setColor(boolean isWhite){
+        this.isWhite = isWhite;
     }
+
+    public boolean getAlive(){
+       return isAlive;
+    }
+
     public boolean getColor(){
-        return this.color;
+        return isWhite;
     }
     public void canMove(){
     }
