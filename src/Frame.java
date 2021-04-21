@@ -1,5 +1,3 @@
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -22,7 +20,7 @@ public class Frame{
     FlowLayout fl;
     ImageIcon caseBlancheDispo, caseNoireDispo, woodBackground;
     boolean selected = false;
-    Piece selectedPiece;
+    Square selectedPiece;
 
     public Frame(){
         chessBoard = new Board();
@@ -129,12 +127,12 @@ public class Frame{
                     }
                     @Override
                     public void mousePressed(MouseEvent e) {
-                        if(!selected && chessBoard.board[a][b].isFilled){
+                        if(!selected && chessBoard.board[a][b].piece != null){
                             displayMouvements();
                             selectedPiece = chessBoard.board[a][b].piece;
                         }
                         else{
-                            chessBoard.board[selectedPiece.x][selectedPiece.y].removePiece();
+                            chessBoard.board[a][b].removePiece();
                             chessBoard.addPiece(selectedPiece, a, b);
                             display();
                             selected = false;
@@ -157,8 +155,8 @@ public class Frame{
     public void displayMouvements(){
         for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
-                if(!chessBoard.board[x][y].isFilled){
-                    if(chessBoard.board[x][y].isBlack){
+                if(chessBoard.board[x][y].piece == null ){
+                    if(chessBoard.board[x][y].color){
                         board[x][y].setIcon(caseNoireDispo);
                     }
                     else{
@@ -180,10 +178,6 @@ public class Frame{
 
     public static void main(String[] args){
         Frame f = new Frame();
-        f.chessBoard.addPiece(new Bishop(true, 3, 3), 3, 3);
-        f.chessBoard.addPiece(new Bishop(true, 2, 2), 2, 2);
-        f.chessBoard.addPiece(new Bishop(true, 5, 5), 5, 5);
-        f.chessBoard.addPiece(new Bishop(true, 6, 6), 6, 6);
         f.display();
         
     }

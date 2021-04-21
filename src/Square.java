@@ -1,32 +1,29 @@
-
-
 import javax.swing.ImageIcon;
 
 public class Square {
-    int ligne, colonne; // Position
-    boolean isBlack, isFilled; // Color and presence of a piece(boolean)
-    Piece piece; // Piece on the square
+    public int x, y; // Position
+    public Piece piece; // Piece on the square
+    boolean color;
     ImageIcon image; // Image 
 
-    public Square(int ligne, int colonne, boolean isBlack){
-        this.ligne = ligne;
-        this.colonne = colonne;
-        this.isBlack = isBlack;
-        isFilled = false;
-        piece = null;
-        if(isBlack){
+    public Square(int x, int y, Piece piece, Boolean color){
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.piece = piece;
+        if(color){
             image = new ImageIcon("Images/CaseNoire.PNG");
         }
         else{
-        image = new ImageIcon("Images/CaseBlanche.PNG");
+            image = new ImageIcon("Images/CaseBlanche.PNG");
         }
     }
 
     // À supprimer 
     // Return the image of the square (square + piece). 
     public ImageIcon returnImage(){
-        if(isFilled){
-            if(isBlack){
+        if(this.piece != null){
+            if(color){
                 return new ImageIcon("Images/Bbb.png");
             }
             else{
@@ -37,10 +34,12 @@ public class Square {
             return this.image;
         }
     }
+    public boolean equals(Square s){
+        return this.x == s.x && this.y == s.y;
+    }
 
     // Remove piece from the square
     public void removePiece(){
         piece = null;
-        isFilled = false;
     }
 }
