@@ -27,6 +27,8 @@ public abstract class Piece {
     public boolean getColor(){
         return isWhite;
     }
-    public void canMove(){
-    }
+    public void canMove(){}
+
+
+
 }

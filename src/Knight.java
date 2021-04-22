@@ -13,7 +13,7 @@ public class Knight extends Piece {
         }
         image = new JLabel(icon);
     }
-    public boolean canMove(Board b, Square start, Square end) {
+    public boolean canMove(Square start, Square end) {
         if (start.equals(end))
             return false;
 
@@ -22,11 +22,9 @@ public class Knight extends Piece {
             return false;
         }
 
-        if (Math.abs(end.position.y-start.position.y) != 2 || Math.abs(end.position.x-start.position.x) != 1 ){ // up and down L
-            if (Math.abs(end.position.x-start.position.x) != 2 || Math.abs(end.position.y-start.position.y) != 1 ){ // right left L
+        if (Math.abs((end.position.y-start.position.y)/(end.position.x-start.position.x)) != 2){ // right left L
                 return false;
             }
-        }
         return true;
     }
 }
