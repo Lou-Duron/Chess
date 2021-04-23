@@ -226,6 +226,7 @@ public class Frame {
         initBoardGraphics(); // Initialize the chessboard (graphically)
         frame.setVisible(true);  
 
+        System.out.print(chessboard.board[1][1].getMoves(chessboard));
         // Listener in case of frame resizing
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
