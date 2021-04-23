@@ -3,7 +3,7 @@ import javax.swing.JLabel;
 
 public abstract class Piece {
     private boolean isWhite, isAlive; //Status //isAlive necessaire ?
-    Position position; // Position of the piece
+    Position position; // Position of the piece // A enlever
     JLabel image; // Label
     ImageIcon icon; // Icon
 

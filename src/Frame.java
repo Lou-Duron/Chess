@@ -23,6 +23,7 @@ public class Frame {
 
     public Frame() {
 
+        
         // Create a new board
         chessboard = new Board();
         chessboard.initBoard(); // Setup the board for a new game
