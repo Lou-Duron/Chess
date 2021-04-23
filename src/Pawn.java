@@ -24,10 +24,22 @@ public class Pawn extends Piece {
         if (end.position.x < start.position.x) {
             return false;
         }
-
+        // First move for pawn
+        if (start.position.y == 1 || start.position.y == 7){
+            if (Math.abs(end.position.y-start.position.y) > 2){
+                return false;
+            }
+        }
+        else{
+            if(Math.abs(end.position.y-start.position.y) > 1){
+                return false;
+            }
+        }
         // Diagonal move to eat a piece
-        if (Math.abs(end.position.x-start.position.x) != 1 || Math.abs(end.position.y-start.position.y) != 1) {
-            return false;
+        if (Math.abs((end.position.y-start.position.y)/(end.position.x-start.position.x)) == 1) {
+            if (end.piece.getColor() == this.getColor() || end.piece == null) { // if square empty or with same color ass the piece
+                return false;
+            }
         }
         return true;
     }

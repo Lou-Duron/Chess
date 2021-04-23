@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Square {
     Position position; // Position
@@ -26,6 +28,20 @@ public class Square {
     // Remove piece from the square
     public void removePiece(){
         piece = null;
+    }
+    public List<Position> getMoves () { //Not working at the moment
+        List<Position> possibleMoves = new ArrayList<>();
+
+        if (piece != null) {
+            for (int x = 0; x < 8; x++) {
+                for (int y = 0; y < 8; y++) {
+                    if (piece.canMove()) { //Problem here, since piece doesn't return boolean (not hidden)
+                        possibleMoves.add(new Position(x, y));
+                    }
+                }
+            }
+        }
+        return possibleMoves;
     }
 
     public boolean equals(Square s){
