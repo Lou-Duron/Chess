@@ -18,11 +18,13 @@ public class Rook extends Piece {
             return false;
 
         // If piece with same color
-        if (end.piece.getColor() == this.getColor()) {
-            return false;
+        if(end.piece != null){ // MODIF : ajout du if, sinon NullPointerException
+            if (end.piece.getColor() == this.getColor()) {
+                return false;
+            }
         }
         // Can only move in a straight line
-        if (Math.abs(end.position.x-start.position.x) != 0 || Math.abs(end.position.y-start.position.y) != 0)
+        if (Math.abs(end.position.x-start.position.x) != 0 && Math.abs(end.position.y-start.position.y) != 0) // MODIF : || -> &&
             return false;
 
         return true;

@@ -1,32 +1,43 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
 
 public class Frame {
-    // Constants
+
     int  SQUARE_SIZE = 80; // Size of a square
-    Color CL_PLAYER = new Color(55,55,60); // Players background color
-    Color CL_GUI = new Color(37,37,45); // GUI background color
-    Color CL_BK = new Color(65,65,67); // Frame background color
-    Color CL_FONT = new Color(204,167,0); // Font color
-    
+
     JFrame frame;
     JLayeredPane main;
-    Board chessboard;
-    JLabel player1, player2, name1, name2, timer1, timer2, deadPieces1, deadPieces2;
-    JLabel menu, newGame, option, exit, analyse, concede, leftButton, rightButton;
-    boolean selected = false;
+    Board b;
     boolean resized = false;
+    Menu menu;
     Piece selectedPiece;
-    Point p;
-    //DragAndDrop DaD = new DragAndDrop(); //DragAndDrop à revoir
+    // Temp
+    List<Position> selectedPieceMoves;
+    Square tempSquare;
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Custom setup for tests
+public void customSetup(){
+    b.addPiece(new Pawn(true), b.board[4][4]);
+    b.addPiece(new Knight(true), b.board[6][6]);
+    b.addPiece(new Bishop(true), b.board[5][5]);
+    b.addPiece(new Rook(true), b.board[3][3]);
+    b.addPiece(new King(true), b.board[2][2]);
+    b.addPiece(new Queen(true), b.board[1][1]);
+    b.addPiece(new Pawn(false), b.board[4][3]);
+    b.addPiece(new Knight(false), b.board[6][5]);
+    b.addPiece(new Bishop(false), b.board[5][4]);
+    b.addPiece(new Rook(false), b.board[3][2]);
+    b.addPiece(new King(false), b.board[2][1]);
+    b.addPiece(new Queen(false), b.board[1][0]);
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// CONSTRUCTOR
     public Frame() {
-
-        
-        // Create a new board
-        chessboard = new Board();
-        chessboard.initBoard(); // Setup the board for a new game
+        // Board
+        b = new Board();
 
         // Main frame
         frame = new JFrame("Chess");
@@ -36,198 +47,185 @@ public class Frame {
         ImageIcon logo = new ImageIcon("Images/logo.png");
         frame.setIconImage(logo.getImage());
         main = new JLayeredPane();
-        main.setBackground(CL_BK);
+        main.setBackground(new Color(65,65,67));
         main.setOpaque(true);
         frame.add(main); 
         frame.setMinimumSize(new Dimension(450,450));
 
-        //this.add(DaD);
-        
-        // Players panels
-        // (player1 = black, player2 = white)
-        player1 = new JLabel();
-        player1.setBackground(CL_PLAYER);
-        player1.setOpaque(true);
-        main.add(player1, Integer.valueOf(0));
-        player2 = new JLabel();
-        player2.setBackground(CL_PLAYER);
-        player2.setOpaque(true);
-        main.add(player2, Integer.valueOf(0));
-        
-        // Timers
-        timer1 = new JLabel("04:57", SwingConstants.CENTER);
-        timer1.setBackground(CL_GUI);
-        timer1.setOpaque(true);
-        timer1.setForeground(CL_FONT);
-        main.add(timer1, Integer.valueOf(2));
-        timer2 = new JLabel("04:24", SwingConstants.CENTER);
-        timer2.setBackground(CL_GUI);
-        timer2.setOpaque(true);
-        timer2.setForeground(CL_FONT);
-        main.add(timer2, Integer.valueOf(2));
+        // Menu
+        menu = new Menu(this); 
+        main.add(menu.player1, Integer.valueOf(0));
+        main.add(menu.player2, Integer.valueOf(0));
+        main.add(menu.timer1, Integer.valueOf(2));
+        main.add(menu.timer2, Integer.valueOf(2));
+        main.add(menu.name1, Integer.valueOf(2));
+        main.add(menu.name2, Integer.valueOf(2));
+        main.add(menu.deadPieces1, Integer.valueOf(2));
+        main.add(menu.deadPieces2, Integer.valueOf(2));
+        main.add(menu.newGame, Integer.valueOf(2));
+        main.add(menu.option, Integer.valueOf(2));
+        main.add(menu.exit, Integer.valueOf(2));
+        main.add(menu.concede, Integer.valueOf(2));
+        main.add(menu.analyse, Integer.valueOf(2));
+        main.add(menu.leftButton, Integer.valueOf(2));
+        main.add(menu.rightButton, Integer.valueOf(2));
 
-        // Names
-        name1 = new JLabel(chessboard.playerB.name, SwingConstants.CENTER);
-        name1.setBackground(CL_GUI);
-        name1.setOpaque(true);
-        name1.setForeground(CL_FONT);
-        main.add(name1, Integer.valueOf(2));
-        name2 = new JLabel(chessboard.playerW.name, SwingConstants.CENTER);
-        name2.setBackground(CL_GUI);
-        name2.setOpaque(true);
-        name2.setForeground(CL_FONT);
-        main.add(name2, Integer.valueOf(2));
-
-        // DeadPieces
-        deadPieces1 = new JLabel();
-        deadPieces1.setBackground(CL_GUI);
-        deadPieces1.setOpaque(true);
-        main.add(deadPieces1, Integer.valueOf(2));
-        deadPieces2 = new JLabel();
-        deadPieces2.setBackground(CL_GUI);
-        deadPieces2.setOpaque(true);
-        main.add(deadPieces2, Integer.valueOf(2));
-
-        // Menu panel
-        // New Game button
-        newGame = new JLabel("New game", SwingConstants.CENTER);
-        newGame.setBackground(CL_GUI);
-        newGame.setOpaque(true);
-        newGame.setForeground(CL_FONT);
-        main.add(newGame, Integer.valueOf(2));
-        newGame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) {
-                reset();
-            } 
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-        });
-        // Option button
-        option = new JLabel("Option", SwingConstants.CENTER);
-        option.setBackground(CL_GUI);
-        option.setOpaque(true);
-        option.setForeground(CL_FONT);
-        main.add(option, Integer.valueOf(2));
-        option.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) {} 
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-        });
-        // Exit button
-        exit = new JLabel("Exit", SwingConstants.CENTER);
-        exit.setBackground(CL_GUI);
-        exit.setOpaque(true);
-        exit.setForeground(CL_FONT);
-        main.add(exit, Integer.valueOf(2));
-        exit.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) {} 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                frame.dispose();
-            }
-        });
-        // Analyse button
-        analyse = new JLabel("A", SwingConstants.CENTER);
-        analyse.setBackground(CL_GUI);
-        analyse.setOpaque(true);
-        analyse.setForeground(CL_FONT);
-        main.add(analyse, Integer.valueOf(2));
-        analyse.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) {} 
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-        });
-        // Concede button
-        concede = new JLabel("C", SwingConstants.CENTER);
-        concede.setBackground(CL_GUI);
-        concede.setOpaque(true);
-        concede.setForeground(CL_FONT);
-        main.add(concede, Integer.valueOf(2));
-        concede.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) {} 
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                reset();
-            }
-        });
-        // Last move button
-        leftButton = new JLabel("Left", SwingConstants.CENTER);
-        leftButton.setBackground(CL_GUI);
-        leftButton.setOpaque(true);
-        leftButton.setForeground(CL_FONT);
-        main.add(leftButton, Integer.valueOf(2));
-        leftButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) {} 
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-        });
-        // Next move button
-        rightButton = new JLabel("Right", SwingConstants.CENTER);
-        rightButton.setBackground(CL_GUI);
-        rightButton.setOpaque(true);
-        rightButton.setForeground(CL_FONT);
-        main.add(rightButton, Integer.valueOf(2));
-        rightButton.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) {} 
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-        });   
-
-        
-        initBoardGraphics(); // Initialize the chessboard (graphically)
+        //b.initBoard(); // Setup the board for a new game
+        customSetup();
+        initBoardGraphics(); // Initalize squares and pieces labels
+        addListeners(); // Add listeners
         frame.setVisible(true);  
+    }
 
-        System.out.print(chessboard.board[1][1].getMoves(chessboard));
-        // Listener in case of frame resizing
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MAIN FUNCTIONS
+
+    // When clicing on a square
+    public void simpleClic(Square s){
+        if(selectedPiece == null){
+            if (s.piece != null){
+                select(s); 
+            }
+        }
+        else{   
+            for(Position position: selectedPieceMoves){
+                if(position.equals(s.position)){
+                    if(s.piece != null){
+                        putToCemetery(s.piece);
+                    }
+                    b.movePiece(tempSquare,s);
+                    selectedPiece.image.setBounds(s.position.x*SQUARE_SIZE, s.position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+                }
+            }
+            unselect();    
+        }
+    }
+
+    // Cemetery
+    public void putToCemetery(Piece p){
+        Image image = p.icon.getImage();
+        Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
+        p.image.setIcon(new ImageIcon(newimg));
+        if(p.getColor()){
+            p.image.setBounds(90+b.playerW.cemetery.size()*SQUARE_SIZE*19/64, SQUARE_SIZE*1/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+        }
+        else{
+            p.image.setBounds(90+b.playerB.cemetery.size()*SQUARE_SIZE*19/64, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+        }
+    }    
+
+    // Select a square/piece if the piece can move
+    public void select(Square s){ // previously displayMoves
+        if(!s.getMoves(b).isEmpty()){
+            selectedPieceMoves = s.getMoves(b);
+            selectedPiece = s.piece;
+            tempSquare = s;
+            for(Position square: selectedPieceMoves){ // for each moves
+                main.setLayer(b.board[square.x][square.y].moves,1); //display JLabel
+            }
+        }
+    }
+
+    // Undo the selection
+    public void unselect(){ // previously removeMoves
+        for(Position square: selectedPieceMoves){ // for each moves
+            main.setLayer(b.board[square.x][square.y].moves,0); //display JLabel
+        }
+        selectedPiece = null;
+        selectedPieceMoves = null;
+        tempSquare = null;
+    }        
+
+    // Reset frame and board (New game + new listeners)
+    public void reset(){
+        for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                main.remove(b.board[x][y].image);
+                main.remove(b.board[x][y].moves);
+                if(b.board[x][y].piece != null){
+                    main.remove(b.board[x][y].piece.image);
+                }
+            }
+        }
+        for(Piece p: b.playerW.cemetery){
+            main.remove(p.image);
+        }
+        for(Piece p: b.playerB.cemetery){
+            main.remove(p.image);
+        }
+        b = new Board();
+        customSetup();
+        addListeners();
+        initBoardGraphics();
+    }
+    // Initialize board (graphically) and resize.
+    public void initBoardGraphics(){
+        for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                main.add(b.board[x][y].image, Integer.valueOf(0));
+                main.add(b.board[x][y].moves, Integer.valueOf(0));
+                if(b.board[x][y].piece != null){
+                    main.add(b.board[x][y].piece.image, Integer.valueOf(3));
+                }
+            }
+        }
+        resize();
+    }
+
+    // Keep proportion of all Labels when resizing the frame, based on new square size
+    public void resize(){
+        main.setBounds(0, 0,   frame.getWidth(), frame.getHeight()-35);
+        SQUARE_SIZE = (int) main.getHeight()/9;
+        menu.player1.setBounds(0, 0, SQUARE_SIZE*8, SQUARE_SIZE/2);
+        menu.player2.setBounds(0, SQUARE_SIZE*8+SQUARE_SIZE/2 , SQUARE_SIZE*8, SQUARE_SIZE/2);
+        menu.timer1.setBounds(SQUARE_SIZE/8, SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE/4);
+        menu.timer2.setBounds(SQUARE_SIZE/8, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE/4);
+        menu.name1.setBounds(SQUARE_SIZE*5/4, SQUARE_SIZE/8, SQUARE_SIZE*3/2, SQUARE_SIZE/4);
+        menu.name2.setBounds(SQUARE_SIZE*5/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/8, SQUARE_SIZE*3/2, SQUARE_SIZE/4);
+        menu.deadPieces1.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+        menu.deadPieces2.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+        menu.newGame.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
+        menu.option.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE/2, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
+        menu.exit.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
+        menu.analyse.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        menu.concede.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        menu.leftButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        menu.rightButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                Image imageCase = b.board[x][y].icon.getImage();
+                Image newimgCase = imageCase.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                b.board[x][y].image.setIcon(new ImageIcon(newimgCase));
+                b.board[x][y].image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+                Image imageDispo = b.board[x][y].iconDispo.getImage();
+                Image newimgDispo = imageDispo.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                b.board[x][y].moves.setIcon(new ImageIcon(newimgDispo));
+                b.board[x][y].moves.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+
+                if(b.board[x][y].piece != null){
+                    Image imagePiece = b.board[x][y].piece.icon.getImage();
+                    Image newimgPiece = imagePiece.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                    b.board[x][y].piece.image.setIcon(new ImageIcon(newimgPiece));
+                    b.board[x][y].piece.image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+                    
+                }
+            }
+        }
+    }
+
+ 
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// LISTENERS
+    public void addListeners(){
+        // Squares
+        for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                addSquareListener(b.board[x][y]);
+            }     
+        }
+
+        // If frame resize
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
                 resize();
@@ -235,7 +233,7 @@ public class Frame {
             }
         });
 
-        // Listener to make the frame a square when mouse exited (keep ?)
+        // Listener to make the frame a square when mouse exited 
         frame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -253,23 +251,11 @@ public class Frame {
             public void mousePressed(MouseEvent e) {} 
             @Override
             public void mouseReleased(MouseEvent e) {}
-        }); 
+        });
     }
-
-    public void addListeners(){
-        // Add listeners on squares and pieces
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                addSquareListener(chessboard.board[x][y]);
-                if(chessboard.board[x][y].piece != null){
-                    addPieceListener(chessboard.board[x][y].piece);
-                }
-            }     
-        }
-    }
-
+    // SQUARES LISTENERS
     public void addSquareListener(Square square) {
-        // Add listeners on squares
+
         square.image.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {}
@@ -279,17 +265,23 @@ public class Frame {
             public void mouseExited(MouseEvent e) {}
             @Override
             public void mousePressed(MouseEvent e) { 
-                if(selected && square.piece == null){   
-                chessboard.movePiece(selectedPiece, square);
-                selectedPiece.image.setBounds(square.position.x*SQUARE_SIZE, square.position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
-                removeMoves(); 
-                } 
+                simpleClic(square);
             }   
             @Override
             public void mouseReleased(MouseEvent e) {}
         });
     }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// MAIN
+    public static void main(String[] args){
+        new Frame();
+    }
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   /* Inutile pour l'instant, à garder pour le DragAndDrop    
     public void addPieceListener(Piece piece){
         // Add listeners on pieces
         piece.image.addMouseListener(new MouseAdapter() {
@@ -302,15 +294,15 @@ public class Frame {
             @Override
             public void mousePressed(MouseEvent e) { 
                 if(!selected){
-                    showMoves();
+                    displayMoves();
                     selectedPiece = piece;
                 }
                 else{
                     if(piece.getColor() != selectedPiece.getColor()){
                         eat(selectedPiece, piece);
-                        chessboard.movePiece(selectedPiece, chessboard.board[piece.position.x][piece.position.y]);
+                        b.movePiece(selectedPiece, b.board[piece.position.x][piece.position.y]);
                         selectedPiece.image.setBounds(piece.position.x*SQUARE_SIZE, piece.position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
-                        chessboard.deletePiece(piece); 
+                        b.deletePiece(piece); 
                         removeMoves();   
                     }
                     else{
@@ -322,131 +314,7 @@ public class Frame {
             public void mouseReleased(MouseEvent e) {}
         });
     }
+    
 
-    // /!\ Need rework /!\ -> Cemetery dont work properly (create a cemetery array?)
-    public void eat(Piece selectedP, Piece p){
-        // When selected piece eat an other given piece (resize label and put in cemetery)
-        Image image = p.icon.getImage();
-        Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
-        p.image.setIcon(new ImageIcon(newimg));
-        if(p.getColor()){
-            p.image.setBounds(90+chessboard.playerB.deadPieces*SQUARE_SIZE*5/16, SQUARE_SIZE*1/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
-        }
-        else{
-            p.image.setBounds(90+chessboard.playerW.deadPieces*SQUARE_SIZE*5/16, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
-        }
   
-    }
-
-
-    public void reset(){
-        // Reset frame and board (New game + new listeners)
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                main.remove(chessboard.board[x][y].image);
-                main.remove(chessboard.board[x][y].moves);
-                if(chessboard.board[x][y].piece != null){
-                    main.remove(chessboard.board[x][y].piece.image);
-                }
-            }
-        }
-        if(selectedPiece != null){        
-            main.remove(selectedPiece.image);
-        }
-        chessboard = new Board();
-        chessboard.initBoard();
-        initBoardGraphics();
-    }
-
-    // /!\ Need rework /!\ -> Shows all empty squares (implements only authorized moves + new graphics)
-    public void showMoves(){
-        //Display authorized moves
-        selected = true;
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                if(chessboard.board[x][y].piece == null){      
-                    main.setLayer(chessboard.board[x][y].moves,1);
-                }
-                
-            }
-        }
-    }
-
-    // /!\ Need rework /!\ -> Same as above
-    public void removeMoves(){
-        //Remove authorized moves
-        selected = false;
-        selectedPiece = null;
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                if(chessboard.board[x][y].piece == null){      
-                    main.setLayer(chessboard.board[x][y].moves,0);
-                }
-            }
-        }
-    }
-
-    public void resize(){
-        // Keep proportion of all Labels when resizing the frame, based on new square size
-        main.setBounds(0, 0,   frame.getWidth(), frame.getHeight()-35);
-        SQUARE_SIZE = (int) main.getHeight()/9;
-        player1.setBounds(0, 0, SQUARE_SIZE*8, SQUARE_SIZE/2);
-        player2.setBounds(0, SQUARE_SIZE*8+SQUARE_SIZE/2 , SQUARE_SIZE*8, SQUARE_SIZE/2);
-        timer1.setBounds(SQUARE_SIZE/8, SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE/4);
-        timer2.setBounds(SQUARE_SIZE/8, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE/4);
-        name1.setBounds(SQUARE_SIZE*5/4, SQUARE_SIZE/8, SQUARE_SIZE*3/2, SQUARE_SIZE/4);
-        name2.setBounds(SQUARE_SIZE*5/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/8, SQUARE_SIZE*3/2, SQUARE_SIZE/4);
-        deadPieces1.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
-        deadPieces2.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
-        newGame.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
-        option.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE/2, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
-        exit.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
-        analyse.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
-        concede.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
-        leftButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
-        rightButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                Image imageCase = chessboard.board[x][y].icon.getImage();
-                Image newimgCase = imageCase.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
-                chessboard.board[x][y].image.setIcon(new ImageIcon(newimgCase));
-                chessboard.board[x][y].image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
-                Image imageDispo = chessboard.board[x][y].iconDispo.getImage();
-                Image newimgDispo = imageDispo.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
-                chessboard.board[x][y].moves.setIcon(new ImageIcon(newimgDispo));
-                chessboard.board[x][y].moves.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
-
-                if(chessboard.board[x][y].piece != null){
-                    Image imagePiece = chessboard.board[x][y].piece.icon.getImage();
-                    Image newimgPiece = imagePiece.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
-                    chessboard.board[x][y].piece.image.setIcon(new ImageIcon(newimgPiece));
-                    chessboard.board[x][y].piece.image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
-                    
-                }
-            }
-        }
-    }
-
-
-    public void initBoardGraphics(){
-        // Initialize board (graphically), add listeners and resize.
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                main.add(chessboard.board[x][y].image, Integer.valueOf(0));
-                main.add(chessboard.board[x][y].moves, Integer.valueOf(0));
-                if(chessboard.board[x][y].piece != null){
-                    main.add(chessboard.board[x][y].piece.image, Integer.valueOf(3));
-                }
-            }
-        }
-        addListeners();
-        resize();   
-    }
-
-
-
-
-    public static void main(String[] args){
-        new Frame();
-    }
-}
+    }*/

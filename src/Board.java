@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Board {
     
     public Square [][] board;// Chessboard
@@ -23,12 +20,33 @@ public class Board {
         }
     }
 
-    /* POUR VIC : j'ai enlevé initBoard du constructeur au cas ou on veut un board
-    sans les pièces au position de départ (par exemple si on veux ajouter une option
-    pour jouer à partir d'une custom position). Du coup j'appelle initBoard dans frame
-    quand on lance une nouvelle partie. .) */
+    // Move a piece on the chessboard
+    public void movePiece(Square start, Square end){
+        if(end.piece != null){
+            deletePiece(end);
+        }
+        end.piece = start.piece;
+        start.piece = null;
+    }
+
+    // Remove a piece from the chessboard
+    public void deletePiece(Square s){
+        if(s.piece.getColor()){
+            playerW.cemetery.add(s.piece);
+        }
+        else{
+            playerB.cemetery.add(s.piece);
+        }
+        s.piece = null;
+    }
+
+    // Add a piece on the cheesboard
+    public void addPiece(Piece p, Square s){
+        s.piece = p;
+    }
 
     public void initBoard(){
+        //Initialize default setup (white down) 
         // Black
         addPiece(new Pawn(false), board[0][1]);
         addPiece(new Pawn(false), board[1][1]);
@@ -64,30 +82,5 @@ public class Board {
         addPiece(new Knight(true), board[6][7]);
         addPiece(new Queen(true), board[3][7]);
         addPiece(new King(true), board[4][7]);
-
-    }
-    // Add a piece on the cheesboard
-    public void addPiece(Piece p, Square s){
-        s.piece = p;
-        p.position = s.position;
-    }
-
-    // Move a piece on the chessboard
-    public void movePiece(Piece p, Square s){
-        s.piece = p;
-        board[p.position.x][p.position.y].removePiece();;
-        p.position = s.position;
-    }
-
-    // Remove a piece from the chessboard
-    public void deletePiece(Piece p){
-        p.setAlive(false);
-        if(p.getColor()){
-            playerW.deadPieces ++;
-        }
-        else {
-            playerB.deadPieces ++;
-        }
-        board[p.position.x][p.position.y].removePiece();
     }
 }

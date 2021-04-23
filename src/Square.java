@@ -25,13 +25,8 @@ public class Square {
         moves = new JLabel(iconDispo);
     }
 
-    // Remove piece from the square
-    public void removePiece(){
-        piece = null;
-    }
-    public List<Position> getMoves (Board b) { //Not working at the moment
+    public List<Position> getMoves (Board b) { //Not working at the moment 
         List<Position> possibleMoves = new ArrayList<>();
-
         if (piece != null) {
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {

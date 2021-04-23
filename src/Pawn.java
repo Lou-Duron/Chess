@@ -20,6 +20,7 @@ public class Pawn extends Piece {
         if (end.piece.getColor() == this.getColor()) {
             return false;
         }
+        
         // Pawns can only move forward
         if (end.position.x < start.position.x) {
             return false;
