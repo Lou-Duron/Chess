@@ -3,23 +3,16 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Menu {
-    JLabel player1, player2, name1, name2, timer1, timer2, deadPieces1, deadPieces2;
+    JLabel name1, name2, timer1, timer2, deadPieces1, deadPieces2;
     JLabel menu, newGame, option, exit, analyse, concede, leftButton, rightButton;
-    Color CL_PLAYER = new Color(55,55,60); // Players background color
-    Color CL_GUI = new Color(37,37,45); // GUI background color
-    Color CL_BK = new Color(65,65,67); // Frame background color
-    Color CL_FONT = new Color(204,167,0); // Font color
+    Color CL_LN = new Color(150,125,100); // Numbers and letters color
+    Color CL_GUI = new Color(26,33,41); // GUI background color
+    Color CL_FONT = new Color(227,215,199); // Font color
+    Color CL_BK = new Color(47,53,62); // Frame background color
     Board b;
 
     public Menu(Frame f){
         b = f.b;
-        // Players panels
-        player1 = new JLabel();
-        player1.setBackground(CL_PLAYER);
-        player1.setOpaque(true);
-        player2 = new JLabel();
-        player2.setBackground(CL_PLAYER);
-        player2.setOpaque(true);
         
         // Timers
         timer1 = new JLabel("04:57", SwingConstants.CENTER);

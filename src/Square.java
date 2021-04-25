@@ -6,8 +6,9 @@ public class Square {
     Position position; // Position
     boolean isWhite; // Color and presence of a piece(boolean)
     Piece piece; // Piece on the square
-    JLabel image, moves; // Labels 
-    ImageIcon icon, iconDispo;
+    JLabel image, movesEmpty, movesFilled; // Labels 
+    ImageIcon icon, iconDispoEmpty, iconDispoFilled;
+
 
     public Square(Position position, boolean isWhite){
         this.position = position;
@@ -15,14 +16,15 @@ public class Square {
         piece = null;
         if(isWhite){
             icon = new ImageIcon("Images/cb.png");
-            iconDispo = new ImageIcon("Images/cbo.png");
         }
         else{
             icon = new ImageIcon("Images/cn.png");
-            iconDispo = new ImageIcon("Images/cno.png");
         }
         image = new JLabel(icon);
-        moves = new JLabel(iconDispo);
+        iconDispoEmpty = new ImageIcon("Images/empty.png");
+        movesEmpty = new JLabel(iconDispoEmpty);
+        iconDispoFilled = new ImageIcon("Images/filled.png");
+        movesFilled = new JLabel(iconDispoFilled);
     }
 
     public List<Position> getMoves (Board b) { //Not working at the moment 
