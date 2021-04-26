@@ -41,8 +41,8 @@ public void customSetup(){
         frame.setIconImage(logo.getImage());
         frame.setMinimumSize(new Dimension(450,450));
 
-        //b.initBoard(); // Clasic Setup
-        customSetup(); //Custom Setup
+        b.initBoard(); // Clasic Setup
+        //customSetup(); //Custom Setup
 
         // Panel setup
         panel = new CustomPanel(this);

@@ -20,11 +20,12 @@ public class King extends Piece {
     }
 
     public boolean canMove(Board b, Square start, Square end) {
-        if (start.equals(end))
-            return false;
+
         // If piece with same color
-        if (end.piece.getColor() == this.getColor()) {
-            return false;
+        if(end.piece != null){
+            if (end.piece.getColor() == this.getColor()) {
+                return false;
+            }
         }
         // Can only move to a neighboring square
         if (Math.abs(end.position.x-start.position.x) > 1 || Math.abs(end.position.y-start.position.y) > 1)

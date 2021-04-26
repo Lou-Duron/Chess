@@ -18,11 +18,12 @@ public class Knight extends Piece {
             return false;
 
         // If piece with same color
-        if (end.piece.getColor() == this.getColor()) {
-            return false;
+        if(end.piece != null){
+            if (end.piece.getColor() == this.getColor()) {
+                return false;
+            }
         }
-
-        if (Math.abs((end.position.y-start.position.y)/(end.position.x-start.position.x)) != 2){ // right left L
+        if (Math.abs((float)(end.position.y-start.position.y)*(end.position.x-start.position.x)) != 2){ // right left L
                 return false;
             }
         return true;

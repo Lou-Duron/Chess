@@ -19,11 +19,20 @@ public class Bishop extends Piece {
             return false;
 
         // If piece with same color
-        if (end.piece.getColor() == this.getColor()) {
-            return false;
+        if(end.piece != null){
+            if (end.piece.getColor() == this.getColor()) {
+                return false;
+            }
         }
         // Didn't move diagonally
-        if (end.position.x == start.position.x || end.position.y == start.position.y)
+        if (end.position.x-start.position.x != 0){
+            if (Math.abs((float)(end.position.y-start.position.y)/(end.position.x-start.position.x)) != 1) {
+                return false;
+            }
+        }
+
+        // Can't move vertically
+        if (end.position.x-start.position.x == 0)
             return false;
 
         return true;
