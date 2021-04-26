@@ -14,10 +14,6 @@ public class Bishop extends Piece {
     }
 
     public boolean canMove(Board b, Square start, Square end) {
-
-        if (start.equals(end))
-            return false;
-
         // If piece with same color
         if(end.piece != null){
             if (end.piece.getColor() == this.getColor()) {
@@ -30,11 +26,14 @@ public class Bishop extends Piece {
                 return false;
             }
         }
-
         // Can't move vertically
         if (end.position.x-start.position.x == 0)
             return false;
 
+        /*boolean diagonal = Math.abs(end.position.x - start.position.x) == 1 && Math.abs(end.position.y - start.position.y) == 1;
+        if (diagonal){
+            while ()
+        }*/
         return true;
     }
 }

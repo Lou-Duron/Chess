@@ -16,30 +16,37 @@ public class Pawn extends Piece {
 
     }
     public boolean canMove(Board b, Square start, Square end) {
-
-        // If piece with same color
-        if (end.piece != null){// if square empty or with same color as the piece
-            if (end.piece.getColor() == this.getColor()) {
+        if (getColor()){ //White
+            if (start.position.y == 6){ //Starting position
+                if ( end.position.y - start.position.y < -2) {
+                    return false;
+                }
+            }
+            else if (end.position.y - start.position.y != -1) {
+                return false;
+            }
+        }
+        if (!getColor()){ //Black
+            if (start.position.y == 1) { //Starting position
+                if (end.position.y - start.position.y > 2) {
+                    return false;
+                }
+            }
+            else if (end.position.y - start.position.y != 1) {
                 return false;
             }
         }
 
-        // Pawns can only move forward
+        // Moves to eat a piece
+        boolean diagonal = Math.abs(end.position.x - start.position.x) == 1 && Math.abs(end.position.y - start.position.y) == 1;
+        boolean sameColor = end.piece.getColor() == this.getColor();
 
-        if (end.position.x == start.position.x){
-            if (end.position.y - start.position.y == 2*sense){
-                if (start.position.y != 1 && start.position.y != 7){
-                    return false;
-                }
-            }
-            if (end.position.y - start.position.y == sense){
-                if (end.piece != null){
-                    return false;
-                }
-            }
-            if (end.position.y - start.position.y > sense && end.position.y - start.position.y < 2*sense){
-                return false;
-            }
+        if(end.piece != null && (!diagonal || sameColor)){ //If there is a piece on the square
+            return false;
+        }
+
+        if (end.piece == null && Math.abs(end.position.x - start.position.x) != 0) { //if not
+            return false;
         }
 
         return true;
