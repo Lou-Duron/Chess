@@ -15,10 +15,6 @@ public class King extends Piece {
         image = new JLabel(icon);
     }
 
-    public boolean isCheck(){
-        return check;
-    }
-
     public boolean canMove(Board b, Square start, Square end) {
 
         // If piece with same color
@@ -35,6 +31,10 @@ public class King extends Piece {
             return false;
         }
         return true;
+    }
+
+    public boolean isCheck(){
+        return false;
     }
 
 }

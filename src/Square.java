@@ -27,12 +27,13 @@ public class Square {
         movesFilled = new JLabel(iconDispoFilled);
     }
 
-    public List<Position> getMoves (Board b) { //Not working at the moment 
+    public List<Position> getMoves (Board b) {
+        System.out.println("caca");
         List<Position> possibleMoves = new ArrayList<>();
         if (piece != null) {
             for (int x = 0; x < 8; x++) {
                 for (int y = 0; y < 8; y++) {
-                    if (piece.canMove(b, this, b.board[x][y])) { //Problem here, since piece doesn't return boolean (not hidden)
+                    if (piece.canMove(b, this, b.board[x][y])) {
                         possibleMoves.add(new Position(x, y));
                     }
                 }
