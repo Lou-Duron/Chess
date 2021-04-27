@@ -10,19 +10,36 @@ public class Menu {
     Color CL_FONT = new Color(227,215,199); // Font color
     Color CL_BK = new Color(47,53,62); // Frame background color
     Board b;
+    int tTop, tBot;
+    Timer tT, tB;
 
     public Menu(Frame f){
-        b = f.b;
-        
+        b = f.b;    
+
         // Timers
-        timerTop = new JLabel("04:57", SwingConstants.CENTER);
+        timerTop = new JLabel("10:00", SwingConstants.CENTER);
         timerTop.setBackground(CL_GUI);
         timerTop.setOpaque(true);
         timerTop.setForeground(CL_FONT);
-        timerBot = new JLabel("04:24", SwingConstants.CENTER);
+        ActionListener Top = new ActionListener(){
+            public void actionPerformed(ActionEvent ae){            
+                tTop --;
+                timerTop.setText(String.valueOf((int) tTop/60) +":"+ String.valueOf(tTop % 60));    
+            }
+        };
+        tT = new Timer(1000, Top);
+
+        timerBot = new JLabel("10:00", SwingConstants.CENTER);
         timerBot.setBackground(CL_GUI);
         timerBot.setOpaque(true);
         timerBot.setForeground(CL_FONT);
+        ActionListener Bot = new ActionListener(){
+            public void actionPerformed(ActionEvent ae){            
+                tBot --;    
+                timerBot.setText(String.valueOf((int) tBot/60) +":"+ String.valueOf(tBot % 60)); 
+            }
+        };
+        tB = new Timer(1000, Bot); 
  
         // Names
         nameTop = new JLabel(b.playerTop.name, SwingConstants.CENTER);
@@ -58,6 +75,8 @@ public class Menu {
             @Override
             public void mousePressed(MouseEvent e) {
                 f.reset();
+                f.b.initBoard();
+                f.panel.initBoardGraphics();
             } 
             @Override
             public void mouseReleased(MouseEvent e) {}
@@ -114,6 +133,7 @@ public class Menu {
             public void mousePressed(MouseEvent e) {
                 f.panel.reverseCoordinates();
                 f.b.reverseBoard();
+                f.panel.initBoardGraphics();
                 f.panel.resize();
             } 
             @Override

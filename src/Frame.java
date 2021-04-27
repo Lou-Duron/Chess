@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 public class Frame {
 
     JFrame frame;
@@ -79,9 +78,7 @@ public void customSetup(){
 			panel.remove(num);
 		}
         b = new Board();
-        customSetup();
         addListeners();
-        panel.initBoardGraphics();
     }
 
     public void addListeners(){
