@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class Menu {
-    JLabel name1, name2, timer1, timer2, deadPieces1, deadPieces2;
+    JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot;
     JLabel menu, newGame, option, exit, analyse, concede, leftButton, rightButton;
     Color CL_LN = new Color(150,125,100); // Numbers and letters color
     Color CL_GUI = new Color(26,33,41); // GUI background color
@@ -15,33 +15,33 @@ public class Menu {
         b = f.b;
         
         // Timers
-        timer1 = new JLabel("04:57", SwingConstants.CENTER);
-        timer1.setBackground(CL_GUI);
-        timer1.setOpaque(true);
-        timer1.setForeground(CL_FONT);
-        timer2 = new JLabel("04:24", SwingConstants.CENTER);
-        timer2.setBackground(CL_GUI);
-        timer2.setOpaque(true);
-        timer2.setForeground(CL_FONT);
+        timerTop = new JLabel("04:57", SwingConstants.CENTER);
+        timerTop.setBackground(CL_GUI);
+        timerTop.setOpaque(true);
+        timerTop.setForeground(CL_FONT);
+        timerBot = new JLabel("04:24", SwingConstants.CENTER);
+        timerBot.setBackground(CL_GUI);
+        timerBot.setOpaque(true);
+        timerBot.setForeground(CL_FONT);
  
         // Names
-        name1 = new JLabel(b.playerB.name, SwingConstants.CENTER);
-        name1.setBackground(CL_GUI);
-        name1.setOpaque(true);
-        name1.setForeground(CL_FONT);
-        name2 = new JLabel(b.playerW.name, SwingConstants.CENTER);
-        name2.setBackground(CL_GUI);
-        name2.setOpaque(true);
-        name2.setForeground(CL_FONT);
+        nameTop = new JLabel(b.playerTop.name, SwingConstants.CENTER);
+        nameTop.setBackground(CL_GUI);
+        nameTop.setOpaque(true);
+        nameTop.setForeground(CL_FONT);
+        nameBot = new JLabel(b.playerBot.name, SwingConstants.CENTER);
+        nameBot.setBackground(CL_GUI);
+        nameBot.setOpaque(true);
+        nameBot.setForeground(CL_FONT);
         
 
         // DeadPieces
-        deadPieces1 = new JLabel();
-        deadPieces1.setBackground(CL_GUI);
-        deadPieces1.setOpaque(true);
-        deadPieces2 = new JLabel();
-        deadPieces2.setBackground(CL_GUI);
-        deadPieces2.setOpaque(true);
+        deadPiecesTop = new JLabel();
+        deadPiecesTop.setBackground(CL_GUI);
+        deadPiecesTop.setOpaque(true);
+        deadPiecesBot = new JLabel();
+        deadPiecesBot.setBackground(CL_GUI);
+        deadPiecesBot.setOpaque(true);
 
         // New Game button
         newGame = new JLabel("New game", SwingConstants.CENTER);
@@ -99,7 +99,7 @@ public class Menu {
             }
         });
         // Analyse button
-        analyse = new JLabel("A", SwingConstants.CENTER);
+        analyse = new JLabel("Inv", SwingConstants.CENTER);
         analyse.setBackground(CL_GUI);
         analyse.setOpaque(true);
         analyse.setForeground(CL_FONT);
@@ -111,7 +111,11 @@ public class Menu {
             @Override
             public void mouseExited(MouseEvent e) {}
             @Override
-            public void mousePressed(MouseEvent e) {} 
+            public void mousePressed(MouseEvent e) {
+                f.panel.reverseCoordinates();
+                f.b.reverseBoard();
+                f.panel.resize();
+            } 
             @Override
             public void mouseReleased(MouseEvent e) {}
         });

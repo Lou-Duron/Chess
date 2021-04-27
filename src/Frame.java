@@ -69,10 +69,10 @@ public void customSetup(){
                 }
             }
         }
-        for(Piece piece: b.playerW.cemetery){
+        for(Piece piece: b.playerTop.cemetery){
             panel.remove(piece.image);
         }
-        for(Piece piece: b.playerB.cemetery){
+        for(Piece piece: b.playerBot.cemetery){
             panel.remove(piece.image);
         }
         for(JLabel num:panel.numbers){

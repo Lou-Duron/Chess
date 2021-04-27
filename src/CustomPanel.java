@@ -6,6 +6,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class CustomPanel extends JLayeredPane implements MouseListener, MouseMotionListener{
 
@@ -31,12 +32,12 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		setPreferredSize(new Dimension(300, 300));
 		// Menu
 		menu = new Menu(f); 
-		this.add(menu.timer1, Integer.valueOf(2));
-		this.add(menu.timer2, Integer.valueOf(2));
-		this.add(menu.name1, Integer.valueOf(2));
-		this.add(menu.name2, Integer.valueOf(2));
-		this.add(menu.deadPieces1, Integer.valueOf(2));
-		this.add(menu.deadPieces2, Integer.valueOf(2));
+		this.add(menu.timerTop, Integer.valueOf(2));
+		this.add(menu.timerBot, Integer.valueOf(2));
+		this.add(menu.nameTop, Integer.valueOf(2));
+		this.add(menu.nameBot, Integer.valueOf(2));
+		this.add(menu.deadPiecesTop, Integer.valueOf(2));
+		this.add(menu.deadPiecesBot, Integer.valueOf(2));
 		this.add(menu.newGame, Integer.valueOf(2));
 		this.add(menu.option, Integer.valueOf(2));
 		this.add(menu.exit, Integer.valueOf(2));
@@ -121,10 +122,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
         piece.image.setIcon(new ImageIcon(newimg));
         if(piece.getColor()){
-            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerW.cemetery.size()*SQUARE_SIZE*19/64, SQUARE_SIZE*1/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerTop.cemetery.size()*SQUARE_SIZE*19/64, SQUARE_SIZE*1/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         }
         else{
-            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerB.cemetery.size()*SQUARE_SIZE*19/64, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerBot.cemetery.size()*SQUARE_SIZE*19/64, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -236,12 +237,12 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         this.setBounds(0, 0,   f.frame.getWidth(), f.frame.getHeight()-35);
         SQUARE_SIZE = (int) this.getHeight()/9;
 		// Resize Menu
-        menu.timer1.setBounds(SQUARE_SIZE/8, SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE/4);
-        menu.timer2.setBounds(SQUARE_SIZE/8, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE/4);
-        menu.name1.setBounds(SQUARE_SIZE*5/4, SQUARE_SIZE/8, SQUARE_SIZE*3/2, SQUARE_SIZE/4);
-        menu.name2.setBounds(SQUARE_SIZE*5/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/8, SQUARE_SIZE*3/2, SQUARE_SIZE/4);
-        menu.deadPieces1.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
-        menu.deadPieces2.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+        menu.timerTop.setBounds(SQUARE_SIZE/8, SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE/4);
+        menu.timerBot.setBounds(SQUARE_SIZE/8, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/8, SQUARE_SIZE*3/4, SQUARE_SIZE/4);
+        menu.nameTop.setBounds(SQUARE_SIZE*5/4, SQUARE_SIZE/8, SQUARE_SIZE*3/2, SQUARE_SIZE/4);
+        menu.nameBot.setBounds(SQUARE_SIZE*5/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/8, SQUARE_SIZE*3/2, SQUARE_SIZE/4);
+        menu.deadPiecesTop.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+        menu.deadPiecesBot.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         menu.newGame.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
         menu.option.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE/2, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
         menu.exit.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
@@ -274,17 +275,17 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
             }
         }
 		// Resize cemetery
-        for(Piece piece:f.b.playerW.cemetery){
+        for(Piece piece:f.b.playerTop.cemetery){
             Image image = piece.icon.getImage();
             Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
             piece.image.setIcon(new ImageIcon(newimg));
-            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerW.cemetery.indexOf(piece)*SQUARE_SIZE*19/64, SQUARE_SIZE*1/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerTop.cemetery.indexOf(piece)*SQUARE_SIZE*19/64, SQUARE_SIZE*1/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         }
-        for(Piece piece:f.b.playerB.cemetery){
+        for(Piece piece:f.b.playerBot.cemetery){
             Image image = piece.icon.getImage();
             Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
             piece.image.setIcon(new ImageIcon(newimg));
-            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerB.cemetery.indexOf(piece)*SQUARE_SIZE*19/64, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerBot.cemetery.indexOf(piece)*SQUARE_SIZE*19/64, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         }
 		// Resize coordinates
 		for(JLabel num:numbers){
@@ -294,4 +295,9 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			let.setBounds(letters.indexOf(let)*SQUARE_SIZE+SQUARE_SIZE*7/8, 8*SQUARE_SIZE+SQUARE_SIZE*1/4, SQUARE_SIZE/4, SQUARE_SIZE/4);
 		}
     }
+
+	public void reverseCoordinates(){
+		Collections.reverse(numbers);
+		Collections.reverse(letters);
+	}
 }

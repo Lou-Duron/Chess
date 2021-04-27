@@ -1,16 +1,15 @@
 public class Board {
     
     public Square [][] board;// Chessboard
-    Player playerB, playerW; // Players
+    Player playerTop, playerBot; // Players
 
     public Board(){
         board = new Square[8][8];
-        playerW = new Player( "Vic", true);
-        playerB = new Player("Lou", false);
-        // Init chessboard
+        playerTop = new Player("Lou", false, true); // Player(name, isWhite, isTop)
+        playerBot = new Player( "Vic", true, false);         
         for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
-                if(x%2 == y%2){
+                if(x%2 != y%2){
                     board[x][y] = new Square(new Position(x,y), false);
                 }
                 else{
@@ -32,10 +31,10 @@ public class Board {
     // Remove a piece from the chessboard
     public void deletePiece(Square s){
         if(s.piece.getColor()){
-            playerW.cemetery.add(s.piece);
+            playerTop.cemetery.add(s.piece);
         }
         else{
-            playerB.cemetery.add(s.piece);
+            playerBot.cemetery.add(s.piece);
         }
         s.piece = null;
     }
@@ -82,5 +81,15 @@ public class Board {
         addPiece(new Knight(true), board[6][7]);
         addPiece(new Queen(true), board[3][7]);
         addPiece(new King(true), board[4][7]);
+    }
+
+    public void reverseBoard(){
+        for(int x=0; x<8; x++){
+            for(int y=0; y<4; y++){
+                Square temp = board[x][y];
+                board[x][y] = board[7-x][7-y];
+                board[7-x][7-y] = temp; 
+            }
+        }
     }
 }
