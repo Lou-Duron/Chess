@@ -83,6 +83,17 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			let.setForeground(menu.CL_LN);
 			this.add(let, Integer.valueOf(1));
 		}
+		// Timers
+		menu.tT.stop();
+		menu.tB.stop();
+		menu.tTop = 600;
+		menu.tBot = 600;
+		if(f.b.playerTop.isWhite){
+            menu.tT.start(); 
+        }
+        else {
+            menu.tB.start();
+        }
 		resize();
 	}
 
@@ -141,8 +152,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 						//if(f.b.board[x][y].image.contains(e.getX(), e.getY())) {// ???	
 							if(selectedPiece == null){
 								if (f.b.board[x][y].piece != null){
-									select(f.b.board[x][y]);
-									clic = true; 
+									if(f.b.currentPlayer.isWhite == f.b.board[x][y].piece.isWhite){
+										select(f.b.board[x][y]);
+										clic = true; 
+									}	
 								}
 							}	
 					}
@@ -162,11 +175,14 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 					//if(f.b.board[x][y].image.contains(e.getX(), e.getY())) {// ???
 						if(!clic){
 							if(f.b.board[x][y].piece != null){
-								select(f.b.board[x][y]);
-								draging = true;
-								oldX = e.getX();
-								oldY = e.getY();
-							}
+								if(f.b.currentPlayer.isWhite == f.b.board[x][y].piece.isWhite){
+									System.out.println("test");
+									select(f.b.board[x][y]);
+									draging = true;
+									oldX = e.getX();
+									oldY = e.getY();
+								}
+							}	
 						}	
 						else{
 							if(selectedPieceMoves != null){
@@ -174,6 +190,14 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									if(position.equals(f.b.board[x][y].position)){
 										if(f.b.board[x][y].piece != null){
 											putToCemetery(f.b.board[x][y].piece);
+										}
+										if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
+											menu.tT.stop();
+											menu.tB.start(); 
+										}
+										else {
+											menu.tB.stop();
+											menu.tT.start();
 										}
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
 										selectedPiece.image.setBounds(f.b.board[x][y].position.x*SQUARE_SIZE, f.b.board[x][y].position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
@@ -194,11 +218,18 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			for(int x=0; x<8; x++){
 				for(int y=0; y<8; y++){
 					if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
-						
 						for(Position position: selectedPieceMoves){
 							if(position.equals(f.b.board[x][y].position)){
 								if(f.b.board[x][y].piece != null){
 									putToCemetery(f.b.board[x][y].piece);
+								}
+								if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
+									menu.tT.stop();
+									menu.tB.start(); 
+								}
+								else {
+									menu.tB.stop();
+									menu.tT.start();
 								}
 								f.b.movePiece(tempSquare,f.b.board[x][y]);
 								selectedPiece.image.setBounds(f.b.board[x][y].position.x*SQUARE_SIZE, f.b.board[x][y].position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
