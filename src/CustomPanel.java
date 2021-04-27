@@ -117,13 +117,17 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 
     // Undoes the selection
     public void unselect(){ // previously removeMoves
-        for(Position pos: selectedPieceMoves){ // for each moves
-            this.setLayer(f.b.board[pos.x][pos.y].movesEmpty,0);
-			this.setLayer(f.b.board[pos.x][pos.y].movesFilled,0); 
-        }
-		this.setLayer(selectedPiece.image,3);
-        selectedPiece = null;
-        selectedPieceMoves = null;
+		if(selectedPieceMoves != null){
+			for(Position pos: selectedPieceMoves){ // for each moves
+				this.setLayer(f.b.board[pos.x][pos.y].movesEmpty,0);
+				this.setLayer(f.b.board[pos.x][pos.y].movesFilled,0); 
+			}
+        	selectedPieceMoves = null;
+		}	
+		if(selectedPiece != null){
+			this.setLayer(selectedPiece.image,3);
+        	selectedPiece = null;
+		}
         tempSquare = null;
     }   
 
@@ -176,7 +180,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 						if(!clic){
 							if(f.b.board[x][y].piece != null){
 								if(f.b.currentPlayer.isWhite == f.b.board[x][y].piece.isWhite){
-									System.out.println("test");
 									select(f.b.board[x][y]);
 									draging = true;
 									oldX = e.getX();
@@ -218,30 +221,33 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			for(int x=0; x<8; x++){
 				for(int y=0; y<8; y++){
 					if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
-						for(Position position: selectedPieceMoves){
-							if(position.equals(f.b.board[x][y].position)){
-								if(f.b.board[x][y].piece != null){
-									putToCemetery(f.b.board[x][y].piece);
-								}
-								if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
-									menu.tT.stop();
-									menu.tB.start(); 
-								}
-								else {
-									menu.tB.stop();
-									menu.tT.start();
-								}
-								f.b.movePiece(tempSquare,f.b.board[x][y]);
-								selectedPiece.image.setBounds(f.b.board[x][y].position.x*SQUARE_SIZE, f.b.board[x][y].position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
-								temp = true;
-							}		
-						}
-												
+						if(selectedPieceMoves != null){
+							for(Position position: selectedPieceMoves){
+								if(position.equals(f.b.board[x][y].position)){
+									if(f.b.board[x][y].piece != null){
+										putToCemetery(f.b.board[x][y].piece);
+									}
+									if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
+										menu.tT.stop();
+										menu.tB.start(); 
+									}
+									else {
+										menu.tB.stop();
+										menu.tT.start();
+									}
+									f.b.movePiece(tempSquare,f.b.board[x][y]);
+									selectedPiece.image.setBounds(f.b.board[x][y].position.x*SQUARE_SIZE, f.b.board[x][y].position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+									temp = true;
+								}		
+							}
+						}						
 					}
 				}
 			}
 			if(!temp){
-				selectedPiece.image.setBounds(tempSquare.position.x*SQUARE_SIZE, tempSquare.position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);						
+				if(selectedPiece != null){
+					selectedPiece.image.setBounds(tempSquare.position.x*SQUARE_SIZE, tempSquare.position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);						
+				}	
 			}
 		unselect();
 		draging = false;
