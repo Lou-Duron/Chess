@@ -30,10 +30,21 @@ public class Bishop extends Piece {
         if (end.position.x-start.position.x == 0)
             return false;
 
-        /*boolean diagonal = Math.abs(end.position.x - start.position.x) == 1 && Math.abs(end.position.y - start.position.y) == 1;
-        if (diagonal){
-            while ()
-        }*/
+        int dirX = end.position.x > start.position.x ? 1 : -1;
+        int dirY = end.position.y > start.position.y ? 1 : -1;
+        for (int i = 1; i < Math.abs(end.position.x - start.position.x)+1; i++){
+            int x = start.position.x+i*dirX;
+            int y = start.position.y+i*dirY;
+            if (b.board[x][y].piece != null) {
+                if (b.board[x][y].piece.getColor() == start.piece.getColor()){
+                    return false;
+                }
+                else if (!b.board[x][y].equals(end)){
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 }
