@@ -39,9 +39,8 @@ public class Pawn extends Piece {
 
         // Moves to eat a piece
         boolean diagonal = Math.abs(end.position.x - start.position.x) == 1 && Math.abs(end.position.y - start.position.y) == 1;
-        boolean sameColor = end.piece.getColor() == this.getColor();
 
-        if(end.piece != null && (!diagonal || sameColor)){ //If there is a piece on the square
+        if(end.piece != null && (!diagonal || end.piece.getColor() == this.getColor())){ //If there is a piece on the square
             return false;
         }
 
