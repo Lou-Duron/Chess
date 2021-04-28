@@ -8,22 +8,12 @@ public class Frame {
     CustomPanel panel;
     Board b;
     boolean resized = false;
+    boolean popUp = false;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Custom setup for tests
 public void customSetup(){
-    b.addPiece(new Pawn(true), b.board[4][4]);
-    b.addPiece(new Knight(true), b.board[6][6]);
-    b.addPiece(new Bishop(true), b.board[5][5]);
-    b.addPiece(new Rook(true), b.board[3][3]);
-    b.addPiece(new King(true), b.board[2][2]);
-    b.addPiece(new Queen(true), b.board[1][1]);
-    b.addPiece(new Pawn(false), b.board[4][3]);
-    b.addPiece(new Knight(false), b.board[6][5]);
-    b.addPiece(new Bishop(false), b.board[5][4]);
-    b.addPiece(new Rook(false), b.board[3][2]);
-    b.addPiece(new King(false), b.board[2][1]);
-    b.addPiece(new Queen(false), b.board[1][0]);
+    b.addPiece(new Pawn(true), b.board[1][1]);
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CONSTRUCTOR

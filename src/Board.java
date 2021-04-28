@@ -35,12 +35,6 @@ public class Board {
         }
         end.piece = start.piece;
         start.piece = null;
-        if(currentPlayer.isWhite == playerTop.isWhite){
-            currentPlayer = playerBot;
-        }
-        else{
-            currentPlayer = playerTop;
-        }
     }
 
     // Remove a piece from the chessboard

@@ -1,10 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Menu {
     JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot;
-    JLabel menu, newGame, option, exit, analyse, concede, leftButton, rightButton;
+    JLabel menu, newGame, option, exit, analyse, concede, leftButton, rightButton, promotionPanel;
+    List<JLabel> promotionWhite, promotionBlack;
     Color CL_LN = new Color(150,125,100); // Numbers and letters color
     Color CL_GUI = new Color(26,33,41); // GUI background color
     Color CL_FONT = new Color(227,215,199); // Font color
@@ -15,6 +18,84 @@ public class Menu {
 
     public Menu(Frame f){
         b = f.b;    
+
+         // Promotion panel
+         promotionPanel = new JLabel();
+         promotionPanel.setBackground(CL_GUI);
+         promotionPanel.setOpaque(true); 
+         promotionWhite = new ArrayList<>();
+         promotionWhite.add(new JLabel(new ImageIcon("Images/wn.png")));
+         promotionWhite.add(new JLabel(new ImageIcon("Images/wb.png")));
+         promotionWhite.add(new JLabel(new ImageIcon("Images/wr.png")));
+         promotionWhite.add(new JLabel(new ImageIcon("Images/wq.png")));
+         for(JLabel piece: promotionWhite){
+             piece.addMouseListener(new MouseAdapter() {
+                 @Override
+                 public void mouseClicked(MouseEvent e) {}
+                 @Override
+                 public void mouseEntered(MouseEvent e) {}
+                 @Override
+                 public void mouseExited(MouseEvent e) {}
+                 @Override
+                 public void mousePressed(MouseEvent e) {
+                     if(f.popUp){
+                         switch(promotionWhite.indexOf(piece)){
+                            case 0:
+                            f.panel.replacePiecePromotion(new Knight(true), f.panel.promotion);
+                            break;
+                         case 1:
+                            f.panel.replacePiecePromotion(new Bishop(true), f.panel.promotion);
+                            break;
+                         case 2:
+                            f.panel.replacePiecePromotion(new Rook(true), f.panel.promotion);
+                            break;
+                         case 3:
+                            f.panel.replacePiecePromotion(new Queen(true), f.panel.promotion);
+                            break;
+                         }
+                     }
+                 } 
+                 @Override
+                 public void mouseReleased(MouseEvent e) {}
+             });
+         }
+ 
+         promotionBlack = new ArrayList<>();
+         promotionBlack.add(new JLabel(new ImageIcon("Images/bn.png")));
+         promotionBlack.add(new JLabel(new ImageIcon("Images/bb.png")));
+         promotionBlack.add(new JLabel(new ImageIcon("Images/br.png")));
+         promotionBlack.add(new JLabel(new ImageIcon("Images/bq.png")));
+         for(JLabel piece: promotionBlack){
+             piece.addMouseListener(new MouseAdapter() {
+                 @Override
+                 public void mouseClicked(MouseEvent e) {}
+                 @Override
+                 public void mouseEntered(MouseEvent e) {}
+                 @Override
+                 public void mouseExited(MouseEvent e) {}
+                 @Override
+                 public void mousePressed(MouseEvent e) {
+                     if(f.popUp){
+                         switch(promotionBlack.indexOf(piece)){
+                             case 0:
+                             f.panel.replacePiecePromotion(new Knight(false), f.panel.promotion);
+                             break;
+                         case 1:
+                             f.panel.replacePiecePromotion(new Bishop(false), f.panel.promotion);
+                             break;
+                         case 2:
+                             f.panel.replacePiecePromotion(new Rook(false), f.panel.promotion);
+                             break;
+                         case 3:
+                             f.panel.replacePiecePromotion(new Queen(false), f.panel.promotion);
+                             break;
+                         }
+                     }
+                 } 
+                 @Override
+                 public void mouseReleased(MouseEvent e) {}
+             });
+         }
 
         // Timers
         timerTop = new JLabel("10:00", SwingConstants.CENTER);

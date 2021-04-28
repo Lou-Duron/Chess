@@ -4,6 +4,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,7 +19,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	Frame f;
 	Piece selectedPiece;
 	List<Position> selectedPieceMoves;
-    Square tempSquare;
+    Square tempSquare, promotion;
 	List<JLabel> numbers, letters;
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // CONSTRUCTOR	
@@ -130,53 +132,42 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		}
         tempSquare = null;
     }   
-
-	// Puts a piece in the cemetery
-	public void putToCemetery(Piece piece){
-        Image image = piece.icon.getImage();
-        Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
-        piece.image.setIcon(new ImageIcon(newimg));
-        if(piece.getColor()){
-            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerTop.cemetery.size()*SQUARE_SIZE*19/64, SQUARE_SIZE*1/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
-        }
-        else{
-            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerBot.cemetery.size()*SQUARE_SIZE*19/64, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
-        }
-    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LISTENERS
 	// When mouse is clicked
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		draging = false;
-		if(!clic){
-			for(int x=0; x<8; x++){
-				for(int y=0; y<8; y++){
-					if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
-						//if(f.b.board[x][y].image.contains(e.getX(), e.getY())) {// ???	
-							if(selectedPiece == null){
-								if (f.b.board[x][y].piece != null){
-									if(f.b.currentPlayer.isWhite == f.b.board[x][y].piece.isWhite){
-										select(f.b.board[x][y]);
-										clic = true; 
-									}	
-								}
-							}	
+		if(!f.popUp){
+			if(!clic){
+				for(int x=0; x<8; x++){
+					for(int y=0; y<8; y++){
+						if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
+							//if(f.b.board[x][y].image.contains(e.getX(), e.getY())) {// ???	
+								if(selectedPiece == null){
+									if (f.b.board[x][y].piece != null){
+										if(f.b.currentPlayer.isWhite == f.b.board[x][y].piece.isWhite){
+											select(f.b.board[x][y]);
+											clic = true; 
+										}	
+									}
+								}	
+						}
 					}
 				}
 			}
+			else{
+				clic = false;
+			}	
 		}
-		else{
-			clic = false;
-		}	
 	}
 	// When mouse is pressed
 	@Override
 	public void mousePressed(MouseEvent e) {
-		for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-				if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
-					//if(f.b.board[x][y].image.contains(e.getX(), e.getY())) {// ???
+		if(!f.popUp){
+			for(int x=0; x<8; x++){
+				for(int y=0; y<8; y++){
+					if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
 						if(!clic){
 							if(f.b.board[x][y].piece != null){
 								if(f.b.currentPlayer.isWhite == f.b.board[x][y].piece.isWhite){
@@ -191,24 +182,16 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 							if(selectedPieceMoves != null){
 								for(Position position: selectedPieceMoves){
 									if(position.equals(f.b.board[x][y].position)){
-										if(f.b.board[x][y].piece != null){
-											putToCemetery(f.b.board[x][y].piece);
-										}
-										if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
-											menu.tT.stop();
-											menu.tB.start(); 
-										}
-										else {
-											menu.tB.stop();
-											menu.tT.start();
-										}
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
-										selectedPiece.image.setBounds(f.b.board[x][y].position.x*SQUARE_SIZE, f.b.board[x][y].position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+										checkPromotion(f.b.board[x][y]);
+										displayPieces();
+										switchPlayer();
 									}
 								}
 								unselect(); 
 							}	 
 						}		
+					}
 				}
 			}
 		}
@@ -224,20 +207,11 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 						if(selectedPieceMoves != null){
 							for(Position position: selectedPieceMoves){
 								if(position.equals(f.b.board[x][y].position)){
-									if(f.b.board[x][y].piece != null){
-										putToCemetery(f.b.board[x][y].piece);
-									}
-									if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
-										menu.tT.stop();
-										menu.tB.start(); 
-									}
-									else {
-										menu.tB.stop();
-										menu.tT.start();
-									}
 									f.b.movePiece(tempSquare,f.b.board[x][y]);
-									selectedPiece.image.setBounds(f.b.board[x][y].position.x*SQUARE_SIZE, f.b.board[x][y].position.y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+									checkPromotion(f.b.board[x][y]);
+									displayPieces();
 									temp = true;
+									switchPlayer();
 								}		
 							}
 						}						
@@ -336,5 +310,156 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	public void reverseCoordinates(){
 		Collections.reverse(numbers);
 		Collections.reverse(letters);
+	}
+
+	public void displayPieces(){
+		for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                if(f.b.board[x][y].piece != null){
+                    Image imagePiece = f.b.board[x][y].piece.icon.getImage();
+                    Image newimgPiece = imagePiece.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                    f.b.board[x][y].piece.image.setIcon(new ImageIcon(newimgPiece));
+                    f.b.board[x][y].piece.image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+                }
+            }
+        }
+		for(Piece piece:f.b.playerTop.cemetery){
+            Image image = piece.icon.getImage();
+            Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
+            piece.image.setIcon(new ImageIcon(newimg));
+            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerTop.cemetery.indexOf(piece)*SQUARE_SIZE*19/64, SQUARE_SIZE*1/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+        }
+        for(Piece piece:f.b.playerBot.cemetery){
+            Image image = piece.icon.getImage();
+            Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
+            piece.image.setIcon(new ImageIcon(newimg));
+            piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerBot.cemetery.indexOf(piece)*SQUARE_SIZE*19/64, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
+        }
+	}
+
+	public void switchPlayer(){
+		if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
+			menu.tT.stop();
+			menu.tB.start(); 
+		}
+		else {
+			menu.tB.stop();
+			menu.tT.start();
+		}
+		if(f.b.currentPlayer.isWhite == f.b.playerTop.isWhite){
+            f.b.currentPlayer = f.b.playerBot;
+        }
+        else{
+            f.b.currentPlayer = f.b.playerTop;
+        }
+	}
+
+	public void checkPromotion(Square s){
+		if(s.piece instanceof Pawn){
+			if(f.b.currentPlayer.isTop){
+				if(s.position.y == 7){
+					promotion = s;
+					popUpPromotion(s);
+				}
+
+			}
+			else{
+				if(s.position.y == 0){
+					promotion = s;
+					popUpPromotion(s);
+					
+				}
+			}
+		}
+	}
+
+	public void popUpPromotion(Square s){
+		this.add(menu.promotionPanel, Integer.valueOf(5));
+		for(JLabel piece: menu.promotionWhite){		
+			this.add(piece, Integer.valueOf(6));
+			piece.setBorder(new LineBorder(menu.CL_FONT));
+		}
+		for(JLabel piece: menu.promotionBlack){		
+			this.add(piece, Integer.valueOf(6));
+			piece.setBorder(new LineBorder(menu.CL_FONT));
+		}
+		menu.promotionPanel.setBounds(SQUARE_SIZE*23/8,SQUARE_SIZE*27/8, SQUARE_SIZE*18/8, SQUARE_SIZE*18/8);
+		if(s.piece.isWhite){
+			for(JLabel piece: menu.promotionWhite){
+				switch(menu.promotionWhite.indexOf(piece)){
+					case 0:
+						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						break;
+					case 1:
+						piece.setBounds(SQUARE_SIZE*4, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						break;
+					case 2:
+						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*9/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						break;
+					case 3:
+						piece.setBounds(SQUARE_SIZE*4, SQUARE_SIZE*9/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						break;
+				}
+			}
+		}
+		else{
+			for(JLabel piece: menu.promotionBlack){
+				switch(menu.promotionBlack.indexOf(piece)){
+					case 0:
+						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						break;
+					case 1:
+						piece.setBounds(SQUARE_SIZE*4, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						break;
+					case 2:
+						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*9/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						break;
+					case 3:
+						piece.setBounds(SQUARE_SIZE*4, SQUARE_SIZE*9/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						break;
+				}
+			}
+		}
+		f.popUp = true;
+	}
+
+	public void callPromotion(Square s){
+		promotion = s;
+		promotionWindow(s.piece.isWhite);
+	}
+
+	public void promotionWindow(boolean isWhite){
+        this.setLayer(menu.promotionPanel,5);
+		if(isWhite){
+			for(JLabel piece: menu.promotionWhite){		
+				this.setLayer(piece,6);
+			}
+		}
+		else {
+			for(JLabel piece: menu.promotionBlack){		
+				this.setLayer(piece,6);
+			}
+		}
+	}
+
+	public void replacePiecePromotion(Piece p, Square s){
+		this.setLayer(menu.promotionPanel,0);
+		this.remove(menu.promotionPanel);
+		for(JLabel piece: menu.promotionWhite){	
+			this.setLayer(piece,0);	
+			this.remove(piece);
+		}
+		for(JLabel piece: menu.promotionBlack){		
+			this.setLayer(piece,0);
+			this.remove(piece);
+		}
+		this.setLayer(s.piece.image,0);
+		this.remove(s.piece.image);
+		this.add(p.image, Integer.valueOf(3));
+		f.b.board[s.position.x][s.position.y].piece = p;
+		System.out.println(p);
+		f.panel.displayPieces();
+		promotion = null;
+		f.popUp = false;
 	}
 }

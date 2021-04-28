@@ -28,7 +28,6 @@ public class Square {
     }
 
     public List<Position> getMoves (Board b) {
-        System.out.println("caca");
         List<Position> possibleMoves = new ArrayList<>();
         if (piece != null) {
             for (int x = 0; x < 8; x++) {
