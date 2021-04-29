@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Menu {
     JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot;
     JLabel menu, newGame, option, exit, analyse, concede, leftButton, rightButton, promotionPanel;
+    ImageIcon iconInv, iconFlag; 
     List<JLabel> promotionWhite, promotionBlack;
     Color CL_LN = new Color(150,125,100); // Numbers and letters color
     Color CL_GUI = new Color(26,33,41); // GUI background color
@@ -19,7 +20,7 @@ public class Menu {
     public Menu(Frame f){
         b = f.b;    
 
-         // Promotion panel
+         // Promotion POPUP
          promotionPanel = new JLabel();
          promotionPanel.setBackground(CL_GUI);
          promotionPanel.setOpaque(true); 
@@ -199,7 +200,8 @@ public class Menu {
             }
         });
         // Analyse button
-        analyse = new JLabel("Inv", SwingConstants.CENTER);
+        iconInv = new ImageIcon("Images/inverse.png");
+        analyse = new JLabel(iconInv, SwingConstants.CENTER);
         analyse.setBackground(CL_GUI);
         analyse.setOpaque(true);
         analyse.setForeground(CL_FONT);
@@ -221,7 +223,8 @@ public class Menu {
             public void mouseReleased(MouseEvent e) {}
         });
         // Concede button
-        concede = new JLabel("C", SwingConstants.CENTER);
+        iconFlag = new ImageIcon("Images/flag.png");
+        concede = new JLabel(iconFlag, SwingConstants.CENTER);
         concede.setBackground(CL_GUI);
         concede.setOpaque(true);
         concede.setForeground(CL_FONT);        

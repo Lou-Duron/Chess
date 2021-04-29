@@ -257,7 +257,13 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         menu.newGame.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
         menu.option.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE/2, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
         menu.exit.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
+		Image imageInv = menu.iconInv.getImage();
+        Image newimgInv = imageInv.getScaledInstance(SQUARE_SIZE*9/32, SQUARE_SIZE*8/32,  java.awt.Image.SCALE_SMOOTH);  
+        menu.analyse.setIcon(new ImageIcon(newimgInv));
         menu.analyse.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+		Image imageFlag = menu.iconFlag.getImage();
+        Image newimgFlag = imageFlag.getScaledInstance(SQUARE_SIZE*9/32, SQUARE_SIZE*8/32,  java.awt.Image.SCALE_SMOOTH);  
+        menu.concede.setIcon(new ImageIcon(newimgFlag));
         menu.concede.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
         menu.leftButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
         menu.rightButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
@@ -375,13 +381,17 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 
 	public void popUpPromotion(Square s){
 		this.add(menu.promotionPanel, Integer.valueOf(5));
-		for(JLabel piece: menu.promotionWhite){		
-			this.add(piece, Integer.valueOf(6));
-			piece.setBorder(new LineBorder(menu.CL_FONT));
+		if(s.piece.isWhite){
+			for(JLabel piece: menu.promotionWhite){		
+				this.add(piece, Integer.valueOf(6));
+				piece.setBorder(new LineBorder(menu.CL_FONT));
+			}
 		}
-		for(JLabel piece: menu.promotionBlack){		
-			this.add(piece, Integer.valueOf(6));
-			piece.setBorder(new LineBorder(menu.CL_FONT));
+		else {
+			for(JLabel piece: menu.promotionBlack){		
+				this.add(piece, Integer.valueOf(6));
+				piece.setBorder(new LineBorder(menu.CL_FONT));
+			}
 		}
 		menu.promotionPanel.setBounds(SQUARE_SIZE*23/8,SQUARE_SIZE*27/8, SQUARE_SIZE*18/8, SQUARE_SIZE*18/8);
 		if(s.piece.isWhite){
