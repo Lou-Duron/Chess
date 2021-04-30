@@ -183,6 +183,12 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 								for(Position position: selectedPieceMoves){
 									if(position.equals(f.b.board[x][y].position)){
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
+										if (f.b.isCheck(f.b.currentPlayer)){
+											System.out.println("Tu es en echec");
+										}
+										/*if (f.b.isCheck(f.b.currentPlayer)){
+											System.out.println("Tu es en echec");
+										}*/
 										checkPromotion(f.b.board[x][y]);
 										displayPieces();
 										switchPlayer();
@@ -208,6 +214,9 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 							for(Position position: selectedPieceMoves){
 								if(position.equals(f.b.board[x][y].position)){
 									f.b.movePiece(tempSquare,f.b.board[x][y]);
+									if (f.b.isCheck(f.b.currentPlayer)){
+										System.out.println("Tu as mis ton adversaire en echec");
+									}
 									checkPromotion(f.b.board[x][y]);
 									displayPieces();
 									temp = true;

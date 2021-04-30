@@ -116,4 +116,31 @@ public class Board {
             addPiece(p,board[7-state.get(p).x][7-state.get(p).y]);
         }
     }
+
+    public boolean isCheck(Player p) {
+        System.out.println("x" + getKing(p).position.x + "y" + getKing(p).position.y) ;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                if (board[i][j].piece != null && board[i][j].piece.isWhite != p.isWhite) {
+                    for (Position pos : board[i][j].getMoves(this)){
+                        if (pos.equals(getKing(p).position)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public Square getKing(Player p){
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (board[x][y].piece instanceof King && board[x][y].piece.getColor() == p.isWhite) {
+                    return board[x][y];
+                }
+            }
+        }
+        return null;
+    }
 }

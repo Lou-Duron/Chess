@@ -1,11 +1,8 @@
 import javax.swing.*;
 
 public class King extends Piece {
-    public boolean check;
-
     public King(boolean isWhite){
         super(isWhite);
-        check = false;
         if(isWhite){
             icon = new ImageIcon("Images/wk.png");
         }
@@ -27,14 +24,9 @@ public class King extends Piece {
         if (Math.abs(end.position.x-start.position.x) > 1 || Math.abs(end.position.y-start.position.y) > 1)
             return false;
 
-        if (isCheck()){
-            return false;
-        }
         return true;
     }
 
-    public boolean isCheck(){
-        return false;
-    }
+
 
 }

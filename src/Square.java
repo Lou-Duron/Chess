@@ -41,6 +41,12 @@ public class Square {
         return possibleMoves;
     }
 
+    public Square(Square s){
+        new Square(s.position, s.isWhite);
+        this.piece = s.piece;
+    }
+
+
     public boolean equals(Square s){
         return this.position == s.position;
     }

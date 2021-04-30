@@ -3,6 +3,7 @@ import java.util.List;
 
 public class Player {
     String name;
+    boolean check;
     boolean isTop;
     boolean isWhite;
     List<Piece> cemetery; // Array of dead pieces
@@ -11,6 +12,8 @@ public class Player {
         this.name = name;
         this.isTop = isTop;
         this.isWhite = isWhite ;
+        check = false;
         cemetery = new ArrayList<Piece>();
     }
+
 }

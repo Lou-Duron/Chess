@@ -3,7 +3,6 @@ import javax.swing.*;
 public class Queen extends Piece {
 
     public Queen(boolean isWhite) {
-
         super(isWhite);
         if(isWhite){
             icon = new ImageIcon("Images/wq.png");
