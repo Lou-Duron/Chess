@@ -5,7 +5,7 @@ import java.util.List;
 public class Board {
     
     public Square [][] board;// Chessboard
-    Player playerTop, playerBot, currentPlayer;
+    Player playerTop, playerBot, currentPlayer, uncurrentPlayer;
     List<Action> history;
     int cursorMoves, nbMoves;
 
@@ -14,10 +14,12 @@ public class Board {
         playerTop = new Player("Lou", false, true); // Player(name, isWhite, isTop)
         playerBot = new Player( "Vic", true, false);
         if(playerTop.isWhite){
-            currentPlayer = playerTop; 
+            currentPlayer = playerTop;
+            uncurrentPlayer = playerBot;
         }
         else {
             currentPlayer = playerBot;
+            uncurrentPlayer = playerTop;
         }
         cursorMoves = 0;
         nbMoves = 0;
@@ -123,13 +125,13 @@ public class Board {
         }
     }
 
-    public boolean isCheck(Player p) {
-        System.out.println("x" + getKing(p).position.x + "y" + getKing(p).position.y) ;
+    public boolean isCheck(boolean color) {
+        System.out.println("x" + getKing(currentPlayer.isWhite).position.x + "y" + getKing(currentPlayer.isWhite).position.y) ;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
-                if (board[i][j].piece != null && board[i][j].piece.isWhite != p.isWhite) {
+                if (board[i][j].piece != null && board[i][j].piece.isWhite == color) {
                     for (Position pos : board[i][j].getMoves(this)){
-                        if (pos.equals(getKing(p).position)) {
+                        if (pos.equals(getKing(!color).position)) {
                             return true;
                         }
                     }
@@ -139,10 +141,11 @@ public class Board {
         return false;
     }
 
-    public Square getKing(Player p) {
+
+    public Square getKing(boolean color) {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (board[x][y].piece instanceof King && board[x][y].piece.getColor() == p.isWhite) {
+                if (board[x][y].piece instanceof King && board[x][y].piece.getColor() == color) {
                     return board[x][y];
                 }
             }

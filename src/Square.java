@@ -41,11 +41,28 @@ public class Square {
         return possibleMoves;
     }
 
+    public List<Position> getMovesInCheck (Board b){
+        List<Position> restrictedMoves = new ArrayList<>();
+        Position currentSquarePosition = new Position(this.position);
+        for (Position p : getMoves(b)){
+            b.movePiece(this, b.board[p.x][p.y]);
+            if (!b.isCheck(b.currentPlayer.isWhite)){
+                restrictedMoves.add(p);
+            }
+            b.movePiece(this, b.board[currentSquarePosition.x][currentSquarePosition.y]);
+        }
+        return restrictedMoves;
+    }
+
     public Square(Square s){
         new Square(s.position, s.isWhite);
         this.piece = s.piece;
     }
 
+    public void hypothesisMove(Square s){
+        s.piece = this.piece;
+        this.piece = null;
+    }
 
     public boolean equals(Square s){
         return this.position == s.position;
