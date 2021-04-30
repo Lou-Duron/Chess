@@ -1,9 +1,13 @@
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
     
     public Square [][] board;// Chessboard
     Player playerTop, playerBot, currentPlayer;
+    List<Action> history;
+    int cursorMoves, nbMoves;
 
     public Board(){
         board = new Square[8][8];
@@ -15,7 +19,9 @@ public class Board {
         else {
             currentPlayer = playerBot;
         }
-                
+        cursorMoves = 0;
+        nbMoves = 0;
+        history = new ArrayList<Action>();
         for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
                 if(x%2 != y%2){
@@ -114,6 +120,15 @@ public class Board {
         }
         for(Piece p:state.keySet()){
             addPiece(p,board[7-state.get(p).x][7-state.get(p).y]);
+        }
+    }
+
+    public void reverseHistory(){
+        for(Action a: history){
+            a.start.position.x = 7 -a.start.position.x;
+            a.start.position.y = 7 -a.start.position.y;
+            a.end.position.x = 7 -a.end.position.x;
+            a.end.position.y = 7 -a.end.position.y;
         }
     }
 }

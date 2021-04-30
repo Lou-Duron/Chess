@@ -7,18 +7,16 @@ import java.util.ArrayList;
 public class Menu {
     JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot;
     JLabel menu, newGame, option, exit, analyse, concede, leftButton, rightButton, promotionPanel;
-    ImageIcon iconInv, iconFlag; 
+    ImageIcon iconInv, iconFlag, left, right; 
     List<JLabel> promotionWhite, promotionBlack;
     Color CL_LN = new Color(150,125,100); // Numbers and letters color
     Color CL_GUI = new Color(26,33,41); // GUI background color
     Color CL_FONT = new Color(227,215,199); // Font color
     Color CL_BK = new Color(47,53,62); // Frame background color
-    Board b;
     int tTop, tBot;
     Timer tT, tB;
 
     public Menu(Frame f){
-        b = f.b;    
 
          // Promotion POPUP
          promotionPanel = new JLabel();
@@ -124,11 +122,11 @@ public class Menu {
         tB = new Timer(1000, Bot); 
  
         // Names
-        nameTop = new JLabel(b.playerTop.name, SwingConstants.CENTER);
+        nameTop = new JLabel(f.b.playerTop.name, SwingConstants.CENTER);
         nameTop.setBackground(CL_GUI);
         nameTop.setOpaque(true);
         nameTop.setForeground(CL_FONT);
-        nameBot = new JLabel(b.playerBot.name, SwingConstants.CENTER);
+        nameBot = new JLabel(f.b.playerBot.name, SwingConstants.CENTER);
         nameBot.setBackground(CL_GUI);
         nameBot.setOpaque(true);
         nameBot.setForeground(CL_FONT);
@@ -216,6 +214,7 @@ public class Menu {
             public void mousePressed(MouseEvent e) {
                 f.panel.reverseCoordinates();
                 f.b.reverseBoard();
+                f.b.reverseHistory();
                 f.panel.initBoardGraphics();
                 f.panel.resize();
             } 
@@ -243,7 +242,8 @@ public class Menu {
             }
         });
         // Last move button
-        leftButton = new JLabel("Left", SwingConstants.CENTER);
+        left = new ImageIcon("Images/left.png");
+        leftButton = new JLabel(left, SwingConstants.CENTER);
         leftButton.setBackground(CL_GUI);
         leftButton.setOpaque(true);
         leftButton.setForeground(CL_FONT);        
@@ -255,12 +255,39 @@ public class Menu {
             @Override
             public void mouseExited(MouseEvent e) {}
             @Override
-            public void mousePressed(MouseEvent e) {} 
+            public void mousePressed(MouseEvent e) {
+                System.out.println(f.b.history);
+                if(f.b.cursorMoves > 0){
+                    f.b.movePiece(f.b.history.get(f.b.cursorMoves-1).end, f.b.history.get(f.b.cursorMoves-1).start);
+                    if(f.b.history.get(f.b.cursorMoves-1).piece != null){
+                        f.b.addPiece(f.b.history.get(f.b.cursorMoves-1).piece, f.b.history.get(f.b.cursorMoves-1).end);
+                        if(f.b.history.get(f.b.cursorMoves-1).end.piece.isWhite){
+                            if(f.b.playerTop.isWhite){
+                                f.b.playerBot.cemetery.remove(f.b.history.get(f.b.cursorMoves-1).end.piece);
+                            }
+                            else{
+                                f.b.playerTop.cemetery.remove(f.b.history.get(f.b.cursorMoves-1).end.piece);
+                            }
+                        }
+                        else{
+                            if(!f.b.playerTop.isWhite){
+                                f.b.playerBot.cemetery.remove(f.b.history.get(f.b.cursorMoves-1).end.piece);
+                            }
+                            else{
+                                f.b.playerTop.cemetery.remove(f.b.history.get(f.b.cursorMoves-1).end.piece);
+                            }
+                        }
+                    }
+                    f.b.cursorMoves --;
+                    f.panel.displayPieces();
+                }
+            } 
             @Override
             public void mouseReleased(MouseEvent e) {}
         });
         // Next move button
-        rightButton = new JLabel("Right", SwingConstants.CENTER);
+        right = new ImageIcon("Images/right.png");
+        rightButton = new JLabel(right, SwingConstants.CENTER);
         rightButton.setBackground(CL_GUI);
         rightButton.setOpaque(true);
         rightButton.setForeground(CL_FONT);       
@@ -272,7 +299,13 @@ public class Menu {
             @Override
             public void mouseExited(MouseEvent e) {}
             @Override
-            public void mousePressed(MouseEvent e) {} 
+            public void mousePressed(MouseEvent e) {
+                if(f.b.cursorMoves < f.b.history.size()){
+                    f.b.movePiece(f.b.history.get(f.b.cursorMoves).start, f.b.history.get(f.b.cursorMoves).end);
+                    f.b.cursorMoves ++;
+                    f.panel.displayPieces();
+                }
+            }
             @Override
             public void mouseReleased(MouseEvent e) {}
         });   
