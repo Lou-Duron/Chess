@@ -1,9 +1,13 @@
 import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
     
     public Square [][] board;// Chessboard
     Player playerTop, playerBot, currentPlayer;
+    List<Action> history;
+    int cursorMoves, nbMoves;
 
     public Board(){
         board = new Square[8][8];
@@ -15,7 +19,9 @@ public class Board {
         else {
             currentPlayer = playerBot;
         }
-                
+        cursorMoves = 0;
+        nbMoves = 0;
+        history = new ArrayList<Action>();
         for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
                 if(x%2 != y%2){
@@ -133,7 +139,7 @@ public class Board {
         return false;
     }
 
-    public Square getKing(Player p){
+    public Square getKing(Player p) {
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
                 if (board[x][y].piece instanceof King && board[x][y].piece.getColor() == p.isWhite) {
@@ -142,5 +148,13 @@ public class Board {
             }
         }
         return null;
+    }
+    public void reverseHistory(){
+        for(Action a: history){
+            a.start.position.x = 7 -a.start.position.x;
+            a.start.position.y = 7 -a.start.position.y;
+            a.end.position.x = 7 -a.end.position.x;
+            a.end.position.y = 7 -a.end.position.y;
+        }
     }
 }
