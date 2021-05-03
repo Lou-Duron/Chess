@@ -121,6 +121,12 @@ public class Board {
         for(Piece p:state.keySet()){
             addPiece(p,board[7-state.get(p).x][7-state.get(p).y]);
         }
+        
+        // History
+        for(Action a: history){
+            a.start = board[7-a.start.position.x][7-a.start.position.y];
+            a.end = board[7-a.end.position.x][7-a.end.position.y];
+        }
     }
 
     public boolean isCheck(Player p) {
@@ -149,12 +155,5 @@ public class Board {
         }
         return null;
     }
-    public void reverseHistory(){
-        for(Action a: history){
-            a.start.position.x = 7 -a.start.position.x;
-            a.start.position.y = 7 -a.start.position.y;
-            a.end.position.x = 7 -a.end.position.x;
-            a.end.position.y = 7 -a.end.position.y;
-        }
-    }
+
 }

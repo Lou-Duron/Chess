@@ -44,7 +44,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		this.add(menu.option, Integer.valueOf(2));
 		this.add(menu.exit, Integer.valueOf(2));
 		this.add(menu.concede, Integer.valueOf(2));
-		this.add(menu.analyse, Integer.valueOf(2));
+		this.add(menu.inverse, Integer.valueOf(2));
 		this.add(menu.leftButton, Integer.valueOf(2));
 		this.add(menu.rightButton, Integer.valueOf(2));
 		// Coordinates
@@ -70,6 +70,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		for(int x=0; x<8; x++){
 			for(int y=0; y<8; y++){
 				this.add(f.b.board[x][y].image, Integer.valueOf(0));
+				this.add(f.b.board[x][y].imageLastMove, Integer.valueOf(0));
 				this.add(f.b.board[x][y].movesEmpty, Integer.valueOf(0));
 				this.add(f.b.board[x][y].movesFilled, Integer.valueOf(0));
 				if(f.b.board[x][y].piece != null){
@@ -108,10 +109,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
             tempSquare = s;
             for(Position pos: selectedPieceMoves){ 
 				if(f.b.board[pos.x][pos.y].piece != null){
-                	this.setLayer(f.b.board[pos.x][pos.y].movesFilled,1);
+                	this.setLayer(f.b.board[pos.x][pos.y].movesFilled,2);
 				}
 				else{
-					this.setLayer(f.b.board[pos.x][pos.y].movesEmpty,1);
+					this.setLayer(f.b.board[pos.x][pos.y].movesEmpty,2);
 				}
             }
         }
@@ -164,7 +165,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	// When mouse is pressed
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(!f.popUp && f.b.nbMoves == f.b.cursorMoves){
+		if(!f.popUp && f.b.nbMoves == f.b.cursorMoves && !menu.reverse){
 			for(int x=0; x<8; x++){
 				for(int y=0; y<8; y++){
 					if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
@@ -186,7 +187,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 											f.b.history.add(new Action(tempSquare, f.b.board[x][y], f.b.board[x][y].piece));
 										}
 										else{
-											f.b.history.add(new Action(tempSquare, f.b.board[x][y], null));
+											f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 										}
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
 										if (f.b.isCheck(f.b.currentPlayer)){
@@ -213,7 +214,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	// When mouse is released
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if(draging && f.b.nbMoves == f.b.cursorMoves){
+		if(draging && f.b.nbMoves == f.b.cursorMoves && !menu.reverse){
 			boolean temp = false;
 			for(int x=0; x<8; x++){
 				for(int y=0; y<8; y++){
@@ -225,7 +226,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										f.b.history.add(new Action(tempSquare, f.b.board[x][y], f.b.board[x][y].piece));
 									}
 									else{
-										f.b.history.add(new Action(tempSquare, f.b.board[x][y], null));
+										f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 									}
 									f.b.movePiece(tempSquare,f.b.board[x][y]);
 									if (f.b.isCheck(f.b.currentPlayer)){
@@ -255,7 +256,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	// When mouse is dragged
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(draging && f.b.nbMoves == f.b.cursorMoves){
+		if(draging && f.b.nbMoves == f.b.cursorMoves && !menu.reverse && selectedPiece != null){
 			selectedPiece.image.setBounds(selectedPiece.image.getX() + e.getX() - oldX, selectedPiece.image.getY() + e.getY() - oldY, SQUARE_SIZE,SQUARE_SIZE);
 			oldX = e.getX();
 			oldY = e.getY();
@@ -283,9 +284,9 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         menu.option.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE/2, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
         menu.exit.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
 		Image imageInv = menu.iconInv.getImage();
-        Image newimgInv = imageInv.getScaledInstance(SQUARE_SIZE*9/32, SQUARE_SIZE*8/32,  java.awt.Image.SCALE_SMOOTH);  
-        menu.analyse.setIcon(new ImageIcon(newimgInv));
-        menu.analyse.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        Image newimgInv = imageInv.getScaledInstance(SQUARE_SIZE*9/32, SQUARE_SIZE*15/62,  java.awt.Image.SCALE_SMOOTH);  
+        menu.inverse.setIcon(new ImageIcon(newimgInv));
+        menu.inverse.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
 		Image imageFlag = menu.iconFlag.getImage();
         Image newimgFlag = imageFlag.getScaledInstance(SQUARE_SIZE*9/32, SQUARE_SIZE*8/32,  java.awt.Image.SCALE_SMOOTH);  
         menu.concede.setIcon(new ImageIcon(newimgFlag));
@@ -313,6 +314,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
                 Image newimgDispoFilled = imageDispoFilled.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
                 f.b.board[x][y].movesFilled.setIcon(new ImageIcon(newimgDispoFilled));
                 f.b.board[x][y].movesFilled.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+				Image imageLastMove = f.b.board[x][y].iconLastMove.getImage();
+                Image newimgLastMove = imageLastMove.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                f.b.board[x][y].imageLastMove.setIcon(new ImageIcon(newimgLastMove));
+                f.b.board[x][y].imageLastMove.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
 				// Resize pieces
                 if(f.b.board[x][y].piece != null){
                     Image imagePiece = f.b.board[x][y].piece.icon.getImage();
@@ -342,6 +347,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		for(JLabel let:letters){
 			let.setBounds(letters.indexOf(let)*SQUARE_SIZE+SQUARE_SIZE*7/8, 8*SQUARE_SIZE+SQUARE_SIZE*1/4, SQUARE_SIZE/4, SQUARE_SIZE/4);
 		}
+		menu.updateButtons(f);
     }
 
 	public void reverseCoordinates(){
@@ -352,6 +358,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	public void displayPieces(){
 		for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
+				this.setLayer(f.b.board[x][y].imageLastMove,0);
                 if(f.b.board[x][y].piece != null){
                     Image imagePiece = f.b.board[x][y].piece.icon.getImage();
                     Image newimgPiece = imagePiece.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
@@ -360,6 +367,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
                 }
             }
         }
+		if(f.b.cursorMoves != 0){
+			this.setLayer(f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].imageLastMove,1);
+			this.setLayer(f.b.board[f.b.history.get(f.b.cursorMoves-1).end.position.x][f.b.history.get(f.b.cursorMoves-1).end.position.y].imageLastMove,1);
+		}
 		for(Piece piece:f.b.playerTop.cemetery){
             Image image = piece.icon.getImage();
             Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
@@ -372,6 +383,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
             piece.image.setIcon(new ImageIcon(newimg));
             piece.image.setBounds(SQUARE_SIZE*9/8+f.b.playerBot.cemetery.indexOf(piece)*SQUARE_SIZE*19/64, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         }
+		menu.updateButtons(f);
 	}
 
 	public void switchPlayer(){
@@ -411,7 +423,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 
 	public void popUpPromotion(Square s){
-		this.add(menu.promotionPanel, Integer.valueOf(5));
+		this.add(menu.popupPanel, Integer.valueOf(5));
 		if(s.piece.isWhite){
 			for(JLabel piece: menu.promotionWhite){		
 				this.add(piece, Integer.valueOf(6));
@@ -424,7 +436,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 				piece.setBorder(new LineBorder(menu.CL_FONT));
 			}
 		}
-		menu.promotionPanel.setBounds(SQUARE_SIZE*23/8,SQUARE_SIZE*27/8, SQUARE_SIZE*18/8, SQUARE_SIZE*18/8);
+		menu.popupPanel.setBounds(SQUARE_SIZE*23/8,SQUARE_SIZE*27/8, SQUARE_SIZE*18/8, SQUARE_SIZE*18/8);
 		if(s.piece.isWhite){
 			for(JLabel piece: menu.promotionWhite){
 				switch(menu.promotionWhite.indexOf(piece)){
@@ -432,13 +444,13 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 					case 1:
-						piece.setBounds(SQUARE_SIZE*4, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						piece.setBounds(SQUARE_SIZE*65/16, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 					case 2:
-						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*9/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*73/16,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 					case 3:
-						piece.setBounds(SQUARE_SIZE*4, SQUARE_SIZE*9/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						piece.setBounds(SQUARE_SIZE*65/16, SQUARE_SIZE*73/16,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 				}
 			}
@@ -450,13 +462,13 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 					case 1:
-						piece.setBounds(SQUARE_SIZE*4, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						piece.setBounds(SQUARE_SIZE*65/16, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 					case 2:
-						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*9/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*69/16,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 					case 3:
-						piece.setBounds(SQUARE_SIZE*4, SQUARE_SIZE*9/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						piece.setBounds(SQUARE_SIZE*65/16, SQUARE_SIZE*69/16,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 				}
 			}
@@ -470,7 +482,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 
 	public void promotionWindow(boolean isWhite){
-        this.setLayer(menu.promotionPanel,5);
+        this.setLayer(menu.popupPanel,5);
 		if(isWhite){
 			for(JLabel piece: menu.promotionWhite){		
 				this.setLayer(piece,6);
@@ -484,8 +496,8 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 
 	public void replacePiecePromotion(Piece p, Square s){
-		this.setLayer(menu.promotionPanel,0);
-		this.remove(menu.promotionPanel);
+		this.setLayer(menu.popupPanel,0);
+		this.remove(menu.popupPanel);
 		for(JLabel piece: menu.promotionWhite){	
 			this.setLayer(piece,0);	
 			this.remove(piece);
@@ -501,5 +513,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		f.panel.displayPieces();
 		promotion = null;
 		f.popUp = false;
+		menu.updateButtons(f);
 	}
 }
