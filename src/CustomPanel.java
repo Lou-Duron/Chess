@@ -71,6 +71,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			for(int y=0; y<8; y++){
 				this.add(f.b.board[x][y].image, Integer.valueOf(0));
 				this.add(f.b.board[x][y].imageLastMove, Integer.valueOf(0));
+				this.add(f.b.board[x][y].imageCheck, Integer.valueOf(0));
 				this.add(f.b.board[x][y].movesEmpty, Integer.valueOf(0));
 				this.add(f.b.board[x][y].movesFilled, Integer.valueOf(0));
 				if(f.b.board[x][y].piece != null){
@@ -196,8 +197,9 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										checkPromotion(f.b.board[x][y]);
 										f.b.cursorMoves ++;
 										f.b.nbMoves ++;
-										displayPieces();
+										
 										switchPlayer();
+										displayPieces();
 									}
 								}
 								unselect(); 
@@ -232,9 +234,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									checkPromotion(f.b.board[x][y]);
 									f.b.cursorMoves ++;
 									f.b.nbMoves ++;
-									displayPieces();
+									
 									temp = true;
 									switchPlayer();
+									displayPieces();
 								}		
 							}
 						}						
@@ -315,6 +318,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
                 Image newimgLastMove = imageLastMove.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
                 f.b.board[x][y].imageLastMove.setIcon(new ImageIcon(newimgLastMove));
                 f.b.board[x][y].imageLastMove.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+				Image imageCheck = f.b.board[x][y].iconCheck.getImage();
+                Image newimgCheck = imageCheck.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
+                f.b.board[x][y].imageCheck.setIcon(new ImageIcon(newimgCheck));
+                f.b.board[x][y].imageCheck.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
 				// Resize pieces
                 if(f.b.board[x][y].piece != null){
                     Image imagePiece = f.b.board[x][y].piece.icon.getImage();
@@ -353,14 +360,21 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 
 	public void displayPieces(){
+		System.out.println(f.b.currentPlayer.isWhite);
 		for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
 				this.setLayer(f.b.board[x][y].imageLastMove,0);
+				this.setLayer(f.b.board[x][y].imageCheck,0);
                 if(f.b.board[x][y].piece != null){
                     Image imagePiece = f.b.board[x][y].piece.icon.getImage();
                     Image newimgPiece = imagePiece.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
                     f.b.board[x][y].piece.image.setIcon(new ImageIcon(newimgPiece));
                     f.b.board[x][y].piece.image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
+					if(f.b.board[x][y].piece instanceof King){
+						if(f.b.currentPlayer.check && f.b.board[x][y].piece.isWhite == f.b.currentPlayer.isWhite){
+							this.setLayer(f.b.board[x][y].imageCheck,1);
+						}
+					}
                 }
             }
         }
@@ -368,6 +382,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			this.setLayer(f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].imageLastMove,1);
 			this.setLayer(f.b.board[f.b.history.get(f.b.cursorMoves-1).end.position.x][f.b.history.get(f.b.cursorMoves-1).end.position.y].imageLastMove,1);
 		}
+
 		for(Piece piece:f.b.playerTop.cemetery){
             Image image = piece.icon.getImage();
             Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  

@@ -6,8 +6,8 @@ public class Square {
     Position position; // Position
     boolean isWhite; // Color and presence of a piece(boolean)
     Piece piece; // Piece on the square
-    JLabel image, imageLastMove, movesEmpty, movesFilled; // Labels 
-    ImageIcon icon, iconDispoEmpty, iconDispoFilled, iconLastMove;
+    JLabel image, imageLastMove, imageCheck, movesEmpty, movesFilled; // Labels 
+    ImageIcon icon, iconDispoEmpty, iconDispoFilled, iconLastMove, iconCheck;
 
 
     public Square(Position position, boolean isWhite){
@@ -17,13 +17,16 @@ public class Square {
         if(isWhite){
             icon = new ImageIcon("Images/cb.png");
             iconLastMove = new ImageIcon("Images/cby.png");
+            iconCheck = new ImageIcon("Images/cbr.png");
         }
         else{
             icon = new ImageIcon("Images/cn.png");
             iconLastMove = new ImageIcon("Images/cny.png");
+            iconCheck = new ImageIcon("Images/cnr.png");
         }
         image = new JLabel(icon);
         imageLastMove = new JLabel(iconLastMove);
+        imageCheck = new JLabel(iconCheck);
         iconDispoEmpty = new ImageIcon("Images/empty.png");
         movesEmpty = new JLabel(iconDispoEmpty);
         iconDispoFilled = new ImageIcon("Images/filled.png");
