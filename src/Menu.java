@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Menu {
-    JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot;
-    JLabel menu, newGame, exit, inverse, concede, leftButton, rightButton, popupPanel;
+    JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot, play, cancel, vsPlayer, vsIA;
+    JLabel menu, newGame, exit, inverse, concede, leftButton, rightButton, popupPanel, timer;
+    JTextField p1name, p2name;
+    JSlider slider;
     ImageIcon iconInv, iconFlag, left, right; 
     List<JLabel> promotionWhite, promotionBlack;
     Color CL_LN = new Color(150,125,100); // Numbers and letters color
@@ -23,11 +25,91 @@ public class Menu {
     public Menu(Frame f){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  Pop-UP frame
+//  New game pop-UP 
         popupPanel = new JLabel();
         popupPanel.setBackground(CL_GUI);
         popupPanel.setOpaque(true); 
-
+        p1name = new JTextField("Player 1");
+        p1name.setBackground(CL_GUI);
+        p1name.setForeground(CL_FONT);
+        p2name = new JTextField("Player 2");
+        p2name.setBackground(CL_GUI);
+        p2name.setForeground(CL_FONT);
+        slider = new JSlider(0,30);
+        slider.setMajorTickSpacing(5);
+        slider.setMinorTickSpacing(1);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setBackground(CL_BK);
+        slider.setForeground(CL_FONT); 
+        play = new JLabel("Play", SwingConstants.CENTER);
+        play.setBackground(CL_ACTIVE);
+        play.setOpaque(true);
+        play.setForeground(CL_FONT);
+        play.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {} 
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+        });
+        cancel = new JLabel("Cancel", SwingConstants.CENTER);
+        cancel.setBackground(CL_ACTIVE);
+        cancel.setOpaque(true);
+        cancel.setForeground(CL_FONT);
+        cancel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {} 
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+        });
+        vsPlayer = new JLabel("Versus player", SwingConstants.CENTER);
+        vsPlayer.setBackground(CL_ACTIVE);
+        vsPlayer.setOpaque(true);
+        vsPlayer.setForeground(CL_FONT);
+        vsPlayer.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {} 
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+        });
+        vsIA = new JLabel("Versus IA", SwingConstants.CENTER);
+        vsIA.setBackground(CL_ACTIVE);
+        vsIA.setOpaque(true);
+        vsIA.setForeground(CL_FONT);
+        vsIA.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {} 
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+        });
+        timer = new JLabel("Time : 10 min", SwingConstants.CENTER);
+        timer.setBackground(CL_ACTIVE);
+        timer.setOpaque(true);
+        timer.setForeground(CL_FONT);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Promotion
         promotionWhite = new ArrayList<JLabel>();
@@ -362,4 +444,38 @@ public class Menu {
             }
         }
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void addNewGamePopUp(CustomPanel p){
+        p.add(popupPanel, Integer.valueOf(5));
+        popupPanel.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+        p.add(vsPlayer, Integer.valueOf(6));
+        vsPlayer.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+        p.add(vsIA, Integer.valueOf(6));
+        vsIA.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+        p.add(p1name, Integer.valueOf(6));
+        p1name.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+        p.add(p2name, Integer.valueOf(6));
+        p2name.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+        p.add(timer, Integer.valueOf(6));
+        timer.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+        p.add(slider, Integer.valueOf(6));
+        slider.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+        p.add(play, Integer.valueOf(6));
+        play.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+        p.add(popupPanel, Integer.valueOf(6));
+        play.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*18/8, p.SQUARE_SIZE*18/8);
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void removeNewGamePopUp(CustomPanel p){
+        p.add(popupPanel);
+        p.add(vsPlayer);
+        p.add(vsIA);
+        p.add(p1name);
+        p.add(p2name);
+        p.add(timer);
+        p.add(slider);
+        p.add(play);
+        p.add(popupPanel);
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

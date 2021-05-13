@@ -505,6 +505,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		popUp = false;
 		menu.updateButtons(f);
 	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void setCoordinates(){
 		numbers = new ArrayList<>();
 		letters = new ArrayList<>();
