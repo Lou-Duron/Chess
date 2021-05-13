@@ -35,10 +35,12 @@ public class Frame {
         }
         b = new Board(topName, botName);
         b.initBoard();
+        panel.setCoordinates();
         panel.addGraphics();
         panel.menu.nameTop.setText(topName);
 		panel.menu.nameBot.setText(botName);
         panel.initTimer(time);
+        panel.menu.reverse = false;
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void addListeners(){
