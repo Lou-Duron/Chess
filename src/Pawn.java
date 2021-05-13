@@ -16,7 +16,7 @@ public class Pawn extends Piece {
 
     }
     public boolean canMove(Board b, Square start, Square end) {
-        if (getColor()){ //White
+        if (this.isWhite == b.playerBot.isWhite){
             if (start.position.y == 6){ //Starting position
                 if ( end.position.y - start.position.y < -2) {
                     return false;
@@ -26,7 +26,7 @@ public class Pawn extends Piece {
                 return false;
             }
         }
-        if (!getColor()){ //Black
+        else{
             if (start.position.y == 1) { //Starting position
                 if (end.position.y - start.position.y > 2) {
                     return false;
@@ -43,11 +43,9 @@ public class Pawn extends Piece {
         if(end.piece != null && (!diagonal || end.piece.getColor() == this.getColor())){ //If there is a piece on the square
             return false;
         }
-
         if (end.piece == null && Math.abs(end.position.x - start.position.x) != 0) { //if not
             return false;
         }
-
         return true;
     }
 }

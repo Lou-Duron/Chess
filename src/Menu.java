@@ -22,13 +22,15 @@ public class Menu {
 
     public Menu(Frame f){
 
-        //  POPUP
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//  Pop-UP frame
         popupPanel = new JLabel();
         popupPanel.setBackground(CL_GUI);
         popupPanel.setOpaque(true); 
 
-        //promotion
-        promotionWhite = new ArrayList<>();
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Promotion
+        promotionWhite = new ArrayList<JLabel>();
         promotionWhite.add(new JLabel(new ImageIcon("Images/wn.png")));
         promotionWhite.add(new JLabel(new ImageIcon("Images/wb.png")));
         promotionWhite.add(new JLabel(new ImageIcon("Images/wr.png")));
@@ -68,7 +70,7 @@ public class Menu {
                 public void mouseReleased(MouseEvent e) {}
             });
         }
-        promotionBlack = new ArrayList<>();
+        promotionBlack = new ArrayList<JLabel>();
         promotionBlack.add(new JLabel(new ImageIcon("Images/bn.png")));
         promotionBlack.add(new JLabel(new ImageIcon("Images/bb.png")));
         promotionBlack.add(new JLabel(new ImageIcon("Images/br.png")));
@@ -108,8 +110,8 @@ public class Menu {
                 public void mouseReleased(MouseEvent e) {}
              });
          }
-
-        // Timers
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Timers
         timerTop = new JLabel("", SwingConstants.CENTER);
         timerTop.setBackground(CL_GUI);
         timerTop.setOpaque(true);
@@ -133,8 +135,8 @@ public class Menu {
             }
         };
         tB = new Timer(1000, Bot); 
- 
-        // Names
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Names
         nameTop = new JLabel("", SwingConstants.CENTER);
         nameTop.setBackground(CL_GUI);
         nameTop.setOpaque(true);
@@ -143,17 +145,16 @@ public class Menu {
         nameBot.setBackground(CL_GUI);
         nameBot.setOpaque(true);
         nameBot.setForeground(CL_FONT);
-        
-
-        // DeadPieces
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// DeadPieces
         deadPiecesTop = new JLabel();
         deadPiecesTop.setBackground(CL_GUI);
         deadPiecesTop.setOpaque(true);
         deadPiecesBot = new JLabel();
         deadPiecesBot.setBackground(CL_GUI);
         deadPiecesBot.setOpaque(true);
-
-        // New Game button
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// New Game button
         newGame = new JLabel("New game", SwingConstants.CENTER);
         newGame.setBackground(CL_GUI);
         newGame.setOpaque(true);
@@ -174,7 +175,8 @@ public class Menu {
             @Override
             public void mouseReleased(MouseEvent e) {}
         });
-        // Exit button
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Exit button
         exit = new JLabel("Exit", SwingConstants.CENTER);
         exit.setBackground(CL_ACTIVE);
         exit.setOpaque(true);
@@ -193,7 +195,8 @@ public class Menu {
                 f.frame.dispose();
             }
         });
-        // inverse button
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Reverse button
         iconInv = new ImageIcon("Images/inverse.png");
         inverse = new JLabel(iconInv, SwingConstants.CENTER);
         inverse.setBackground(CL_GUI);
@@ -210,16 +213,17 @@ public class Menu {
             public void mousePressed(MouseEvent e) {
                 f.panel.unselect();
                 if(!f.panel.popUp){
+                    f.panel.removeGraphics();
                     f.panel.reverseCoordinates();
                     f.b.reverseBoard();
                     f.panel.addGraphics();
                     reverse = !reverse;
-                    f.panel.resize();
                 }
             } 
             @Override
             public void mouseReleased(MouseEvent e) {}
         });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Concede button
         iconFlag = new ImageIcon("Images/flag.png");
         concede = new JLabel(iconFlag, SwingConstants.CENTER);
@@ -240,7 +244,8 @@ public class Menu {
                
             }
         });
-        // Last move button
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Last move button
         left = new ImageIcon("Images/left.png");
         leftButton = new JLabel(left, SwingConstants.CENTER);
         leftButton.setBackground(CL_GUI);
@@ -290,6 +295,7 @@ public class Menu {
             @Override
             public void mouseReleased(MouseEvent e) {}
         });
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Next move button
         right = new ImageIcon("Images/right.png");
         rightButton = new JLabel(right, SwingConstants.CENTER);
@@ -321,9 +327,8 @@ public class Menu {
             @Override
             public void mouseReleased(MouseEvent e) {}
         });   
-
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void updateButtons(Frame f){
         if(f.panel.popUp){
             newGame.setBackground(CL_GUI);

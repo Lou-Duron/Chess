@@ -18,7 +18,6 @@ public class Frame {
         ImageIcon logo = new ImageIcon("Images/logo.png");
         frame.setIconImage(logo.getImage());
         frame.setMinimumSize(new Dimension(450,450));
-
         // Panel setup
         panel = new CustomPanel(this);
         panel.setBackground(panel.menu.CL_BK);
@@ -37,6 +36,8 @@ public class Frame {
         b = new Board(topName, botName);
         b.initBoard();
         panel.addGraphics();
+        panel.menu.nameTop.setText(topName);
+		panel.menu.nameBot.setText(botName);
         panel.initTimer(time);
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -47,7 +48,6 @@ public class Frame {
                 resized = false;
             }
         });
-        // Listener to make the frame a square when mouse exited 
         frame.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {}

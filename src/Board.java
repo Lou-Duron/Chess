@@ -14,7 +14,7 @@ public class Board {
         board = new Square[8][8];
         Random r = new Random();
         boolean randomize = r.nextInt(2) == 1;
-        playerTop = new Player(playerTopName, randomize, true);
+        playerTop = new Player(playerTopName, randomize, true); 
         playerBot = new Player(playerBotName, !randomize, false);
         if(playerTop.isWhite){
             currentPlayer = playerTop;
@@ -50,7 +50,7 @@ public class Board {
 
     // Remove a piece from the chessboard
     public void deletePiece(Square s){
-        if(s.piece.getColor()){
+        if(s.piece.isWhite == playerBot.isWhite){
             playerTop.cemetery.add(s.piece);
         }
         else{
@@ -125,8 +125,6 @@ public class Board {
         for(Piece p:state.keySet()){
             addPiece(p,board[7-state.get(p).x][7-state.get(p).y]);
         }
-        
-        // History
         for(Action a: history){
             a.start = board[7-a.start.position.x][7-a.start.position.y];
             a.end = board[7-a.end.position.x][7-a.end.position.y];

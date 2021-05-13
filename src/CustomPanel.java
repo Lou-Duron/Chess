@@ -20,8 +20,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	List<Position> selectedPieceMoves;
     Square tempSquare, promotion;
 	List<JLabel> numbers, letters;
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CONSTRUCTOR	
 
 	public CustomPanel(Frame f){
 		super();
@@ -81,7 +79,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		for(JLabel let:letters){
 			let.setForeground(menu.CL_LN);
 			add(let, Integer.valueOf(1));
-		}
+		}		
 		resize();
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -154,7 +152,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
     }   
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // LISTENERS
-	// When mouse is clicked
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		draging = false;
@@ -181,7 +178,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			}	
 		}
 	}
-	// When mouse is pressed
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(!popUp && f.b.nbMoves == f.b.cursorMoves && !menu.reverse){
@@ -215,7 +212,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										checkPromotion(f.b.board[x][y]);
 										f.b.cursorMoves ++;
 										f.b.nbMoves ++;
-										
 										switchPlayer();
 										displayPieces();
 									}
@@ -228,7 +224,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			}
 		}
 	}
-	// When mouse is released
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		if(draging && f.b.nbMoves == f.b.cursorMoves && !menu.reverse){
@@ -271,7 +267,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		draging = false;
 		}
 	}
-	// When mouse is dragged
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		if(draging && f.b.nbMoves == f.b.cursorMoves && !menu.reverse && selectedPiece != null){
@@ -370,12 +366,12 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		}
 		menu.updateButtons(f);
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void reverseCoordinates(){
 		Collections.reverse(numbers);
 		Collections.reverse(letters);
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void displayPieces(){
 		System.out.println(f.b.currentPlayer.isWhite);
 		for(int x=0; x<8; x++){
@@ -399,7 +395,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			this.setLayer(f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].imageLastMove,1);
 			this.setLayer(f.b.board[f.b.history.get(f.b.cursorMoves-1).end.position.x][f.b.history.get(f.b.cursorMoves-1).end.position.y].imageLastMove,1);
 		}
-
 		for(Piece piece:f.b.playerTop.cemetery){
             Image image = piece.icon.getImage();
             Image newimg = image.getScaledInstance(SQUARE_SIZE*3/8, SQUARE_SIZE*3/8,  java.awt.Image.SCALE_SMOOTH);  
@@ -414,7 +409,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         }
 		menu.updateButtons(f);
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void switchPlayer(){
 		if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
 			menu.tT.stop();
@@ -431,7 +426,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
             f.b.currentPlayer = f.b.playerTop;
         }
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void checkPromotion(Square s){
 		if(s.piece instanceof Pawn){
 			if(f.b.currentPlayer.isTop){
@@ -439,18 +434,16 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 					promotion = s;
 					popUpPromotion(s);
 				}
-
 			}
 			else{
 				if(s.position.y == 0){
 					promotion = s;
 					popUpPromotion(s);
-					
 				}
 			}
 		}
 	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void popUpPromotion(Square s){
 		this.add(menu.popupPanel, Integer.valueOf(5));
 		if(s.piece.isWhite){
@@ -494,36 +487,17 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 						piece.setBounds(SQUARE_SIZE*65/16, SQUARE_SIZE*7/2,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 					case 2:
-						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*69/16,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						piece.setBounds(SQUARE_SIZE*3, SQUARE_SIZE*73/16,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 					case 3:
-						piece.setBounds(SQUARE_SIZE*65/16, SQUARE_SIZE*69/16,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
+						piece.setBounds(SQUARE_SIZE*65/16, SQUARE_SIZE*73/16,SQUARE_SIZE*15/16,SQUARE_SIZE*15/16);
 						break;
 				}
 			}
 		}
 		popUp = true;
 	}
-
-	public void callPromotion(Square s){
-		promotion = s;
-		promotionWindow(s.piece.isWhite);
-	}
-
-	public void promotionWindow(boolean isWhite){
-        this.setLayer(menu.popupPanel,5);
-		if(isWhite){
-			for(JLabel piece: menu.promotionWhite){		
-				this.setLayer(piece,6);
-			}
-		}
-		else {
-			for(JLabel piece: menu.promotionBlack){		
-				this.setLayer(piece,6);
-			}
-		}
-	}
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void replacePiecePromotion(Piece p, Square s){
 		this.setLayer(menu.popupPanel,0);
 		this.remove(menu.popupPanel);
