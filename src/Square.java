@@ -33,6 +33,21 @@ public class Square {
         movesFilled = new JLabel(iconDispoFilled);
     }
 
+    public Square(Square s){
+        this(s.position, s.isWhite);
+        this.imageLastMove = null;
+        this.image = null;
+        this.imageCheck = null;
+        this.icon = null;
+        this.iconLastMove = null;
+        this.iconDispoFilled = null;
+        this.iconCheck = null;
+        this.movesFilled = null;
+        this.iconDispoEmpty = null;
+        this.movesEmpty = null;
+        this.piece = s.piece;
+    }
+
     public List<Position> getMoves (Board b) {
         List<Position> possibleMoves = new ArrayList<>();
         if (piece != null) {
@@ -44,30 +59,33 @@ public class Square {
                 }
             }
         }
-        return possibleMoves;
-    }
-
-    public List<Position> getMovesInCheck (Board b){
-        List<Position> restrictedMoves = new ArrayList<>();
-        Position currentSquarePosition = new Position(this.position);
-        for (Position p : getMoves(b)){
-            b.movePiece(this, b.board[p.x][p.y]);
-            if (!b.isCheck(b.currentPlayer.isWhite)){
-                restrictedMoves.add(p);
-            }
-            b.movePiece(this, b.board[currentSquarePosition.x][currentSquarePosition.y]);
+        //Avoid self check
+        Board temporaryBoard;
+        List<Position> definitiveMoves = new ArrayList<>();
+        for (Position x : possibleMoves){
+            System.out.println("pm"+ x.x + " " + x.y);
         }
-        return restrictedMoves;
+        for (Position p : possibleMoves) {
+            temporaryBoard = new Board(b);
+            temporaryBoard.movePiece(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
+            System.out.println(temporaryBoard.board[p.x][p.y].piece.icon);
+            if (!temporaryBoard.isCheck(!b.currentPlayer.isWhite)) {
+                definitiveMoves.add(p);
+            }
+        }
+        return definitiveMoves;
     }
 
-    public Square(Square s){
-        new Square(s.position, s.isWhite);
-        this.piece = s.piece;
-    }
-
-    public void hypothesisMove(Square s){
-        s.piece = this.piece;
-        this.piece = null;
+    public boolean isMoveValid (Board b, Position p) {
+        if (piece == null) return false;
+        if (!piece.canMove(b, this, b.board[p.x][p.y])) {
+            return false;
+        }
+        //Avoid self check
+        Board temporaryBoard = new Board(b);
+        temporaryBoard.movePiece(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
+        System.out.println(temporaryBoard.uncurrentPlayer.isWhite);
+        return !temporaryBoard.isCheck(!temporaryBoard.uncurrentPlayer.isWhite);
     }
 
     public boolean equals(Square s){

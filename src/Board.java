@@ -39,6 +39,22 @@ public class Board {
         }
     }
 
+    public Board(Board b){
+        board = new Square[8][8];
+        playerBot = b.playerBot;
+        playerTop = b.playerTop;
+        currentPlayer = b.currentPlayer;
+        uncurrentPlayer = b.uncurrentPlayer;
+        cursorMoves = 0;
+        nbMoves = 0;
+        history = null;
+        for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                this.board[x][y] = new Square(b.board[x][y]);
+            }
+        }
+    }
+
     // Move a piece on the chessboard
     public void movePiece(Square start, Square end){
         if(end.piece != null){
@@ -132,15 +148,10 @@ public class Board {
     }
 
     public boolean isCheck(boolean color) {
-        System.out.println("x" + getKing(currentPlayer.isWhite).position.x + "y" + getKing(currentPlayer.isWhite).position.y) ;
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (board[i][j].piece != null && board[i][j].piece.isWhite == color) {
-                    for (Position pos : board[i][j].getMoves(this)){
-                        if (pos.equals(getKing(!color).position)) {
-                            return true;
-                        }
-                    }
+                    if(board[i][j].isMoveValid(this, getKing(!color).position)) return true;
                 }
             }
         }

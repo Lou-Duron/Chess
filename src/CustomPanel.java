@@ -206,9 +206,9 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 											f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 										}
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
-										if (f.b.isCheck(f.b.currentPlayer.isWhite)){
+									/*	if (f.b.isCheck(f.b.currentPlayer.isWhite)){
 											System.out.println("Tu es en echec");
-										}
+										}*/
 										checkPromotion(f.b.board[x][y]);
 										f.b.cursorMoves ++;
 										f.b.nbMoves ++;
@@ -242,9 +242,9 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 									}
 									f.b.movePiece(tempSquare,f.b.board[x][y]);
-									if (f.b.isCheck(f.b.currentPlayer.isWhite)){
+									/*if (f.b.isCheck(f.b.currentPlayer.isWhite)){
 										f.b.uncurrentPlayer.check = true;
-									}
+									}*/
 									checkPromotion(f.b.board[x][y]);
 									f.b.cursorMoves ++;
 									f.b.nbMoves ++;
@@ -421,9 +421,11 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		}
 		if(f.b.currentPlayer.isWhite == f.b.playerTop.isWhite){
             f.b.currentPlayer = f.b.playerBot;
+            f.b.uncurrentPlayer = f.b.playerTop;
         }
         else{
             f.b.currentPlayer = f.b.playerTop;
+            f.b.uncurrentPlayer = f.b.playerBot;
         }
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
