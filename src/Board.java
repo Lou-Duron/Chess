@@ -1,18 +1,21 @@
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Board {
     
-    public Square [][] board;// Chessboard
+    public Square [][] board;
     Player playerTop, playerBot, currentPlayer, uncurrentPlayer;
     List<Action> history;
     int cursorMoves, nbMoves;
 
-    public Board(){
+    public Board(String playerTopName, String playerBotName){
         board = new Square[8][8];
-        playerTop = new Player("Lou", false, true); // Player(name, isWhite, isTop)
-        playerBot = new Player( "Vic", true, false);
+        Random r = new Random();
+        boolean randomize = r.nextInt(2) == 1;
+        playerTop = new Player(playerTopName, randomize, true);
+        playerBot = new Player(playerBotName, !randomize, false);
         if(playerTop.isWhite){
             currentPlayer = playerTop;
             uncurrentPlayer = playerBot;
@@ -62,7 +65,6 @@ public class Board {
     }
 
     public void initBoard(){
-        //Initialize default setup (white down) 
         // Top
         addPiece(new Pawn(playerTop.isWhite), board[0][1]);
         addPiece(new Pawn(playerTop.isWhite), board[1][1]);

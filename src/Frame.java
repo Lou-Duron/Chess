@@ -8,19 +8,8 @@ public class Frame {
     CustomPanel panel;
     Board b;
     boolean resized = false;
-    boolean popUp = false;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Custom setup for tests
-public void customSetup(){
-    b.addPiece(new Pawn(true), b.board[1][1]);
-}
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// CONSTRUCTOR
     public Frame() {
-        // Board
-        b = new Board();
-
         // Frame setup
         frame = new JFrame("Chess");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -30,47 +19,27 @@ public void customSetup(){
         frame.setIconImage(logo.getImage());
         frame.setMinimumSize(new Dimension(450,450));
 
-        b.initBoard(); // Clasic Setup
-        //customSetup(); //Custom Setup
-
         // Panel setup
         panel = new CustomPanel(this);
         panel.setBackground(panel.menu.CL_BK);
         panel.setOpaque(true);
-        panel.initBoardGraphics();
 		frame.add(panel);
+        addListeners(); 
 
-        addListeners(); // Resize Listener 
+        newGame("Player 1", "Player 2", 600, false);
         frame.setVisible(true);
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MAIN FUNCTIONS
-
-    // Resets frame and board (New game + new listeners)
-    public void reset(){
-        for(int x=0; x<8; x++){
-            for(int y=0; y<8; y++){
-                panel.remove(b.board[x][y].image);
-                panel.remove(b.board[x][y].movesEmpty);
-                panel.remove(b.board[x][y].movesFilled);
-                if(b.board[x][y].piece != null){
-                    panel.remove(b.board[x][y].piece.image);
-                }
-            }
+    public void newGame(String topName, String botName, int time, boolean IA){
+        if(b != null){
+            panel.removeGraphics();
         }
-        for(Piece piece: b.playerTop.cemetery){
-            panel.remove(piece.image);
-        }
-        for(Piece piece: b.playerBot.cemetery){
-            panel.remove(piece.image);
-        }
-        for(JLabel num:panel.numbers){
-			panel.remove(num);
-		}
-        b = new Board();
-        addListeners();
+        b = new Board(topName, botName);
+        b.initBoard();
+        panel.addGraphics();
+        panel.initTimer(time);
     }
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void addListeners(){
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Menu {
     JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot;
-    JLabel menu, newGame, option, exit, inverse, concede, leftButton, rightButton, popupPanel;
+    JLabel menu, newGame, exit, inverse, concede, leftButton, rightButton, popupPanel;
     ImageIcon iconInv, iconFlag, left, right; 
     List<JLabel> promotionWhite, promotionBlack;
     Color CL_LN = new Color(150,125,100); // Numbers and letters color
@@ -43,7 +43,7 @@ public class Menu {
                 public void mouseExited(MouseEvent e) {}
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if(f.popUp){
+                    if(f.panel.popUp){
                         switch(promotionWhite.indexOf(piece)){
                             case 0:
                             f.panel.replacePiecePromotion(new Knight(true), f.panel.promotion);
@@ -83,7 +83,7 @@ public class Menu {
                 public void mouseExited(MouseEvent e) {}
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if(f.popUp){
+                    if(f.panel.popUp){
                         switch(promotionBlack.indexOf(piece)){
                             case 0:
                             f.panel.replacePiecePromotion(new Knight(false), f.panel.promotion);
@@ -110,7 +110,7 @@ public class Menu {
          }
 
         // Timers
-        timerTop = new JLabel("10:00", SwingConstants.CENTER);
+        timerTop = new JLabel("", SwingConstants.CENTER);
         timerTop.setBackground(CL_GUI);
         timerTop.setOpaque(true);
         timerTop.setForeground(CL_FONT);
@@ -122,7 +122,7 @@ public class Menu {
         };
         tT = new Timer(1000, Top);
 
-        timerBot = new JLabel("10:00", SwingConstants.CENTER);
+        timerBot = new JLabel("", SwingConstants.CENTER);
         timerBot.setBackground(CL_GUI);
         timerBot.setOpaque(true);
         timerBot.setForeground(CL_FONT);
@@ -135,11 +135,11 @@ public class Menu {
         tB = new Timer(1000, Bot); 
  
         // Names
-        nameTop = new JLabel(f.b.playerTop.name, SwingConstants.CENTER);
+        nameTop = new JLabel("", SwingConstants.CENTER);
         nameTop.setBackground(CL_GUI);
         nameTop.setOpaque(true);
         nameTop.setForeground(CL_FONT);
-        nameBot = new JLabel(f.b.playerBot.name, SwingConstants.CENTER);
+        nameBot = new JLabel("", SwingConstants.CENTER);
         nameBot.setBackground(CL_GUI);
         nameBot.setOpaque(true);
         nameBot.setForeground(CL_FONT);
@@ -167,32 +167,8 @@ public class Menu {
             public void mouseExited(MouseEvent e) {}
             @Override
             public void mousePressed(MouseEvent e) {
-                if(!f.popUp){
-                    f.reset();
-                    f.b.initBoard();
-                    f.panel.initBoardGraphics();
-                }
-            } 
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-        });
-        // Option button
-        option = new JLabel("Option", SwingConstants.CENTER);
-        option.setBackground(CL_GUI);
-        option.setOpaque(true);
-        option.setForeground(CL_FONT);       
-        option.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {}
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-            @Override
-            public void mouseExited(MouseEvent e) {}
-            @Override
-            public void mousePressed(MouseEvent e) { 
-                f.panel.unselect();
-                if(!f.popUp){
-
+                if(!f.panel.popUp){
+                    f.newGame("p1", "p2", 1200, false);
                 }
             } 
             @Override
@@ -233,10 +209,10 @@ public class Menu {
             @Override
             public void mousePressed(MouseEvent e) {
                 f.panel.unselect();
-                if(!f.popUp){
+                if(!f.panel.popUp){
                     f.panel.reverseCoordinates();
                     f.b.reverseBoard();
-                    f.panel.initBoardGraphics();
+                    f.panel.addGraphics();
                     reverse = !reverse;
                     f.panel.resize();
                 }
@@ -261,7 +237,7 @@ public class Menu {
             public void mousePressed(MouseEvent e) {} 
             @Override
             public void mouseReleased(MouseEvent e) {
-               f.reset();
+               
             }
         });
         // Last move button
@@ -280,7 +256,7 @@ public class Menu {
             @Override
             public void mousePressed(MouseEvent e) {
                 f.panel.unselect();
-                if(f.b.cursorMoves > 0 && !f.popUp){
+                if(f.b.cursorMoves > 0 && !f.panel.popUp){
                     f.b.movePiece(f.b.history.get(f.b.cursorMoves-1).end, f.b.history.get(f.b.cursorMoves-1).start);
                     if(f.b.history.get(f.b.cursorMoves-1).piece != null){
                         f.b.addPiece(f.b.history.get(f.b.cursorMoves-1).piece, f.b.history.get(f.b.cursorMoves-1).end);
@@ -330,7 +306,7 @@ public class Menu {
             @Override
             public void mousePressed(MouseEvent e) {
                 f.panel.unselect();
-                if(f.b.cursorMoves < f.b.history.size() && !f.popUp) {
+                if(f.b.cursorMoves < f.b.history.size() && !f.panel.popUp) {
                     f.b.movePiece(f.b.history.get(f.b.cursorMoves).start, f.b.history.get(f.b.cursorMoves).end);
                     if(f.b.history.get(f.b.cursorMoves).promoted != null){
                         f.panel.setLayer(f.b.history.get(f.b.cursorMoves).end.piece.image,0);
@@ -349,9 +325,8 @@ public class Menu {
     }
 
     public void updateButtons(Frame f){
-        if(f.popUp){
+        if(f.panel.popUp){
             newGame.setBackground(CL_GUI);
-            option.setBackground(CL_GUI);
             inverse.setBackground(CL_GUI);
             concede.setBackground(CL_GUI);
             leftButton.setBackground(CL_GUI);
@@ -359,7 +334,6 @@ public class Menu {
         }
         else{
             newGame.setBackground(CL_ACTIVE);
-            option.setBackground(CL_ACTIVE);
             inverse.setBackground(CL_ACTIVE);
             concede.setBackground(CL_ACTIVE);
             if(reverse){

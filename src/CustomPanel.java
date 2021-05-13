@@ -5,7 +5,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
-
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,7 +12,7 @@ import java.util.Collections;
 public class CustomPanel extends JLayeredPane implements MouseListener, MouseMotionListener{
 
 	int  SQUARE_SIZE = 80; 
-	boolean draging, clic;
+	boolean draging, clic, popUp;
 	int oldX, oldY;
 	Menu menu;
 	Frame f;
@@ -41,7 +40,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		this.add(menu.deadPiecesTop, Integer.valueOf(2));
 		this.add(menu.deadPiecesBot, Integer.valueOf(2));
 		this.add(menu.newGame, Integer.valueOf(2));
-		this.add(menu.option, Integer.valueOf(2));
 		this.add(menu.exit, Integer.valueOf(2));
 		this.add(menu.concede, Integer.valueOf(2));
 		this.add(menu.inverse, Integer.valueOf(2));
@@ -63,45 +61,66 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		letters.add(new JLabel("h"));
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// MAIN FUNCTIONS
-
-	// Initializes board (graphically) and resize.
-	public void initBoardGraphics(){
+	public void addGraphics(){
 		for(int x=0; x<8; x++){
 			for(int y=0; y<8; y++){
-				this.add(f.b.board[x][y].image, Integer.valueOf(0));
-				this.add(f.b.board[x][y].imageLastMove, Integer.valueOf(0));
-				this.add(f.b.board[x][y].imageCheck, Integer.valueOf(0));
-				this.add(f.b.board[x][y].movesEmpty, Integer.valueOf(0));
-				this.add(f.b.board[x][y].movesFilled, Integer.valueOf(0));
+				add(f.b.board[x][y].image, Integer.valueOf(0));
+				add(f.b.board[x][y].imageLastMove, Integer.valueOf(0));
+				add(f.b.board[x][y].imageCheck, Integer.valueOf(0));
+				add(f.b.board[x][y].movesEmpty, Integer.valueOf(0));
+				add(f.b.board[x][y].movesFilled, Integer.valueOf(0));
 				if(f.b.board[x][y].piece != null){
-					this.add(f.b.board[x][y].piece.image, Integer.valueOf(3));
+					add(f.b.board[x][y].piece.image, Integer.valueOf(3));
 				}
 			}
 		}
 		for(JLabel num:numbers){
 			num.setForeground(menu.CL_LN);
-			this.add(num, Integer.valueOf(1));
+			add(num, Integer.valueOf(1));
 		}
 		for(JLabel let:letters){
 			let.setForeground(menu.CL_LN);
-			this.add(let, Integer.valueOf(1));
+			add(let, Integer.valueOf(1));
 		}
-		// Timers
-		menu.tT.stop();
-		menu.tB.stop();
-		menu.tTop = 600;
-		menu.tBot = 600;
-		if(f.b.playerTop.isWhite){
-            menu.tT.start(); 
-        }
-        else {
-            menu.tB.start();
-        }
 		resize();
 	}
-
-	// Selects a square if the piece can move
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void removeGraphics(){
+        for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+                remove(f.b.board[x][y].image);
+                remove(f.b.board[x][y].movesEmpty);
+                remove(f.b.board[x][y].movesFilled);
+				remove(f.b.board[x][y].imageLastMove);
+				remove(f.b.board[x][y].imageCheck);
+                if(f.b.board[x][y].piece != null){
+                    remove(f.b.board[x][y].piece.image);
+                }
+            }
+        }
+        for(Piece piece: f.b.playerTop.cemetery){
+            remove(piece.image);
+        }
+        for(Piece piece: f.b.playerBot.cemetery){
+            remove(piece.image);
+        }
+        for(JLabel num:numbers){
+			remove(num);
+		}
+		for(JLabel let:letters){
+			remove(let);
+		}
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void initTimer(int time){
+				menu.tT.stop();
+				menu.tB.stop();
+				menu.tTop = time;
+				menu.tBot = time;
+				menu.timerTop.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
+				menu.timerBot.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void select(Square s){
         if(!s.getMoves(f.b).isEmpty()){
             selectedPieceMoves = s.getMoves(f.b);
@@ -118,8 +137,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
             }
         }
     }
-
-    // Undoes the selection
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void unselect(){ // previously removeMoves
 		if(selectedPieceMoves != null){
 			for(Position pos: selectedPieceMoves){ // for each moves
@@ -140,7 +158,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		draging = false;
-		if(!f.popUp && f.b.nbMoves == f.b.cursorMoves){
+		if(!popUp && f.b.nbMoves == f.b.cursorMoves){
 			if(!clic){
 				for(int x=0; x<8; x++){
 					for(int y=0; y<8; y++){
@@ -166,7 +184,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	// When mouse is pressed
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(!f.popUp && f.b.nbMoves == f.b.cursorMoves && !menu.reverse){
+		if(!popUp && f.b.nbMoves == f.b.cursorMoves && !menu.reverse){
 			for(int x=0; x<8; x++){
 				for(int y=0; y<8; y++){
 					if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
@@ -281,7 +299,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         menu.deadPiecesTop.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         menu.deadPiecesBot.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         menu.newGame.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
-        menu.option.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE/2, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
         menu.exit.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
 		Image imageInv = menu.iconInv.getImage();
         Image newimgInv = imageInv.getScaledInstance(SQUARE_SIZE*9/32, SQUARE_SIZE*15/62,  java.awt.Image.SCALE_SMOOTH);  
@@ -485,7 +502,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 				}
 			}
 		}
-		f.popUp = true;
+		popUp = true;
 	}
 
 	public void callPromotion(Square s){
@@ -524,7 +541,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		f.b.board[s.position.x][s.position.y].piece = p;
 		f.panel.displayPieces();
 		promotion = null;
-		f.popUp = false;
+		popUp = false;
 		menu.updateButtons(f);
 	}
 }
