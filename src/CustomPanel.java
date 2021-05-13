@@ -43,20 +43,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		this.add(menu.inverse, Integer.valueOf(2));
 		this.add(menu.leftButton, Integer.valueOf(2));
 		this.add(menu.rightButton, Integer.valueOf(2));
-		// Coordinates
-		numbers = new ArrayList<>();
-		letters = new ArrayList<>();
-		for(int i=8; i>0; i--){
-			numbers.add(new JLabel(String.valueOf(i)));
-		}
-		letters.add(new JLabel("a"));
-		letters.add(new JLabel("b"));
-		letters.add(new JLabel("c"));
-		letters.add(new JLabel("d"));
-		letters.add(new JLabel("e"));
-		letters.add(new JLabel("f"));
-		letters.add(new JLabel("g"));
-		letters.add(new JLabel("h"));
+		setCoordinates();
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void addGraphics(){
@@ -295,23 +282,23 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         menu.deadPiecesTop.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         menu.deadPiecesBot.setBounds(SQUARE_SIZE*13/4, SQUARE_SIZE*8+SQUARE_SIZE/2+SQUARE_SIZE/16, SQUARE_SIZE*9/2, SQUARE_SIZE*3/8);
         menu.newGame.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
-        menu.exit.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
+        menu.exit.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE/2, SQUARE_SIZE*7/8+22, SQUARE_SIZE*3/8);
 		Image imageInv = menu.iconInv.getImage();
         Image newimgInv = imageInv.getScaledInstance(SQUARE_SIZE*9/32, SQUARE_SIZE*15/62,  java.awt.Image.SCALE_SMOOTH);  
         menu.inverse.setIcon(new ImageIcon(newimgInv));
-        menu.inverse.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        menu.inverse.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
 		Image imageFlag = menu.iconFlag.getImage();
         Image newimgFlag = imageFlag.getScaledInstance(SQUARE_SIZE*9/32, SQUARE_SIZE*8/32,  java.awt.Image.SCALE_SMOOTH);  
         menu.concede.setIcon(new ImageIcon(newimgFlag));
-        menu.concede.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        menu.concede.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
 		Image imageLeft = menu.left.getImage();
         Image newimgLeft = imageLeft.getScaledInstance(SQUARE_SIZE*11/32, SQUARE_SIZE*9/32,  java.awt.Image.SCALE_SMOOTH);  
         menu.leftButton.setIcon(new ImageIcon(newimgLeft));
-        menu.leftButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        menu.leftButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
 		Image imageRight = menu.right.getImage();
         Image newimgRight = imageRight.getScaledInstance(SQUARE_SIZE*11/32, SQUARE_SIZE*9/32,  java.awt.Image.SCALE_SMOOTH);  
         menu.rightButton.setIcon(new ImageIcon(newimgRight));
-        menu.rightButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
+        menu.rightButton.setBounds(SQUARE_SIZE*8+SQUARE_SIZE*1/16+SQUARE_SIZE*5/16+22, SQUARE_SIZE*1/16+SQUARE_SIZE*3/2, SQUARE_SIZE*9/16, SQUARE_SIZE*3/8);
         // Resize squares
 		for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
@@ -364,6 +351,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		for(JLabel let:letters){
 			let.setBounds(letters.indexOf(let)*SQUARE_SIZE+SQUARE_SIZE*7/8, 8*SQUARE_SIZE+SQUARE_SIZE*1/4, SQUARE_SIZE/4, SQUARE_SIZE/4);
 		}
+		displayPieces();
 		menu.updateButtons(f);
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -373,7 +361,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void displayPieces(){
-		System.out.println(f.b.currentPlayer.isWhite);
 		for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
 				this.setLayer(f.b.board[x][y].imageLastMove,0);
@@ -517,5 +504,25 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		promotion = null;
 		popUp = false;
 		menu.updateButtons(f);
+	}
+	public void setCoordinates(){
+		numbers = new ArrayList<>();
+		letters = new ArrayList<>();
+		for(int i=8; i>0; i--){
+			numbers.add(new JLabel(String.valueOf(i)));
+		}
+		letters.add(new JLabel("a"));
+		letters.add(new JLabel("b"));
+		letters.add(new JLabel("c"));
+		letters.add(new JLabel("d"));
+		letters.add(new JLabel("e"));
+		letters.add(new JLabel("f"));
+		letters.add(new JLabel("g"));
+		letters.add(new JLabel("h"));
+		if(f.b != null){
+			if(!f.b.playerBot.isWhite){
+				reverseCoordinates();
+			}
+		}
 	}
 }

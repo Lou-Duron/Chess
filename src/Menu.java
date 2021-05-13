@@ -213,11 +213,12 @@ public class Menu {
             public void mousePressed(MouseEvent e) {
                 f.panel.unselect();
                 if(!f.panel.popUp){
-                    f.panel.removeGraphics();
-                    f.panel.reverseCoordinates();
-                    f.b.reverseBoard();
-                    f.panel.addGraphics();
                     reverse = !reverse;
+                    f.panel.removeGraphics();
+                    f.b.reverseBoard();
+                    f.panel.reverseCoordinates();
+                    f.panel.addGraphics();
+                    
                 }
             } 
             @Override

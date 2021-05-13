@@ -80,8 +80,15 @@ public class Board {
         addPiece(new Bishop(playerTop.isWhite), board[5][0]);
         addPiece(new Knight(playerTop.isWhite), board[1][0]);
         addPiece(new Knight(playerTop.isWhite), board[6][0]);
-        addPiece(new Queen(playerTop.isWhite), board[3][0]);
-        addPiece(new King(playerTop.isWhite), board[4][0]);
+        if(playerTop.isWhite){
+            addPiece(new Queen(true), board[4][0]);
+            addPiece(new King(true), board[3][0]);
+        }
+        else{
+            addPiece(new Queen(false), board[3][0]);
+            addPiece(new King(false), board[4][0]);
+        }
+        
 
         // Bot
         addPiece(new Pawn(playerBot.isWhite), board[0][6]);
@@ -100,6 +107,14 @@ public class Board {
         addPiece(new Knight(playerBot.isWhite), board[6][7]);
         addPiece(new Queen(playerBot.isWhite), board[3][7]);
         addPiece(new King(playerBot.isWhite), board[4][7]);
+        if(playerTop.isWhite){
+            addPiece(new Queen(false), board[4][7]);
+            addPiece(new King(false), board[3][7]);
+        }
+        else{
+            addPiece(new Queen(true), board[3][7]);
+            addPiece(new King(true), board[4][7]);
+        }
     }
 
     public void reverseBoard(){
