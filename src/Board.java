@@ -3,12 +3,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 public class Board {
     
     public Square [][] board;
     Player playerTop, playerBot, currentPlayer, uncurrentPlayer;
     List<Action> history;
     int cursorMoves, nbMoves;
+    boolean time;
 
     public Board(String playerTopName, String playerBotName){
         board = new Square[8][8];
@@ -174,4 +176,5 @@ public class Board {
         return null;
     }
 
+   
 }

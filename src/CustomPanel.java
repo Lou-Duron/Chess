@@ -8,6 +8,9 @@ import javax.swing.border.LineBorder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.io.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.*;
 
 public class CustomPanel extends JLayeredPane implements MouseListener, MouseMotionListener{
 
@@ -98,12 +101,20 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void initTimer(int time){
-				menu.tT.stop();
-				menu.tB.stop();
-				menu.tTop = time;
-				menu.tBot = time;
-				menu.timerTop.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
-				menu.timerBot.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
+		menu.tT.stop();
+		menu.tB.stop();
+		if(time == 0){
+			menu.timerTop.setText("00:00");
+			menu.timerBot.setText("00:00");
+			f.b.time = false;
+		}
+		else{
+			menu.tTop = time;
+			menu.tBot = time;
+			menu.timerTop.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
+			menu.timerBot.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
+			f.b.time = true;
+		}
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void select(Square s){
@@ -192,14 +203,21 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										else{
 											f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 										}
+										if(f.b.board[x][y].piece != null){
+											playSound("eat");
+										}
+										else{
+											playSound("move");
+										}
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
+									
 										if (f.b.isCheck(f.b.currentPlayer.isWhite)){
 											System.out.println("Tu es en echec");
 										}
 										checkPromotion(f.b.board[x][y]);
 										f.b.cursorMoves ++;
 										f.b.nbMoves ++;
-										switchPlayer();
+										switchPlayer(f.b.time);
 										displayPieces();
 									}
 								}
@@ -228,6 +246,12 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									else{
 										f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 									}
+									if(f.b.board[x][y].piece != null){
+										playSound("eat");
+									}
+									else{
+										playSound("move");
+									}
 									f.b.movePiece(tempSquare,f.b.board[x][y]);
 									if (f.b.isCheck(f.b.currentPlayer.isWhite)){
 										f.b.uncurrentPlayer.check = true;
@@ -237,7 +261,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									f.b.nbMoves ++;
 									
 									temp = true;
-									switchPlayer();
+									switchPlayer(f.b.time);
 									displayPieces();
 								}		
 							}
@@ -397,14 +421,16 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		menu.updateButtons(f);
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void switchPlayer(){
-		if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
-			menu.tT.stop();
-			menu.tB.start(); 
-		}
-		else {
-			menu.tB.stop();
-			menu.tT.start();
+	public void switchPlayer(boolean time){
+		if(time){
+			if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
+				menu.tT.stop();
+				menu.tB.start(); 
+			}
+			else {
+				menu.tB.stop();
+				menu.tT.start();
+			}
 		}
 		if(f.b.currentPlayer.isWhite == f.b.playerTop.isWhite){
             f.b.currentPlayer = f.b.playerBot;
@@ -432,6 +458,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void popUpPromotion(Square s){
+		playSound("promotion");
 		this.add(menu.popupPanel, Integer.valueOf(5));
 		if(s.piece.isWhite){
 			for(JLabel piece: menu.promotionWhite){		
@@ -526,4 +553,20 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			}
 		}
 	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void playSound(String s){
+        try {
+            File f = new File("./Sounds/"+ s +".wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 }
