@@ -60,6 +60,12 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 				}
 			}
 		}
+		for(Piece piece: f.b.playerTop.cemetery){
+            add(piece.image, Integer.valueOf(3));
+        }
+        for(Piece piece: f.b.playerBot.cemetery){
+            add(piece.image, Integer.valueOf(3));
+        }
 		for(JLabel num:numbers){
 			num.setForeground(menu.CL_LN);
 			add(num, Integer.valueOf(1));
@@ -162,6 +168,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										if(f.b.currentPlayer.isWhite == f.b.board[x][y].piece.isWhite){
 											select(f.b.board[x][y]);
 											clic = true; 
+											System.out.println(selectedPiece.isWhite);
 										}	
 									}
 								}	

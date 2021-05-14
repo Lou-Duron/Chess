@@ -470,6 +470,7 @@ public class Menu {
                         f.panel.add(f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].piece.image, Integer.valueOf(3));
                     }
                     f.b.cursorMoves --;
+                    System.out.println(f.b.board[3][3].piece);
                     f.panel.displayPieces();
                 }
             } 
