@@ -12,6 +12,10 @@ public class King extends Piece {
         image = new JLabel(icon);
     }
 
+    public King(King k) {
+        super(k);
+    }
+    
     public boolean canMove(Board b, Square start, Square end) {
 
         // If piece with same color
