@@ -432,6 +432,20 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
             f.b.currentPlayer = f.b.playerTop;
             f.b.uncurrentPlayer = f.b.playerBot;
         }
+
+        //New current player in check ?
+        if (f.b.isCheck(!f.b.currentPlayer.isWhite)){
+        	f.b.currentPlayer.check = true;
+		}
+
+        //Game Over ?
+		if (f.b.winLose()) {
+			menu.endGame(f.b.uncurrentPlayer, this);
+		}
+		if (f.b.egality()){
+			menu.endGame(null, this);
+
+		}
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void checkPromotion(Square s){

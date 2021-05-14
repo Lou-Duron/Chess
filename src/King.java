@@ -1,10 +1,10 @@
 import javax.swing.*;
 
 public class King extends Piece {
-    boolean hasmoved;
+    boolean hasMoved;
     public King(boolean isWhite){
         super(isWhite);
-        hasmoved = false;
+        hasMoved = false;
         if(isWhite){
             icon = new ImageIcon("Images/wk.png");
         }
@@ -16,7 +16,7 @@ public class King extends Piece {
 
     public King(King k){
         super(k);
-        hasmoved = k.hasmoved;
+        hasMoved = k.hasMoved;
     }
     public boolean canMove(Board b, Square start, Square end) {
 
@@ -32,7 +32,5 @@ public class King extends Piece {
 
         return true;
     }
-
-
 
 }

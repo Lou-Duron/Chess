@@ -1,10 +1,11 @@
 import javax.swing.*;
 
 public class Rook extends Piece {
+        boolean hasMoved;
 
     public Rook(boolean isWhite) {
-
         super(isWhite);
+        hasMoved = false;
         if(isWhite){
             icon = new ImageIcon("Images/wr.png");
         }
@@ -16,6 +17,7 @@ public class Rook extends Piece {
 
     public Rook(Rook r){
         super(r);
+        hasMoved = r.hasMoved;
     }
 
     public boolean canMove(Board b, Square start, Square end) {

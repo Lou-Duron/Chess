@@ -200,6 +200,26 @@ public class Board {
         return null;
     }
 
+    public boolean noMovesPossible(){
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (board[x][y].piece != null && !board[x][y].getMoves(this).isEmpty() ){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // To be done
+    public boolean winLose(){
+        return false;
+    }
+    public boolean egality(){
+        return false;
+    }
+
+
     public void playSound(String s){
         try {
             File f = new File("./Sounds/"+ s +".wav");
@@ -207,11 +227,7 @@ public class Board {
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
             clip.start();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
     }

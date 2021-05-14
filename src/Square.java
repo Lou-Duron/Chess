@@ -113,6 +113,7 @@ public class Square {
     public boolean equals(Square s){
         return this.position == s.position;
     }
+
 }
 
     
