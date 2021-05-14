@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Square {
     Position position; // Position
     boolean isWhite; // Color and presence of a piece(boolean)

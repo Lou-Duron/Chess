@@ -1,7 +1,6 @@
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.io.*;
+import javax.sound.sampled.*;
 
 
 public class Board {
@@ -43,6 +42,12 @@ public class Board {
 
     // Move a piece on the chessboard
     public void movePiece(Square start, Square end){
+        if(end.piece != null){
+            playSound("eat");
+        }
+        else{
+            playSound("move");
+        }
         if(end.piece != null){
             deletePiece(end);
         }
@@ -176,5 +181,20 @@ public class Board {
         return null;
     }
 
+    public void playSound(String s){
+        try {
+            File f = new File("./Sounds/"+ s +".wav");
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
    
 }

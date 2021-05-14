@@ -8,9 +8,7 @@ import javax.swing.border.LineBorder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.io.*;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.*;
+
 
 public class CustomPanel extends JLayeredPane implements MouseListener, MouseMotionListener{
 
@@ -203,12 +201,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										else{
 											f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 										}
-										if(f.b.board[x][y].piece != null){
-											playSound("eat");
-										}
-										else{
-											playSound("move");
-										}
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
 									
 										if (f.b.isCheck(f.b.currentPlayer.isWhite)){
@@ -245,12 +237,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									}
 									else{
 										f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
-									}
-									if(f.b.board[x][y].piece != null){
-										playSound("eat");
-									}
-									else{
-										playSound("move");
 									}
 									f.b.movePiece(tempSquare,f.b.board[x][y]);
 									if (f.b.isCheck(f.b.currentPlayer.isWhite)){
@@ -458,7 +444,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void popUpPromotion(Square s){
-		playSound("promotion");
+		f.b.playSound("promotion");
 		this.add(menu.popupPanel, Integer.valueOf(5));
 		if(s.piece.isWhite){
 			for(JLabel piece: menu.promotionWhite){		
@@ -554,19 +540,4 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		}
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void playSound(String s){
-        try {
-            File f = new File("./Sounds/"+ s +".wav");
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-        } catch (UnsupportedAudioFileException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (LineUnavailableException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -465,7 +465,6 @@ public class Menu {
                         }
                     }
                     if(f.b.history.get(f.b.cursorMoves-1).promoted != null){
-                        f.panel.setLayer(f.b.history.get(f.b.cursorMoves-1).start.piece.image,0);
 		                f.panel.remove(f.b.history.get(f.b.cursorMoves-1).start.piece.image);
                         f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].piece = new Pawn(f.b.history.get(f.b.cursorMoves-1).start.piece.isWhite);
                         f.panel.add(f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].piece.image, Integer.valueOf(3));
