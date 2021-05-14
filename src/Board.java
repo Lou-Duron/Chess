@@ -71,6 +71,14 @@ public class Board {
         start.piece = null;
     }
 
+    public void movePieceTemp(Square start, Square end){
+        if(end.piece != null){
+            deletePiece(end);
+        }
+        end.piece = start.piece;
+        start.piece = null;
+    }
+
     // Remove a piece from the chessboard
     public void deletePiece(Square s){
         if(s.piece.isWhite == playerBot.isWhite){

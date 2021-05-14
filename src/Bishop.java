@@ -13,6 +13,10 @@ public class Bishop extends Piece {
         image = new JLabel(icon);
     }
 
+    public Bishop(Bishop b){
+        super(b);
+    }
+
     public boolean canMove(Board b, Square start, Square end) {
         // If piece with same color
         if(end.piece != null){

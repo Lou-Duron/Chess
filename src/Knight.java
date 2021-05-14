@@ -13,6 +13,11 @@ public class Knight extends Piece {
         }
         image = new JLabel(icon);
     }
+
+    public Knight(Knight k){
+        super(k);
+        castlingDone = k.castlingDone;
+    }
     public boolean canMove(Board b,Square start, Square end) {
         if (start.equals(end))
             return false;

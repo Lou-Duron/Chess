@@ -15,6 +15,10 @@ public class Pawn extends Piece {
         image = new JLabel(icon);
 
     }
+
+    public Pawn(Pawn p){
+        super(p);
+    }
     public boolean canMove(Board b, Square start, Square end) {
         if (this.isWhite == b.playerBot.isWhite){
             if (start.position.y == 6){ //Starting position

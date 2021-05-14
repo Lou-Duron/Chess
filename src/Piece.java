@@ -10,6 +10,12 @@ public abstract class Piece {
         this.isWhite = isWhite;
     }
 
+    public Piece(Piece p){
+        this.isWhite = p.isWhite;
+        this.image = null;
+        this.icon = null;
+    }
+
     public boolean getColor(){
         return isWhite;
     }

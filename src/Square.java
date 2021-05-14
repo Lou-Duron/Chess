@@ -1,4 +1,6 @@
 import javax.swing.*;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class Square {
         movesFilled = new JLabel(iconDispoFilled);
     }
 
-    public Square(Square s){
+    public Square(Square s) {
         this(s.position, s.isWhite);
         this.imageLastMove = null;
         this.image = null;
@@ -46,9 +48,28 @@ public class Square {
         this.movesFilled = null;
         this.iconDispoEmpty = null;
         this.movesEmpty = null;
-        this.piece = s.piece;
-    }
-
+        if (s.piece != null) {
+            if (s.piece instanceof Bishop) {
+                this.piece = new Bishop(s.piece.isWhite);
+            }
+            if (s.piece instanceof Knight) {
+                this.piece = new Knight(s.piece.isWhite);
+            }
+            if (s.piece instanceof King) {
+                this.piece = new King(s.piece.isWhite);
+            }
+            if (s.piece instanceof Pawn) {
+                this.piece = new Pawn(s.piece.isWhite);
+            }
+            if (s.piece instanceof Queen) {
+                this.piece = new Queen(s.piece.isWhite);
+            }
+            if (s.piece instanceof Rook) {
+                this.piece = new Rook(s.piece.isWhite);
+            }
+        }
+        else this.piece = null;
+   }
     public List<Position> getMoves (Board b) {
         List<Position> possibleMoves = new ArrayList<>();
         if (piece != null) {
@@ -68,7 +89,7 @@ public class Square {
         }
         for (Position p : possibleMoves) {
             temporaryBoard = new Board(b);
-            temporaryBoard.movePiece(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
+            temporaryBoard.movePieceTemp(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
             System.out.println(temporaryBoard.board[p.x][p.y].piece.icon);
             if (!temporaryBoard.isCheck(!b.currentPlayer.isWhite)) {
                 definitiveMoves.add(p);
@@ -84,7 +105,7 @@ public class Square {
         }
         //Avoid self check
         Board temporaryBoard = new Board(b);
-        temporaryBoard.movePiece(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
+        temporaryBoard.movePieceTemp(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
         System.out.println(temporaryBoard.uncurrentPlayer.isWhite);
         return !temporaryBoard.isCheck(!temporaryBoard.uncurrentPlayer.isWhite);
     }
