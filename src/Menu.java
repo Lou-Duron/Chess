@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class Menu {
-    JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot, play, cancel, vsPlayer, vsIA;
-    JLabel menu, newGame, exit, inverse, concede, leftButton, rightButton, popupPanel, timer, player1, player2;
+    JLabel nameTop, nameBot, timerTop, timerBot, deadPiecesTop, deadPiecesBot, player1, player2;
+    JLabel menu, newGame, exit, inverse, concede, leftButton, rightButton, popupPanel, timer;
+    JLabel play, cancel, vsPlayer, vsIA, endNewGame, endExit, endMessage;
     JTextField p1name, p2name;
     JSlider slider;
     ImageIcon iconInv, iconFlag, left, right; 
@@ -27,7 +28,7 @@ public class Menu {
     public Menu(Frame f){
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//  New game pop-UP 
+//  New game pop-up 
         popupPanel = new JLabel();
         popupPanel.setBackground(CL_BK);
         popupPanel.setOpaque(true);
@@ -153,6 +154,51 @@ public class Menu {
         player2.setOpaque(true);
         player2.setForeground(CL_FONT);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// End game pop-up
+        endNewGame = new JLabel("New Game", SwingConstants.CENTER);
+        endNewGame.setBackground(CL_ACTIVE);
+        endNewGame.setOpaque(true);
+        endNewGame.setForeground(CL_FONT);
+        endNewGame.setBorder(new LineBorder(CL_GUI));
+        endNewGame.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {
+                removeEndGamePanel(f.panel);
+                addNewGamePopUp(f.panel);
+            } 
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+        });
+        endExit = new JLabel("Exit", SwingConstants.CENTER);
+        endExit.setBackground(CL_ACTIVE);
+        endExit.setOpaque(true);
+        endExit.setForeground(CL_FONT);
+        endExit.setBorder(new LineBorder(CL_GUI));
+        endExit.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {}
+            @Override
+            public void mouseEntered(MouseEvent e) {}
+            @Override
+            public void mouseExited(MouseEvent e) {}
+            @Override
+            public void mousePressed(MouseEvent e) {
+                f.frame.dispose();
+            } 
+            @Override
+            public void mouseReleased(MouseEvent e) {}
+        });
+        endMessage = new JLabel("", SwingConstants.CENTER);
+        endMessage.setBackground(CL_BK);
+        endMessage.setOpaque(true);
+        endMessage.setForeground(CL_FONT);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Promotion
         promotionWhite = new ArrayList<JLabel>();
         promotionWhite.add(new JLabel(new ImageIcon("Images/wn.png")));
@@ -243,7 +289,10 @@ public class Menu {
         ActionListener Top = new ActionListener(){
             public void actionPerformed(ActionEvent ae){            
                 tTop --;
-                timerTop.setText(String.valueOf((int) tTop/60) +":"+ String.valueOf(tTop % 60));    
+                timerTop.setText(String.valueOf((int) tTop/60) +":"+ String.valueOf(tTop % 60));
+                if(tTop == 0){
+                    endGame(f.b.playerBot, f.panel);
+                }    
             }
         };
         tT = new Timer(1000, Top);
@@ -256,6 +305,9 @@ public class Menu {
             public void actionPerformed(ActionEvent ae){            
                 tBot --;    
                 timerBot.setText(String.valueOf((int) tBot/60) +":"+ String.valueOf(tBot % 60)); 
+                if(tBot == 0){
+                    endGame(f.b.playerTop, f.panel);
+                } 
             }
         };
         tB = new Timer(1000, Bot); 
@@ -367,11 +419,11 @@ public class Menu {
             @Override
             public void mouseExited(MouseEvent e) {}
             @Override
-            public void mousePressed(MouseEvent e) {} 
+            public void mousePressed(MouseEvent e) {
+                endGame(null, f.panel);
+            } 
             @Override
-            public void mouseReleased(MouseEvent e) {
-               
-            }
+            public void mouseReleased(MouseEvent e) {}
         });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Last move button
@@ -413,7 +465,6 @@ public class Menu {
                         }
                     }
                     if(f.b.history.get(f.b.cursorMoves-1).promoted != null){
-                        f.panel.setLayer(f.b.history.get(f.b.cursorMoves-1).start.piece.image,0);
 		                f.panel.remove(f.b.history.get(f.b.cursorMoves-1).start.piece.image);
                         f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].piece = new Pawn(f.b.history.get(f.b.cursorMoves-1).start.piece.isWhite);
                         f.panel.add(f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].piece.image, Integer.valueOf(3));
@@ -535,4 +586,34 @@ public class Menu {
         p.displayPieces();
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void addEndGamePanel(CustomPanel p){
+        p.popUp = true;
+        p.add(popupPanel, Integer.valueOf(5));
+        popupPanel.setBounds(p.SQUARE_SIZE*19/8,p.SQUARE_SIZE*27/8, p.SQUARE_SIZE*13/4, p.SQUARE_SIZE*5/4);
+        p.add(endMessage, Integer.valueOf(6));
+        endMessage.setBounds(p.SQUARE_SIZE*5/2,p.SQUARE_SIZE*7/2, p.SQUARE_SIZE*3, p.SQUARE_SIZE*1/2);
+        p.add(endNewGame, Integer.valueOf(6));
+        endNewGame.setBounds(p.SQUARE_SIZE*23/8,p.SQUARE_SIZE*17/4, p.SQUARE_SIZE*9/8, p.SQUARE_SIZE*1/4);
+        p.add(endExit, Integer.valueOf(6));
+        endExit.setBounds(p.SQUARE_SIZE*129/32,p.SQUARE_SIZE*17/4, p.SQUARE_SIZE*9/8, p.SQUARE_SIZE*1/4);
+    }
+
+    public void endGame(Player player, CustomPanel p){
+        addEndGamePanel(p);
+        if(player == null){
+            endMessage.setText("Draw !");
+        }
+        else{
+            endMessage.setText(player.name + " has won !");
+        }
+    }
+
+    public void removeEndGamePanel(CustomPanel p){
+        p.popUp = false;
+        p.remove(popupPanel);
+        p.remove(endMessage);
+        p.remove(endNewGame);
+        p.remove(endExit);
+        p.displayPieces();
+    }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 public class CustomPanel extends JLayeredPane implements MouseListener, MouseMotionListener{
 
 	int  SQUARE_SIZE = 80; 
@@ -98,12 +99,20 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void initTimer(int time){
-				menu.tT.stop();
-				menu.tB.stop();
-				menu.tTop = time;
-				menu.tBot = time;
-				menu.timerTop.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
-				menu.timerBot.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
+		menu.tT.stop();
+		menu.tB.stop();
+		if(time == 0){
+			menu.timerTop.setText("00:00");
+			menu.timerBot.setText("00:00");
+			f.b.time = false;
+		}
+		else{
+			menu.tTop = time;
+			menu.tBot = time;
+			menu.timerTop.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
+			menu.timerBot.setText(String.valueOf((int) time/60) +":"+ String.valueOf(time % 60)+"0");
+			f.b.time = true;
+		}
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void select(Square s){
@@ -199,7 +208,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										checkPromotion(f.b.board[x][y]);
 										f.b.cursorMoves ++;
 										f.b.nbMoves ++;
-										switchPlayer();
+										switchPlayer(f.b.time);
 										displayPieces();
 									}
 								}
@@ -237,7 +246,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									f.b.nbMoves ++;
 									
 									temp = true;
-									switchPlayer();
+									switchPlayer(f.b.time);
 									displayPieces();
 								}		
 							}
@@ -397,14 +406,16 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		menu.updateButtons(f);
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void switchPlayer(){
-		if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
-			menu.tT.stop();
-			menu.tB.start(); 
-		}
-		else {
-			menu.tB.stop();
-			menu.tT.start();
+	public void switchPlayer(boolean time){
+		if(time){
+			if(f.b.playerTop.isWhite == f.b.currentPlayer.isWhite){
+				menu.tT.stop();
+				menu.tB.start(); 
+			}
+			else {
+				menu.tB.stop();
+				menu.tT.start();
+			}
 		}
 		if(f.b.currentPlayer.isWhite == f.b.playerTop.isWhite){
             f.b.currentPlayer = f.b.playerBot;
@@ -434,6 +445,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void popUpPromotion(Square s){
+		f.b.playSound("promotion");
 		this.add(menu.popupPanel, Integer.valueOf(5));
 		if(s.piece.isWhite){
 			for(JLabel piece: menu.promotionWhite){		
@@ -528,4 +540,5 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			}
 		}
 	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
