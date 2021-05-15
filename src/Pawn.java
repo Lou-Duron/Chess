@@ -19,11 +19,19 @@ public class Pawn extends Piece {
     public Pawn(Pawn p){
         super(p);
     }
+
     public boolean canMove(Board b, Square start, Square end) {
-        if (this.isWhite == b.playerBot.isWhite){
+        if (b.currentPlayer == b.playerBot){
             if (start.position.y == 6){ //Starting position
                 if ( end.position.y - start.position.y < -2) {
                     return false;
+                }
+                else {
+                    if (end.position.y == start.position.y-2 && end.position.x == start.position.x){
+                        if (b.board[start.position.x][start.position.y-1].piece != null){
+                            return false;
+                        }
+                    }
                 }
             }
             else if (end.position.y - start.position.y != -1) {
@@ -35,12 +43,18 @@ public class Pawn extends Piece {
                 if (end.position.y - start.position.y > 2) {
                     return false;
                 }
+                else {
+                    if (end.position.y == start.position.y+2 && end.position.x == start.position.x){
+                        if (b.board[start.position.x][start.position.y+1].piece != null){
+                            return false;
+                        }
+                    }
+                }
             }
             else if (end.position.y - start.position.y != 1) {
                 return false;
             }
         }
-
         // Moves to eat a piece
         boolean diagonal = Math.abs(end.position.x - start.position.x) == 1 && Math.abs(end.position.y - start.position.y) == 1;
 

@@ -200,10 +200,10 @@ public class Board {
         return null;
     }
 
-    public boolean noMovesPossible(){
+    public boolean noMovesPossible(Player p){
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (board[x][y].piece != null && !board[x][y].getMoves(this).isEmpty() ){
+                if (board[x][y].piece != null && board[x][y].piece.isWhite == p.isWhite && !board[x][y].getMoves(this).isEmpty() ){
                     return false;
                 }
             }
@@ -213,10 +213,27 @@ public class Board {
 
     // To be done
     public boolean winLose(){
-        return false;
+        return currentPlayer.check && noMovesPossible(currentPlayer);
     }
-    public boolean egality(){
-        return false;
+    public boolean equality(){
+        int bishop = 0;
+        int knight = 0;
+
+        if (!currentPlayer.check && noMovesPossible(currentPlayer))
+            return true;
+
+        for (int x = 0; x < 8; x++) {
+            for (int y = 0; y < 8; y++) {
+                if (board[x][y].piece != null && board[x][y].piece.isWhite == currentPlayer.isWhite)
+                    if (!(board[x][y].piece instanceof Bishop) || (!(board[x][y].piece instanceof Knight)) || !(board[x][y].piece instanceof King))
+                        return false;
+                    if (board[x][y].piece instanceof Bishop)
+                        bishop ++;
+                    if (board[x][y].piece instanceof Knight)
+                        knight ++;
+                }
+            }
+        return bishop < 1 || knight < 1;
     }
 
 

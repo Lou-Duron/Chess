@@ -15,6 +15,7 @@ public class Queen extends Piece {
     public Queen(Queen q){
         super(q);
     }
+
     public boolean canMove(Board b, Square start, Square end) {
         int distanceX = Math.abs(end.position.x - start.position.x);
         int distanceY = Math.abs(end.position.y - start.position.y);
