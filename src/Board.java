@@ -216,24 +216,27 @@ public class Board {
         return currentPlayer.check && noMovesPossible(currentPlayer);
     }
     public boolean equality(){
-        int bishop = 0;
-        int knight = 0;
+        int currentKing = 0;
+        int uncurrentKing = 0;
 
+        // No check but any moves possibles
         if (!currentPlayer.check && noMovesPossible(currentPlayer))
             return true;
 
+        // King vs King or King alone
         for (int x = 0; x < 8; x++) {
             for (int y = 0; y < 8; y++) {
-                if (board[x][y].piece != null && board[x][y].piece.isWhite == currentPlayer.isWhite)
-                    if (!(board[x][y].piece instanceof Bishop) || (!(board[x][y].piece instanceof Knight)) || !(board[x][y].piece instanceof King))
-                        return false;
-                    if (board[x][y].piece instanceof Bishop)
-                        bishop ++;
-                    if (board[x][y].piece instanceof Knight)
-                        knight ++;
+                if (board[x][y].piece != null && !(board[x][y].piece instanceof King)){
+                    if (board[x][y].piece.isWhite == currentPlayer.isWhite){
+                        currentKing ++;
+                    }
+                    else{
+                        uncurrentKing ++;
+                    }
                 }
             }
-        return bishop < 1 || knight < 1;
+        }
+        return !(currentKing != 0 && uncurrentKing !=0);
     }
 
 
