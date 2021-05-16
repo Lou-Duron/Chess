@@ -58,6 +58,7 @@ public class Board {
 
     // Move a piece on the chessboard
     public void movePiece(Square start, Square end){
+        //System.out.println(castlingPossible(start));
         if(end.piece != null){
             playSound("eat");
         }
@@ -69,6 +70,37 @@ public class Board {
         }
         end.piece = start.piece;
         start.piece = null;
+        end.piece.hasMoved = true;
+    }
+
+    public void castling(){
+
+    }
+
+    public boolean castlingPossible(Square s){
+        if (!(s.piece instanceof Rook)){
+            //System.out.println("not rook");
+            return false;
+
+        }
+        else{
+            if (s.piece.hasMoved) {
+                //System.out.println("rook moved");
+                return false;
+            }
+            else if (!getKing(currentPlayer.isWhite).piece.hasMoved){
+                //System.out.println("king hasn't moved");
+                int size = getKing(currentPlayer.isWhite).position.x - s.position.x;
+                int sense = s.position.x - getKing(currentPlayer.isWhite).position.x < 0 ? -1 : 1;
+                for(int i = 1; i < size; i++){
+                    if(board[getKing(currentPlayer.isWhite).position.x+i*sense][getKing(currentPlayer.isWhite).position.y].piece != null){
+                        //System.out.println("piece in the middle ?");
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     public void movePieceTemp(Square start, Square end){

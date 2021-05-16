@@ -420,6 +420,8 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 				menu.tT.start();
 			}
 		}
+
+		f.b.currentPlayer.check = false;
 		if(f.b.currentPlayer.isWhite == f.b.playerTop.isWhite){
             f.b.currentPlayer = f.b.playerBot;
             f.b.uncurrentPlayer = f.b.playerTop;

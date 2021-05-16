@@ -4,6 +4,7 @@ import java.util.List;
 public class Player {
     String name;
     boolean check;
+    boolean castle;
     boolean isTop;
     boolean isWhite;
     List<Piece> cemetery; // Array of dead pieces
@@ -13,6 +14,8 @@ public class Player {
         this.isTop = isTop;
         this.isWhite = isWhite ;
         check = false;
+        castle = false;
+
         cemetery = new ArrayList<Piece>();
     }
 
