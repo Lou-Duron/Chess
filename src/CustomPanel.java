@@ -123,8 +123,8 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void select(Square s){
         if(!s.getMoves(f.b).isEmpty()){
-            selectedPieceMoves = s.getMoves(f.b);
-            selectedPiece = s.piece;
+            selectedPieceMoves = new ArrayList<Position>(s.getMoves(f.b).keySet());
+			selectedPiece = s.piece;
 			this.setLayer(selectedPiece.image,4);
             tempSquare = s;
             for(Position pos: selectedPieceMoves){ 

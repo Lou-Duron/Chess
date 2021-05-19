@@ -2,7 +2,9 @@ import javax.swing.*;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Square {
@@ -70,7 +72,11 @@ public class Square {
         }
         else this.piece = null;
    }
-    public List<Position> getMoves (Board b) {
+    public HashMap<Position, MoveType> getMoves (Board b) {
+        return getRestrictedMoves(b, getPossibleMoves(b));
+    }
+
+    public List<Position> getPossibleMoves (Board b){ //Basics Moves
         List<Position> possibleMoves = new ArrayList<>();
         if (piece != null) {
             for (int x = 0; x < 8; x++) {
@@ -81,19 +87,36 @@ public class Square {
                 }
             }
         }
-        //Avoid self check
+        return possibleMoves;
+    }
+
+    public HashMap<Position, MoveType> getRestrictedMoves (Board b, List<Position> possibleMoves) {
         Board temporaryBoard;
-        List<Position> definitiveMoves = new ArrayList<>();
+        HashMap<Position, MoveType> definitiveMoves = new HashMap<>();
         for (Position p : possibleMoves) {
             temporaryBoard = new Board(b);
             temporaryBoard.movePieceTemp(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
             if (!temporaryBoard.isCheck(!b.currentPlayer.isWhite)) {
-                definitiveMoves.add(p);
+                definitiveMoves.put(p, MoveType.CLASSIC);
+            }
+        }
+        //Special movement for king
+  /*      if (b.castling(this).isEmpty()){
+            System.out.println("castle move impossible");
+        }*/
+        if (!b.castling(this).isEmpty()) {
+            for (Map.Entry<Square, MoveType> m : b.castling(this).entrySet()) {
+                temporaryBoard = new Board(b);
+                b.castleMove(m.getValue());
+                if (!temporaryBoard.isCheck(!b.currentPlayer.isWhite)) {
+                    int topdown = b.currentPlayer == b.playerTop ? 0 : 7;
+                    int sense = m.getValue() == MoveType.KINGSIDE ? 2 : 6;
+                        definitiveMoves.put(b.board[sense][topdown].position , m.getValue());
+                }
             }
         }
         return definitiveMoves;
     }
-
     public boolean isMoveValid (Board b, Position p) {
         if (piece == null) return false;
         if (!piece.canMove(b, this, b.board[p.x][p.y])) {
