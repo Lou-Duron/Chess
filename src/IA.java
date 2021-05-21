@@ -152,10 +152,10 @@ public class IA {
             f.b.history.add(new Action(start, end));
         }
         if(end.piece != null){
-            f.b.playSound("eat");
+            f.b.playSound(Sounds.EAT.getFile());
         }
         else{
-            f.b.playSound("move");
+            f.b.playSound(Sounds.MOVE.getFile());
         }
         f.b.movePiece(start,end);
         f.panel.checkPromotion(end);
