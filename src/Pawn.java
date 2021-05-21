@@ -22,7 +22,7 @@ public class Pawn extends Piece {
     public boolean canMove(Board b, Square start, Square end) {
         if (b.currentPlayer == b.playerBot){
             if (start.position.y == 6){ //Starting position
-                if ( end.position.y - start.position.y < -2) {
+                if ( end.position.y - start.position.y < -2 || end.position.y - start.position.y > 0) {
                     return false;
                 }
                 else {
@@ -39,7 +39,7 @@ public class Pawn extends Piece {
         }
         else{
             if (start.position.y == 1) { //Starting position
-                if (end.position.y - start.position.y > 2) {
+                if (end.position.y - start.position.y > 2 || end.position.y - start.position.y < 0) {
                     return false;
                 }
                 else {
