@@ -135,7 +135,7 @@ public class IA {
         HashMap<Square[][],List<Square>> fina = getMovesBoard(f.b.board);
         int best = Integer.MAX_VALUE;
         for(Square[][] b: fina.keySet()){
-            int tmp = minimaxPrunning(b, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
+            int tmp = minimaxPrunning(b, 1, Integer.MIN_VALUE, Integer.MAX_VALUE, true);
             if(tmp < best){
                 best = tmp;
                 bestMove.clear();
