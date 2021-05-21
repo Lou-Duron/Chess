@@ -108,8 +108,8 @@ public class Board {
         addPiece(new Knight(playerTop.isWhite), board[1][0]);
         addPiece(new Knight(playerTop.isWhite), board[6][0]);
         if(playerTop.isWhite){
-            addPiece(new Queen(true), board[3][0]);
-            addPiece(new King(true), board[4][0]);
+            addPiece(new Queen(true), board[4][0]);
+            addPiece(new King(true), board[3][0]);
         }
         else{
             addPiece(new Queen(false), board[3][0]);
@@ -135,8 +135,8 @@ public class Board {
         addPiece(new Queen(playerBot.isWhite), board[3][7]);
         addPiece(new King(playerBot.isWhite), board[4][7]);
         if(playerTop.isWhite){
-            addPiece(new Queen(false), board[3][7]);
-            addPiece(new King(false), board[4][7]);
+            addPiece(new Queen(false), board[4][7]);
+            addPiece(new King(false), board[3][7]);
         }
         else{
             addPiece(new Queen(true), board[3][7]);
