@@ -151,12 +151,18 @@ public class IA {
         else{
             f.b.history.add(new Action(start, end));
         }
-        //f.b.movePiece(start,end);
+        if(end.piece != null){
+            f.b.playSound("eat");
+        }
+        else{
+            f.b.playSound("move");
+        }
+        f.b.movePiece(start,end);
         f.panel.checkPromotion(end);
         f.b.cursorMoves ++;
         f.b.nbMoves ++;
-        f.panel.switchPlayer(f.b.time);
         f.panel.displayPieces();
+        f.panel.switchPlayer(f.b.time);
         System.out.println("");
         System.out.println("->");
     }

@@ -105,7 +105,8 @@ public class Square {
         //Avoid self check
         Board temporaryBoard = new Board(b);
         temporaryBoard.movePieceTemp(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
-        return !temporaryBoard.isCheck(!temporaryBoard.uncurrentPlayer.isWhite);
+        return true
+        //!temporaryBoard.isCheck(!temporaryBoard.uncurrentPlayer.isWhite);
     }
 
     public boolean equals(Square s){
