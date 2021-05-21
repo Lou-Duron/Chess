@@ -5,11 +5,11 @@ public class Queen extends Piece {
     public Queen(boolean isWhite) {
         super(isWhite);
         if(isWhite){
-            icon = new ImageIcon("Images/wq.png");
+            icon = new ImageIcon(Images.WQUEEN.getImage());
             value = 90;
         }
         else{
-            icon = new ImageIcon("Images/bq.png");
+            icon = new ImageIcon(Images.BQUEEN.getImage());
             value = -90;
         }
         image = new JLabel(icon);

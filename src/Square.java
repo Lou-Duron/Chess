@@ -16,21 +16,21 @@ public class Square {
         this.isWhite = isWhite;
         piece = null;
         if(isWhite){
-            icon = new ImageIcon("Images/cb.png");
-            iconLastMove = new ImageIcon("Images/cby.png");
-            iconCheck = new ImageIcon("Images/cbr.png");
+            icon = new ImageIcon(Images.WSQUARE.getImage());
+            iconLastMove = new ImageIcon(Images.WLASTMOVE.getImage());
+            iconCheck = new ImageIcon(Images.WCHECK.getImage());
         }
         else{
-            icon = new ImageIcon("Images/cn.png");
-            iconLastMove = new ImageIcon("Images/cny.png");
-            iconCheck = new ImageIcon("Images/cnr.png");
+            icon = new ImageIcon(Images.BSQUARE.getImage());
+            iconLastMove = new ImageIcon(Images.BLASTMOVE.getImage());
+            iconCheck = new ImageIcon(Images.BCHECK.getImage());
         }
         image = new JLabel(icon);
         imageLastMove = new JLabel(iconLastMove);
         imageCheck = new JLabel(iconCheck);
-        iconDispoEmpty = new ImageIcon("Images/empty.png");
+        iconDispoEmpty = new ImageIcon(Images.EMPTY.getImage());
         movesEmpty = new JLabel(iconDispoEmpty);
-        iconDispoFilled = new ImageIcon("Images/filled.png");
+        iconDispoFilled = new ImageIcon(Images.FILLED.getImage());
         movesFilled = new JLabel(iconDispoFilled);
     }
 

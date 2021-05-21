@@ -201,10 +201,10 @@ public class Menu {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Promotion
         promotionWhite = new ArrayList<JLabel>();
-        promotionWhite.add(new JLabel(new ImageIcon("Images/wn.png")));
-        promotionWhite.add(new JLabel(new ImageIcon("Images/wb.png")));
-        promotionWhite.add(new JLabel(new ImageIcon("Images/wr.png")));
-        promotionWhite.add(new JLabel(new ImageIcon("Images/wq.png")));
+        promotionWhite.add(new JLabel(new ImageIcon(Images.WKNIGHT.getImage())));
+        promotionWhite.add(new JLabel(new ImageIcon(Images.WBISHOP.getImage())));
+        promotionWhite.add(new JLabel(new ImageIcon(Images.WROOK.getImage())));
+        promotionWhite.add(new JLabel(new ImageIcon(Images.WQUEEN.getImage())));
         for(JLabel piece: promotionWhite){
             piece.addMouseListener(new MouseAdapter() {
                 @Override
@@ -241,10 +241,10 @@ public class Menu {
             });
         }
         promotionBlack = new ArrayList<JLabel>();
-        promotionBlack.add(new JLabel(new ImageIcon("Images/bn.png")));
-        promotionBlack.add(new JLabel(new ImageIcon("Images/bb.png")));
-        promotionBlack.add(new JLabel(new ImageIcon("Images/br.png")));
-        promotionBlack.add(new JLabel(new ImageIcon("Images/bq.png")));
+        promotionBlack.add(new JLabel(new ImageIcon(Images.BKNIGHT.getImage())));
+        promotionBlack.add(new JLabel(new ImageIcon(Images.BBISHOP.getImage())));
+        promotionBlack.add(new JLabel(new ImageIcon(Images.BROOK.getImage())));
+        promotionBlack.add(new JLabel(new ImageIcon(Images.BQUEEN.getImage())));
         for(JLabel piece: promotionBlack){
             piece.addMouseListener(new MouseAdapter() {
                 @Override
@@ -375,7 +375,7 @@ public class Menu {
         });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Reverse button
-        iconInv = new ImageIcon("Images/inverse.png");
+        iconInv = new ImageIcon(Images.REVERSEBOARD.getImage());
         inverse = new JLabel(iconInv, SwingConstants.CENTER);
         inverse.setBackground(CL_GUI);
         inverse.setOpaque(true);
@@ -405,7 +405,7 @@ public class Menu {
         });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Concede button
-        iconFlag = new ImageIcon("Images/flag.png");
+        iconFlag = new ImageIcon(Images.FLAG.getImage());
         concede = new JLabel(iconFlag, SwingConstants.CENTER);
         concede.setBackground(CL_GUI);
         concede.setOpaque(true);
@@ -427,7 +427,7 @@ public class Menu {
         });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Last move button
-        left = new ImageIcon("Images/left.png");
+        left = new ImageIcon(Images.LARROW.getImage());
         leftButton = new JLabel(left, SwingConstants.CENTER);
         leftButton.setBackground(CL_GUI);
         leftButton.setOpaque(true);
@@ -479,7 +479,7 @@ public class Menu {
         });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Next move button
-        right = new ImageIcon("Images/right.png");
+        right = new ImageIcon(Images.RARROW.getImage());
         rightButton = new JLabel(right, SwingConstants.CENTER);
         rightButton.setBackground(CL_GUI);
         rightButton.setOpaque(true);

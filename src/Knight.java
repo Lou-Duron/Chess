@@ -6,11 +6,11 @@ public class Knight extends Piece {
         super(isWhite);
         castlingDone = false;
         if(isWhite){
-            icon = new ImageIcon("Images/wn.png");
+            icon = new ImageIcon(Images.WKNIGHT.getImage());
             value = 30;
         }
         else{
-            icon = new ImageIcon("Images/bn.png");
+            icon = new ImageIcon(Images.BKNIGHT.getImage());
             value = -30;
         }
         image = new JLabel(icon);
