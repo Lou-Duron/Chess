@@ -8,9 +8,11 @@ public class Rook extends Piece {
         hasMoved = false;
         if(isWhite){
             icon = new ImageIcon("Images/wr.png");
+            value = 50;
         }
         else{
             icon = new ImageIcon("Images/br.png");
+            value = 50;
         }
         image = new JLabel(icon);
     }

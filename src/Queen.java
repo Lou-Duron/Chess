@@ -6,9 +6,11 @@ public class Queen extends Piece {
         super(isWhite);
         if(isWhite){
             icon = new ImageIcon("Images/wq.png");
+            value = 90;
         }
         else{
             icon = new ImageIcon("Images/bq.png");
+            value = -90;
         }
         image = new JLabel(icon);
     }

@@ -7,9 +7,11 @@ public class Knight extends Piece {
         castlingDone = false;
         if(isWhite){
             icon = new ImageIcon("Images/wn.png");
+            value = 30;
         }
         else{
             icon = new ImageIcon("Images/bn.png");
+            value = -30;
         }
         image = new JLabel(icon);
     }

@@ -8,6 +8,8 @@ public class Frame {
     CustomPanel panel;
     Board b;
     boolean resized = false;
+    IA ia;
+    boolean IA;
 
     public Frame() {
         // Frame setup
@@ -41,6 +43,13 @@ public class Frame {
 		panel.menu.nameBot.setText(botName);
         panel.initTimer(time);
         panel.menu.reverse = false;
+        if(IA){
+            ia = new IA(b.playerTop, this);
+            this.IA = true;
+            if(b.playerTop.isWhite){
+                ia.makeMove();
+            }
+        }
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void addListeners(){

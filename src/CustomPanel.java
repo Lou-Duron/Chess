@@ -217,8 +217,8 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										checkPromotion(f.b.board[x][y]);
 										f.b.cursorMoves ++;
 										f.b.nbMoves ++;
-										switchPlayer(f.b.time);
 										displayPieces();
+										switchPlayer(f.b.time);
 									}
 								}
 								unselect(); 
@@ -261,8 +261,8 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									f.b.nbMoves ++;
 									
 									temp = true;
-									switchPlayer(f.b.time);
 									displayPieces();
+									switchPlayer(f.b.time);
 								}		
 							}
 						}						
@@ -454,7 +454,11 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 		}
 		if (f.b.equality()){
 			menu.endGame(null, this);
-
+		}
+		if(f.IA){
+			if(f.b.currentPlayer.isTop){
+				f.ia.makeMove();
+			}
 		}
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
