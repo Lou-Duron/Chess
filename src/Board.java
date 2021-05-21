@@ -69,7 +69,7 @@ public class Board {
 
     public void movePieceTemp(Square start, Square end){
         if(end.piece != null){
-            deletePiece(end);
+            end.piece = null;
         }
         end.piece = start.piece;
         start.piece = null;
