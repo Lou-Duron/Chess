@@ -15,7 +15,7 @@ public class IA {
             for(int y=0; y<8; y++){
                 if(board[x][y].piece != null && board[x][y].piece.isWhite == p.isWhite){
                     if(board[x][y].getMoves(f.b).size() > 0){
-                        for(Position p:board[x][y].getMoves(f.b).keySet()){
+                        for(Position p:board[x][y].getMoves(f.b)){
                             Square[][] temp = new Square[8][8];
                             for(int i=0; i<8; i++){
                                 for(int j=0; j<8; j++){
@@ -110,7 +110,7 @@ public class IA {
             for(int y=0; y<8; y++){
                 if(board[x][y].piece != null && board[x][y].piece.isWhite == p.isWhite){
                     if(board[x][y].getMoves(f.b).size() > 0){
-                        for(Position p:board[x][y].getMoves(f.b).keySet()){
+                        for(Position p:board[x][y].getMoves(f.b)){
                             Square[][] b = new Square[8][8];
                             for(int i=0; i<8; i++){
                                 for(int j=0; j<8; j++){
@@ -151,7 +151,7 @@ public class IA {
         else{
             f.b.history.add(new Action(start, end));
         }
-        f.b.movePiece(start,end);
+        //f.b.movePiece(start,end);
         f.panel.checkPromotion(end);
         f.b.cursorMoves ++;
         f.b.nbMoves ++;

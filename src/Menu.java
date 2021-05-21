@@ -444,7 +444,7 @@ public class Menu {
             public void mousePressed(MouseEvent e) {
                 f.panel.unselect();
                 if(f.b.cursorMoves > 0 && !f.panel.popUp){
-                    f.b.movePiece(f.b.history.get(f.b.cursorMoves-1).end, f.b.history.get(f.b.cursorMoves-1).start, f.panel.selectedPieceMoves.get(f.b.history.get(f.b.cursorMoves-1).start.position ));
+                    f.b.movePiece(f.b.history.get(f.b.cursorMoves-1).end, f.b.history.get(f.b.cursorMoves-1).start);
                     if(f.b.history.get(f.b.cursorMoves-1).piece != null){
                         f.b.addPiece(f.b.history.get(f.b.cursorMoves-1).piece, f.b.history.get(f.b.cursorMoves-1).end);
                         if(f.b.history.get(f.b.cursorMoves-1).end.piece.isWhite){
@@ -496,7 +496,7 @@ public class Menu {
             public void mousePressed(MouseEvent e) {
                 f.panel.unselect();
                 if(f.b.cursorMoves < f.b.history.size() && !f.panel.popUp) {
-                    f.b.movePiece(f.b.history.get(f.b.cursorMoves).start, f.b.history.get(f.b.cursorMoves).end, f.panel.selectedPieceMoves.get(f.b.history.get(f.b.cursorMoves).end.position));
+                    f.b.movePiece(f.b.history.get(f.b.cursorMoves).start, f.b.history.get(f.b.cursorMoves).end);
                     if(f.b.history.get(f.b.cursorMoves).promoted != null){
                         f.panel.setLayer(f.b.history.get(f.b.cursorMoves).end.piece.image,0);
 		                f.panel.remove(f.b.history.get(f.b.cursorMoves).end.piece.image);//f.b.board[f.b.history.get(f.b.cursorMoves-1).start.position.x][f.b.history.get(f.b.cursorMoves-1).start.position.y].piece = new Pawn(f.b.history.get(f.b.cursorMoves-1).start.piece.isWhite);

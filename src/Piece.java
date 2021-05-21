@@ -5,7 +5,6 @@ public abstract class Piece {
     boolean isWhite; //Status
     JLabel image; // Label
     ImageIcon icon; // Icon
-    boolean hasMoved;
     int value;
 
     public Piece(boolean isWhite) {
@@ -16,7 +15,6 @@ public abstract class Piece {
         this.isWhite = p.isWhite;
         this.image = null;
         this.icon = null;
-        hasMoved = false;
     }
 
     public boolean getColor(){

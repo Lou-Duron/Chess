@@ -70,9 +70,6 @@ public class Square {
         }
         else this.piece = null;
    }
-    public HashMap<Position, MoveType> getMoves (Board b) {
-        return getRestrictedMoves(b, getPossibleMoves(b));
-    }
 
     public List<Position> getPossibleMoves (Board b){ //Basics Moves
         List<Position> possibleMoves = new ArrayList<>();
@@ -88,29 +85,14 @@ public class Square {
         return possibleMoves;
     }
 
-    public HashMap<Position, MoveType> getRestrictedMoves (Board b, List<Position> possibleMoves) {
+    public ArrayList<Position> getMoves (Board b) {
         Board temporaryBoard;
-        HashMap<Position, MoveType> definitiveMoves = new HashMap<>();
-        for (Position p : possibleMoves) {
+        ArrayList<Position> definitiveMoves = new ArrayList<Position>();
+        for (Position p : getPossibleMoves(b)) {
             temporaryBoard = new Board(b);
             temporaryBoard.movePieceTemp(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
             if (!temporaryBoard.isCheck(!b.currentPlayer.isWhite)) {
-                definitiveMoves.put(p, MoveType.CLASSIC);
-            }
-        }
-        //Special movement for king
-        if (b.castling(this).isEmpty()){
-            System.out.println("castle move impossible");
-        }
-        if (!b.castling(this).isEmpty()) {
-            for (Map.Entry<Square, MoveType> m : b.castling(this).entrySet()) {
-                temporaryBoard = new Board(b);
-                b.castleMove(m.getValue());
-                if (!temporaryBoard.isCheck(!b.currentPlayer.isWhite)) {
-                    int topdown = b.currentPlayer == b.playerTop ? 0 : 7;
-                    int sense = m.getValue() == MoveType.KINGSIDE ? 2 : 6;
-                    definitiveMoves.put(b.board[sense][topdown].position , m.getValue());
-                }
+                definitiveMoves.add(p);
             }
         }
         return definitiveMoves;

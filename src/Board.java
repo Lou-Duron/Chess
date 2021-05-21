@@ -58,73 +58,14 @@ public class Board {
     }
 
     // Move a piece on the chessboard
-    public void movePiece(Square start, Square end, MoveType m){
-        if (m == MoveType.CLASSIC) {
-            if (end.piece != null) {
-                deletePiece(end);
-            }
-            end.piece = start.piece;
-            start.piece = null;
-            end.piece.hasMoved = true;
-        } else{
-            castleMove(m);
+    public void movePiece(Square start, Square end){
+        if (end.piece != null) {
+            deletePiece(end);
         }
+        end.piece = start.piece;
+        start.piece = null;
     }
 
-    public void castleMove(MoveType m){
-        int sense = currentPlayer == playerTop ? 0 : 7;
-        if ( m == MoveType.KINGSIDE) {
-            movePieceTemp(board[4][sense], board[2][sense]);
-            movePieceTemp(board[0][sense], board[3][sense]);
-        }
-        else{
-            movePieceTemp(board[4][sense], board[6][sense]);
-            movePieceTemp(board[7][sense], board[5][sense]);
-
-        }
-    }
-
-    public HashMap<Square, MoveType> castling(Square king) {
-        HashMap<Square, MoveType> possibleRook = new HashMap<>();
-        if (king.piece instanceof King && !king.piece.hasMoved && king.piece.isWhite == currentPlayer.isWhite) {//King moved or wrong color
-            System.out.println("king " + king.piece.hasMoved + " "+ king.piece.isWhite);
-            if (currentPlayer == playerTop) {
-                if (board[0][0].piece != null && board[0][0].piece.isWhite == currentPlayer.isWhite && !board[0][0].piece.hasMoved && board[0][0].piece instanceof Rook) {
-                    System.out.println("rook ok");
-                    if (!pieceInTheWay(king, -3)) {
-                        System.out.println("no piece in the way");
-                        possibleRook.put(board[0][0], MoveType.KINGSIDE);
-                    }
-                }
-                if (board[7][0].piece != null && board[7][0].piece.isWhite == currentPlayer.isWhite && !board[7][0].piece.hasMoved && board[0][0].piece instanceof Rook)
-                    if (!pieceInTheWay(king, +2)) {
-                        possibleRook.put(board[7][0], MoveType.QUEENSIDE);
-                    }
-            }
-            else {
-                if (board[7][7].piece != null && board[7][7].piece.isWhite == currentPlayer.isWhite && !board[7][7].piece.hasMoved && board[0][0].piece instanceof Rook) {
-                    if (!pieceInTheWay(king, -2)){
-                        possibleRook.put(board[7][7], MoveType.QUEENSIDE);
-                    }
-                }
-                if (board[0][7].piece != null && board[0][7].piece.isWhite == currentPlayer.isWhite && !board[0][7].piece.hasMoved && board[0][0].piece instanceof Rook) {
-                    if (!pieceInTheWay(king, -2)){
-                        possibleRook.put(board[0][7], MoveType.KINGSIDE);
-                    }
-                }
-            }
-        }
-        return possibleRook;
-    }
-    public boolean pieceInTheWay(Square king, int x){
-        int sense = x < 0 ? -1 : 1;
-        for (int i = 0; i < Math.abs(x); i++) {
-            if (board[king.position.x + i * sense][king.position.y].piece != null) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void movePieceTemp(Square start, Square end){
         if(end.piece != null){
