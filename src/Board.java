@@ -58,13 +58,17 @@ public class Board {
     }
 
     // Move a piece on the chessboard
-    public void movePiece(Square start, Square end){
-        if(end.piece != null){
-            deletePiece(end);
+    public void movePiece(Square start, Square end, MoveType m){
+        if (m == MoveType.CLASSIC) {
+            if (end.piece != null) {
+                deletePiece(end);
+            }
+            end.piece = start.piece;
+            start.piece = null;
+            end.piece.hasMoved = true;
+        } else{
+            castleMove(m);
         }
-        end.piece = start.piece;
-        start.piece = null;
-        end.piece.hasMoved = true;
     }
 
     public void castleMove(MoveType m){
@@ -83,24 +87,27 @@ public class Board {
     public HashMap<Square, MoveType> castling(Square king) {
         HashMap<Square, MoveType> possibleRook = new HashMap<>();
         if (king.piece instanceof King && !king.piece.hasMoved && king.piece.isWhite == currentPlayer.isWhite) {//King moved or wrong color
+            System.out.println("king " + king.piece.hasMoved + " "+ king.piece.isWhite);
             if (currentPlayer == playerTop) {
-                if (board[0][0].piece != null && board[0][0].piece.isWhite == currentPlayer.isWhite && !board[0][0].piece.hasMoved) {
-                    if (!pieceInTheWay(king, -2)) {
+                if (board[0][0].piece != null && board[0][0].piece.isWhite == currentPlayer.isWhite && !board[0][0].piece.hasMoved && board[0][0].piece instanceof Rook) {
+                    System.out.println("rook ok");
+                    if (!pieceInTheWay(king, -3)) {
+                        System.out.println("no piece in the way");
                         possibleRook.put(board[0][0], MoveType.KINGSIDE);
                     }
                 }
-                if (board[7][0].piece != null && board[7][0].piece.isWhite == currentPlayer.isWhite && !board[7][0].piece.hasMoved)
+                if (board[7][0].piece != null && board[7][0].piece.isWhite == currentPlayer.isWhite && !board[7][0].piece.hasMoved && board[0][0].piece instanceof Rook)
                     if (!pieceInTheWay(king, +2)) {
                         possibleRook.put(board[7][0], MoveType.QUEENSIDE);
                     }
             }
             else {
-                if (board[7][7].piece != null && board[7][7].piece.isWhite == currentPlayer.isWhite && !board[7][7].piece.hasMoved) {
+                if (board[7][7].piece != null && board[7][7].piece.isWhite == currentPlayer.isWhite && !board[7][7].piece.hasMoved && board[0][0].piece instanceof Rook) {
                     if (!pieceInTheWay(king, -2)){
                         possibleRook.put(board[7][7], MoveType.QUEENSIDE);
                     }
                 }
-                if (board[0][7].piece != null && board[0][7].piece.isWhite == currentPlayer.isWhite && !board[0][7].piece.hasMoved) {
+                if (board[0][7].piece != null && board[0][7].piece.isWhite == currentPlayer.isWhite && !board[0][7].piece.hasMoved && board[0][0].piece instanceof Rook) {
                     if (!pieceInTheWay(king, -2)){
                         possibleRook.put(board[0][7], MoveType.KINGSIDE);
                     }

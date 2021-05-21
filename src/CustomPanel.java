@@ -5,6 +5,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,7 +19,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	Menu menu;
 	Frame f;
 	Piece selectedPiece;
-	List<Position> selectedPieceMoves;
+	HashMap<Position, MoveType> selectedPieceMoves;
     Square tempSquare, promotion;
 	List<JLabel> numbers, letters;
 
@@ -123,11 +124,11 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void select(Square s){
         if(!s.getMoves(f.b).isEmpty()){
-            selectedPieceMoves = new ArrayList<Position>(s.getMoves(f.b).keySet());
+            selectedPieceMoves = s.getMoves(f.b);
 			selectedPiece = s.piece;
 			this.setLayer(selectedPiece.image,4);
             tempSquare = s;
-            for(Position pos: selectedPieceMoves){ 
+            for(Position pos: selectedPieceMoves.keySet()){
 				if(f.b.board[pos.x][pos.y].piece != null){
                 	this.setLayer(f.b.board[pos.x][pos.y].movesFilled,2);
 				}
@@ -140,7 +141,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void unselect(){ // previously removeMoves
 		if(selectedPieceMoves != null){
-			for(Position pos: selectedPieceMoves){ // for each moves
+			for(Position pos: selectedPieceMoves.keySet()){ // for each moves
 				this.setLayer(f.b.board[pos.x][pos.y].movesEmpty,0);
 				this.setLayer(f.b.board[pos.x][pos.y].movesFilled,0); 
 			}
@@ -199,7 +200,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 						}	
 						else{
 							if(selectedPieceMoves != null){
-								for(Position position: selectedPieceMoves){
+								for(Position position: selectedPieceMoves.keySet()){
 									if(position.equals(f.b.board[x][y].position)){
 										if(f.b.board[x][y].piece != null){
 											f.b.history.add(new Action(tempSquare, f.b.board[x][y], f.b.board[x][y].piece));
@@ -213,7 +214,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										else{
 											f.b.playSound("move");
 										}
-										f.b.movePiece(tempSquare,f.b.board[x][y]);
+										f.b.movePiece(tempSquare,f.b.board[x][y], selectedPieceMoves.get(position));
 										checkPromotion(f.b.board[x][y]);
 										f.b.cursorMoves ++;
 										f.b.nbMoves ++;
@@ -238,7 +239,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 				for(int y=0; y<8; y++){
 					if(e.getX() <= f.b.board[x][y].image.getX()+f.b.board[x][y].image.getWidth() && e.getX() >= f.b.board[x][y].image.getX() && e.getY() <= f.b.board[x][y].image.getY()+f.b.board[x][y].image.getHeight() && e.getY() >= f.b.board[x][y].image.getY()){
 						if(selectedPieceMoves != null){
-							for(Position position: selectedPieceMoves){
+							for(Position position: selectedPieceMoves.keySet()){
 								if(position.equals(f.b.board[x][y].position)){
 									if(f.b.board[x][y].piece != null){
 										f.b.history.add(new Action(tempSquare, f.b.board[x][y], f.b.board[x][y].piece));
@@ -252,7 +253,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									else{
 										f.b.playSound("move");
 									}
-									f.b.movePiece(tempSquare,f.b.board[x][y]);
+									f.b.movePiece(tempSquare,f.b.board[x][y], selectedPieceMoves.get(position));
 									/*if (f.b.isCheck(f.b.currentPlayer.isWhite)){
 										f.b.uncurrentPlayer.check = true;
 									}*/

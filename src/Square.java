@@ -99,9 +99,9 @@ public class Square {
             }
         }
         //Special movement for king
-  /*      if (b.castling(this).isEmpty()){
+        if (b.castling(this).isEmpty()){
             System.out.println("castle move impossible");
-        }*/
+        }
         if (!b.castling(this).isEmpty()) {
             for (Map.Entry<Square, MoveType> m : b.castling(this).entrySet()) {
                 temporaryBoard = new Board(b);
@@ -109,7 +109,7 @@ public class Square {
                 if (!temporaryBoard.isCheck(!b.currentPlayer.isWhite)) {
                     int topdown = b.currentPlayer == b.playerTop ? 0 : 7;
                     int sense = m.getValue() == MoveType.KINGSIDE ? 2 : 6;
-                        definitiveMoves.put(b.board[sense][topdown].position , m.getValue());
+                    definitiveMoves.put(b.board[sense][topdown].position , m.getValue());
                 }
             }
         }
