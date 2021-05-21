@@ -6,9 +6,11 @@ public class Bishop extends Piece {
         super(isWhite);
         if(isWhite){
             icon = new ImageIcon("Images/wb.png");
+            value = 30;
         }
         else{
             icon = new ImageIcon("Images/bb.png");
+            value = -30;
         }
         image = new JLabel(icon);
     }

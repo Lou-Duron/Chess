@@ -7,9 +7,11 @@ public class King extends Piece {
         hasMoved = false;
         if(isWhite){
             icon = new ImageIcon("Images/wk.png");
+            value = 900;
         }
         else{
             icon = new ImageIcon("Images/bk.png");
+            value = -900;
         }
         image = new JLabel(icon);
     }
