@@ -395,11 +395,6 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
                     Image newimgPiece = imagePiece.getScaledInstance(SQUARE_SIZE, SQUARE_SIZE,  java.awt.Image.SCALE_SMOOTH);  
                     f.b.board[x][y].piece.image.setIcon(new ImageIcon(newimgPiece));
                     f.b.board[x][y].piece.image.setBounds(x*SQUARE_SIZE, y*SQUARE_SIZE+SQUARE_SIZE/2, SQUARE_SIZE, SQUARE_SIZE);
-					if(f.b.board[x][y].piece instanceof King){
-						if(f.b.currentPlayer.check && f.b.board[x][y].piece.isWhite == f.b.currentPlayer.isWhite){
-							this.setLayer(f.b.board[x][y].imageCheck,1);
-						}
-					}
                 }
             }
         }
@@ -447,6 +442,15 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         //New current player in check ?
         if (f.b.isCheck(!f.b.currentPlayer.isWhite)){
         	f.b.currentPlayer.check = true;
+		}
+		for(int x=0; x<8; x++){
+            for(int y=0; y<8; y++){
+				if(f.b.board[x][y].piece instanceof King){
+					if(f.b.currentPlayer.check && f.b.board[x][y].piece.isWhite == f.b.currentPlayer.isWhite){
+						this.setLayer(f.b.board[x][y].imageCheck,1);
+					}
+				}
+			}
 		}
 
         //Game Over ?
