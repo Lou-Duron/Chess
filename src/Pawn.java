@@ -5,7 +5,7 @@ public class Pawn extends Piece {
     public Pawn(boolean isWhite) {
         super(isWhite);
         if(isWhite){
-            icon = new ImageIcon(Images.WPAWN.getImage());
+            icon = new ImageIcon((Images.WPAWN.getImage()));
             value = 10;
         }
         else{
