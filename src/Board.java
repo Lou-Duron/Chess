@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.*;
 import java.io.*;
 import javax.sound.sampled.*;
@@ -239,7 +238,7 @@ public class Board {
 
     public void playSound(String s){
         try {
-            File f = new File("./Sounds/"+ s +".wav");
+            File f = new File(s);
             AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
