@@ -60,12 +60,6 @@ public class Board {
     // Move a piece on the chessboard
     public void movePiece(Square start, Square end){
         if(end.piece != null){
-            playSound("eat");
-        }
-        else{
-            playSound("move");
-        }
-        if(end.piece != null){
             deletePiece(end);
         }
         end.piece = start.piece;

@@ -207,6 +207,12 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										else{
 											f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 										}
+										if(f.b.board[x][y].piece != null){
+											f.b.playSound("eat");
+										}
+										else{
+											f.b.playSound("move");
+										}
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
 										checkPromotion(f.b.board[x][y]);
 										f.b.cursorMoves ++;
@@ -239,6 +245,12 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 									}
 									else{
 										f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
+									}
+									if(f.b.board[x][y].piece != null){
+										f.b.playSound("eat");
+									}
+									else{
+										f.b.playSound("move");
 									}
 									f.b.movePiece(tempSquare,f.b.board[x][y]);
 									/*if (f.b.isCheck(f.b.currentPlayer.isWhite)){
