@@ -22,11 +22,12 @@ public class Pawn extends Piece {
 
     public boolean canMove(Board b, Square start, Square end) {
         if (b.currentPlayer == b.playerBot){
-            if (start.position.y == 6){ //Starting position
+            if (start.position.y == 6){ //Starting position for bottom player
+                // Can only move forward and up to 2 squares
                 if ( end.position.y - start.position.y < -2 || end.position.y - start.position.y > 0) {
                     return false;
                 }
-                else {
+                else { // If condition respected, is there a piece in the way ?
                     if (end.position.y == start.position.y-2 && end.position.x == start.position.x){
                         if (b.board[start.position.x][start.position.y-1].piece != null){
                             return false;
@@ -34,12 +35,14 @@ public class Pawn extends Piece {
                     }
                 }
             }
+            // Else, only one square forward authorized
             else if (end.position.y - start.position.y != -1) {
                 return false;
             }
         }
         else{
-            if (start.position.y == 1) { //Starting position
+            if (start.position.y == 1) { //Starting position for top player
+                // Can only move forward and up to 2 squares
                 if (end.position.y - start.position.y > 2 || end.position.y - start.position.y < 0) {
                     return false;
                 }
@@ -58,7 +61,7 @@ public class Pawn extends Piece {
         // Moves to eat a piece
         boolean diagonal = Math.abs(end.position.x - start.position.x) == 1 && Math.abs(end.position.y - start.position.y) == 1;
 
-        if(end.piece != null && (!diagonal || end.piece.getColor() == this.getColor())){ //If there is a piece on the square
+        if(end.piece != null && (!diagonal || end.piece.getColor() == this.getColor())){
             return false;
         }
         if (end.piece == null && Math.abs(end.position.x - start.position.x) != 0) { //if not

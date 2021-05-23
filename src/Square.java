@@ -34,7 +34,7 @@ public class Square {
         movesFilled = new JLabel(iconDispoFilled);
     }
 
-    public Square(Square s) {
+    public Square(Square s) { //Copy constructor
         this(s.position, s.isWhite);
         this.imageLastMove = null;
         this.image = null;
@@ -83,28 +83,30 @@ public class Square {
         return possibleMoves;
     }
 
+
     public ArrayList<Position> getMoves (Board b) {
         Board temporaryBoard;
         ArrayList<Position> definitiveMoves = new ArrayList<Position>();
         for (Position p : getPossibleMoves(b)) {
             temporaryBoard = new Board(b);
             temporaryBoard.movePieceTemp(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
+            Player player = temporaryBoard.currentPlayer;
+            temporaryBoard.currentPlayer = temporaryBoard.uncurrentPlayer;
+            temporaryBoard.uncurrentPlayer = player;
             if (!temporaryBoard.isCheck(!b.currentPlayer.isWhite)) {
                 definitiveMoves.add(p);
             }
         }
         return definitiveMoves;
     }
-    public boolean isMoveValid (Board b, Position p) {
+
+
+    public boolean isMoveValid (Board b, Position p) { //Test self check for a move
         if (piece == null) return false;
-        if (!piece.canMove(b, this, b.board[p.x][p.y])) {
+        if (!piece.canMove(b, b.board[this.position.x][this.position.y], b.board[p.x][p.y])) {
             return false;
         }
-        //Avoid self check
-        Board temporaryBoard = new Board(b);
-        temporaryBoard.movePieceTemp(temporaryBoard.board[this.position.x][this.position.y], temporaryBoard.board[p.x][p.y]);
         return true;
-        //!temporaryBoard.isCheck(!temporaryBoard.uncurrentPlayer.isWhite);
     }
 
     public boolean equals(Square s){

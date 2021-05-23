@@ -23,6 +23,7 @@ public class Rook extends Piece {
     }
 
     public boolean canMove(Board b, Square start, Square end) {
+        //Which vertical or horizontal move
         int distanceX = Math.abs(end.position.x - start.position.x);
         int distanceY = Math.abs(end.position.y - start.position.y);
 
@@ -32,7 +33,7 @@ public class Rook extends Piece {
                 return false;
             }
         }
-        // if move not in a straight line
+        // if didn't move in a straight line
         if (distanceX != 0 && distanceY != 0)
             return false;
 

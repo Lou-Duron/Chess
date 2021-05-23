@@ -75,6 +75,7 @@ public class Board {
         }
         end.piece = start.piece;
         start.piece = null;
+
     }
 
     // Remove a piece from the chessboard

@@ -26,7 +26,7 @@ public class Bishop extends Piece {
                 return false;
             }
         }
-        // Didn't move diagonally
+        // Can't move diagonally
         if (end.position.x-start.position.x != 0){
             if (Math.abs((float)(end.position.y-start.position.y)/(end.position.x-start.position.x)) != 1) {
                 return false;
@@ -36,16 +36,17 @@ public class Bishop extends Piece {
         if (end.position.x-start.position.x == 0)
             return false;
 
-        int dirX = end.position.x > start.position.x ? 1 : -1;
-        int dirY = end.position.y > start.position.y ? 1 : -1;
+        // For diagonal moves
+        int dirX = end.position.x > start.position.x ? 1 : -1; //right or left diagonal
+        int dirY = end.position.y > start.position.y ? 1 : -1; //up or down diagonal
         for (int i = 1; i < Math.abs(end.position.x - start.position.x)+1; i++){
             int x = start.position.x+i*dirX;
             int y = start.position.y+i*dirY;
-            if (b.board[x][y].piece != null) {
-                if (b.board[x][y].piece.getColor() == start.piece.getColor()){
+            if (b.board[x][y].piece != null) { //Collision
+                if (b.board[x][y].piece.getColor() == start.piece.getColor()){ //Can't eat its own pieces
                     return false;
                 }
-                else if (!b.board[x][y].equals(end)){
+                else if (!b.board[x][y].equals(end)){ //Piece in the way between start and end
                     return false;
                 }
             }

@@ -52,10 +52,11 @@ public class Queen extends Piece {
                 }
             }
         }
+        // Vertical and horizontal collisions
         else {
-            // Vertical Collisions
-            int dirX = end.position.x >= start.position.x ? 1 : -1;
-            int dirY = end.position.y >= start.position.y ? 1 : -1;
+            //Which  move
+            int dirX = end.position.x >= start.position.x ? 1 : -1; // right or left
+            int dirY = end.position.y >= start.position.y ? 1 : -1; // up or down
             int maxDistance = Math.max(distanceX, distanceY);
             int x;
             int y;
@@ -69,11 +70,11 @@ public class Queen extends Piece {
                     y = start.position.y;
                 }
 
-                if (b.board[x][y].piece != null) {
-                    if (b.board[x][y].piece.getColor() == start.piece.getColor()) {
+                if (b.board[x][y].piece != null) { //Piece in the way
+                    if (b.board[x][y].piece.getColor() == start.piece.getColor()) { //Piece of the same color
                         return false;
 
-                    } else if (!b.board[x][y].equals(end)) {
+                    } else if (!b.board[x][y].equals(end)) { //no possible moves after this one
                         return false;
                     }
                 }
