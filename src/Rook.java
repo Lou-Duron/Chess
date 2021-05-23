@@ -7,11 +7,11 @@ public class Rook extends Piece {
         super(isWhite);
         hasMoved = false;
         if(isWhite){
-            icon = new ImageIcon("Images/wr.png");
+            icon = new ImageIcon(Images.WROOK.getImage());
             value = 50;
         }
         else{
-            icon = new ImageIcon("Images/br.png");
+            icon = new ImageIcon(Images.BROOK.getImage());
             value = 50;
         }
         image = new JLabel(icon);

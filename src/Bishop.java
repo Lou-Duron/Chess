@@ -5,11 +5,11 @@ public class Bishop extends Piece {
     public Bishop(boolean isWhite) {
         super(isWhite);
         if(isWhite){
-            icon = new ImageIcon("Images/wb.png");
+            icon = new ImageIcon(Images.WBISHOP.getImage());
             value = 30;
         }
         else{
-            icon = new ImageIcon("Images/bb.png");
+            icon = new ImageIcon(Images.BBISHOP.getImage());
             value = -30;
         }
         image = new JLabel(icon);

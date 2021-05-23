@@ -1,14 +1,15 @@
 import javax.swing.*;
+import java.util.Objects;
 
 public class Pawn extends Piece {
     public Pawn(boolean isWhite) {
         super(isWhite);
         if(isWhite){
-            icon = new ImageIcon("Images/wp.png");
+            icon = new ImageIcon((Images.WPAWN.getImage()));
             value = 10;
         }
         else{
-            icon = new ImageIcon("Images/bp.png");
+            icon = new ImageIcon(Images.BPAWN.getImage());
             value = -10;
         }
         image = new JLabel(icon);
