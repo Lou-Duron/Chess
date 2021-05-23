@@ -1,7 +1,4 @@
 import java.util.*;
-import java.io.*;
-import javax.sound.sampled.*;
-
 
 public class Board {
     
@@ -11,12 +8,18 @@ public class Board {
     int cursorMoves, nbMoves;
     boolean time;
 
-    public Board(String playerTopName, String playerBotName){
+    public Board(String playerTopName, String playerBotName, boolean ia){
         board = new Square[8][8];
-        Random r = new Random();
-        boolean randomize = r.nextInt(2) == 1;
-        playerTop = new Player(playerTopName, randomize, true); 
-        playerBot = new Player(playerBotName, !randomize, false);
+        if(ia){
+            playerTop = new Player("IA", false, true); 
+            playerBot = new Player(playerBotName, true, false);
+        }
+        else{
+            Random r = new Random();
+            boolean randomize = r.nextInt(2) == 1;
+            playerTop = new Player(playerTopName, randomize, true); 
+            playerBot = new Player(playerBotName, !randomize, false);
+        }
         if(playerTop.isWhite){
             currentPlayer = playerTop;
             uncurrentPlayer = playerBot;
@@ -233,19 +236,6 @@ public class Board {
             }
         }
         return !(currentKing != 0 && uncurrentKing !=0);
-    }
-
-
-    public void playSound(String s){
-        try {
-            File f = new File(s);
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioIn);
-            clip.start();
-        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-            e.printStackTrace();
-        }
     }
    
 }

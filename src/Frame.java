@@ -35,7 +35,7 @@ public class Frame {
         if(b != null){
             panel.removeGraphics();
         }
-        b = new Board(topName, botName);
+        b = new Board(topName, botName, IA);
         b.initBoard();
         panel.setCoordinates();
         panel.addGraphics();
@@ -46,9 +46,10 @@ public class Frame {
         if(IA){
             ia = new IA(b.playerTop, this);
             this.IA = true;
-            if(b.playerTop.isWhite){
-                ia.makeMove();
-            }
+        }
+        else {
+            ia = null;
+            this.IA = false;
         }
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

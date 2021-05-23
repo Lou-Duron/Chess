@@ -51,28 +51,6 @@ public class IA {
         }
         return score;
     }
-    
-    public int minimax(Square[][] board, int depth, boolean maximizingPlayer){
-        if(depth == 0){ // or game over
-            return computeScore(board);
-        }
-        if(maximizingPlayer){
-            int maxEval = Integer.MIN_VALUE;
-            for(Square[][] b: getMoves(board)){
-                int eval = minimax(b, depth-1 , false);
-                maxEval = Math.max(eval,maxEval);
-            }
-            return maxEval;
-        }
-        else{
-            int minEval = Integer.MAX_VALUE;
-            for(Square[][] b: getMoves(board)){
-                int eval = minimax(b, depth-1 , true);
-                minEval = Math.min(eval,minEval);
-            }
-            return minEval;
-        }
-    }
 
     public int minimaxPrunning(Square[][] board, int depth,int alpha, int beta, boolean maximizingPlayer){
         if(depth == 0){ // or game over
@@ -81,7 +59,7 @@ public class IA {
         if(maximizingPlayer){
             int maxEval = Integer.MIN_VALUE;
             for(Square[][] b: getMoves(board)){
-                int eval = minimaxPrunning(b, depth-1, alpha, beta, true);
+                int eval = minimaxPrunning(b, depth-1, alpha, beta, false);
                 maxEval = Math.max(eval,maxEval);
                 alpha = Math.max(alpha, eval);
                 if(beta <= alpha){
@@ -95,7 +73,7 @@ public class IA {
             for(Square[][] b: getMoves(board)){
                 int eval = minimaxPrunning(b, depth-1, alpha, beta, true);
                 minEval = Math.min(eval,minEval);
-                beta = Math.max(beta, eval);
+                beta = Math.min(beta, eval);
                 if(beta <= alpha){
                     break;
                 }
@@ -141,7 +119,6 @@ public class IA {
                 bestMove.clear();
                 bestMove.addAll(fina.get(b));
             }
-            System.out.print("|");
         }
         Square start = f.b.board[bestMove.get(0).position.x][bestMove.get(0).position.y];
         Square end = f.b.board[bestMove.get(1).position.x][bestMove.get(1).position.y];
@@ -152,10 +129,10 @@ public class IA {
             f.b.history.add(new Action(start, end));
         }
         if(end.piece != null){
-            f.b.playSound(Sounds.EAT.getFile());
+            f.panel.playSound(Sounds.EAT.getFile());
         }
         else{
-            f.b.playSound(Sounds.MOVE.getFile());
+            f.panel.playSound(Sounds.MOVE.getFile());
         }
         f.b.movePiece(start,end);
         f.panel.checkPromotion(end);
@@ -163,7 +140,5 @@ public class IA {
         f.b.nbMoves ++;
         f.panel.displayPieces();
         f.panel.switchPlayer(f.b.time);
-        System.out.println("");
-        System.out.println("->");
     }
 }

@@ -8,7 +8,8 @@ import javax.swing.border.LineBorder;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-
+import java.io.*;
+import javax.sound.sampled.*;
 
 public class CustomPanel extends JLayeredPane implements MouseListener, MouseMotionListener{
 
@@ -208,10 +209,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 											f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 										}
 										if(f.b.board[x][y].piece != null){
-											f.b.playSound(Sounds.EAT.getFile());
+											playSound(Sounds.EAT.getFile());
 										}
 										else{
-											f.b.playSound(Sounds.MOVE.getFile());
+											playSound(Sounds.MOVE.getFile());
 										}
 										f.b.movePiece(tempSquare,f.b.board[x][y]);
 										checkPromotion(f.b.board[x][y]);
@@ -247,10 +248,10 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 										f.b.history.add(new Action(tempSquare, f.b.board[x][y]));
 									}
 									if(f.b.board[x][y].piece != null){
-										f.b.playSound(Sounds.EAT.getFile());
+										playSound(Sounds.EAT.getFile());
 									}
 									else{
-										f.b.playSound(Sounds.MOVE.getFile());
+										playSound(Sounds.MOVE.getFile());
 									}
 									f.b.movePiece(tempSquare,f.b.board[x][y]);
 									checkPromotion(f.b.board[x][y]);
@@ -438,7 +439,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
         //New current player in check ?
         if (f.b.isCheck(!f.b.currentPlayer.isWhite)){
         	f.b.currentPlayer.check = true;
-			f.b.playSound(Sounds.CHECK.getFile());
+			playSound(Sounds.CHECK.getFile());
 		}
 		for(int x=0; x<8; x++){
             for(int y=0; y<8; y++){
@@ -482,7 +483,7 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 	}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public void popUpPromotion(Square s){
-		f.b.playSound(Sounds.PROMOTION.getFile());
+		playSound(Sounds.PROMOTION.getFile());
 		this.add(menu.popupPanel, Integer.valueOf(5));
 		if(s.piece.isWhite){
 			for(JLabel piece: menu.promotionWhite){		
@@ -577,5 +578,17 @@ public class CustomPanel extends JLayeredPane implements MouseListener, MouseMot
 			}
 		}
 	}
+
+	public void playSound(String s){
+        try {
+            File f = new File(s);
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
+    }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

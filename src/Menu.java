@@ -22,8 +22,8 @@ public class Menu {
     Color CL_ACTIVE = new Color(90,100,111); // Active button color
     int tTop, tBot;
     Timer tT, tB;
-    boolean IA = false;
     boolean reverse = false;
+    boolean IA = false;
 
     public Menu(Frame f){
 
@@ -397,7 +397,6 @@ public class Menu {
                     f.b.reverseBoard();
                     f.panel.reverseCoordinates();
                     f.panel.addGraphics();
-                    
                 }
             } 
             @Override
@@ -420,7 +419,7 @@ public class Menu {
             public void mouseExited(MouseEvent e) {}
             @Override
             public void mousePressed(MouseEvent e) {
-                endGame(null, f.panel);
+                endGame(f.b.uncurrentPlayer, f.panel);
             } 
             @Override
             public void mouseReleased(MouseEvent e) {}
